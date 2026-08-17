@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Postlain Admin - Quản Trị Hệ Sinh Thái Portal</title>
+  <title>POSTLAIN // ADMIN CONTROL MATRIX</title>
   <meta name="robots" content="noindex, nofollow">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
-  <!-- CSS Stylesheets -->
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/admin.css">
 </head>
@@ -24,10 +24,10 @@
   <div id="auth-overlay" class="auth-overlay">
     <div class="auth-card">
       <div class="auth-icon-wrap">
-        <i data-lucide="shield-lock" style="width: 34px; height: 34px;"></i>
+        <i data-lucide="shield-alert" style="width: 32px; height: 32px;"></i>
       </div>
-      <h2 class="auth-title">Postlain Admin</h2>
-      <p class="auth-subtitle">Nhập mã PIN bảo mật để truy cập bảng điều khiển</p>
+      <h2 class="auth-title">POSTLAIN ROOT</h2>
+      <p class="auth-subtitle">Nhập mã PIN bảo mật để truy cập bảng điều khiển hệ thống</p>
 
       <div class="auth-pin-group">
         <input 
@@ -39,18 +39,18 @@
           autocomplete="off"
           autofocus
         >
-        <div id="pin-error-msg" style="color: var(--accent-rose); font-size: 0.85rem; margin-top: 10px; display: none;">
-          Mã PIN không đúng.
+        <div id="pin-error-msg" style="color: var(--red-neon); font-size: 0.82rem; margin-top: 10px; display: none; font-family: var(--font-mono);">
+          MÃ PIN KHÔNG CHÍNH XÁC.
         </div>
       </div>
 
       <button id="admin-pin-submit" class="auth-btn">
-        <i data-lucide="key-round" style="width: 18px; height: 18px;"></i>
-        <span>Mở Khóa Quản Trị</span>
+        <i data-lucide="key" style="width: 16px; height: 16px;"></i>
+        <span>XÁC THỰC MÃ PIN</span>
       </button>
 
-      <div class="auth-hint">
-        Mã PIN mặc định ban đầu: <strong style="color: #fff;">1234</strong>
+      <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 18px; font-family: var(--font-mono);">
+        PIN MẶC ĐỊNH: <strong style="color: var(--red-neon);">1234</strong>
       </div>
     </div>
   </div>
@@ -61,138 +61,80 @@
     <aside class="admin-sidebar">
       <div>
         <a href="../" class="admin-brand">
-          <div class="brand-icon-wrapper" style="width: 38px; height: 38px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); display: flex; align-items: center; justify-content: center; color: #fff;">
-            <i data-lucide="layers" style="width: 20px; height: 20px;"></i>
+          <div style="width: 34px; height: 34px; background: #13131c; border: 1px solid var(--red-neon); display: flex; align-items: center; justify-content: center; color: var(--red-neon); clip-path: var(--clip-corner-sm);">
+            <i data-lucide="terminal" style="width: 18px; height: 18px;"></i>
           </div>
           <div>
-            <div>Postlain</div>
-            <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 600; letter-spacing: 0.5px;">ADMIN PANEL</div>
+            <div style="font-size: 1.1rem; line-height: 1;">POSTLAIN</div>
+            <div style="font-size: 0.68rem; color: var(--red-neon); font-family: var(--font-mono); letter-spacing: 1px;">ROOT // ADMIN</div>
           </div>
         </a>
 
         <nav class="admin-nav">
           <a href="#portals" class="admin-nav-item active" data-tab="portals">
-            <i data-lucide="compass" style="width: 18px; height: 18px;"></i>
-            <span>Cổng Kết Nối</span>
+            <i data-lucide="grid" style="width: 18px; height: 18px;"></i>
+            <span>01 // MASTER GATE</span>
           </a>
-          <a href="#categories" class="admin-nav-item" data-tab="categories">
-            <i data-lucide="folder-tree" style="width: 18px; height: 18px;"></i>
-            <span>Danh Mục</span>
-          </a>
-          <a href="#settings" class="admin-nav-item" data-tab="settings">
-            <i data-lucide="settings-2" style="width: 18px; height: 18px;"></i>
-            <span>Cấu Hình Chung</span>
+          <a href="#about" class="admin-nav-item" data-tab="about">
+            <i data-lucide="user-x" style="width: 18px; height: 18px;"></i>
+            <span>02 // SOẠN THẢO ABOUT</span>
           </a>
           <a href="#deploy" class="admin-nav-item" data-tab="deploy">
             <i data-lucide="cloud-upload" style="width: 18px; height: 18px;"></i>
-            <span>Deploy & Backup</span>
+            <span>03 // DEPLOY & BACKUP</span>
           </a>
         </nav>
       </div>
 
       <div class="admin-sidebar-footer">
         <a href="../" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">
-          <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
-          <span>Xem Trang Chủ</span>
+          <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+          <span>XEM TRANG CHỦ</span>
         </a>
         <button id="change-pin-btn" class="btn btn-secondary btn-sm" style="width: 100%;">
-          <i data-lucide="key" style="width: 15px; height: 15px;"></i>
-          <span>Đổi Mã PIN</span>
+          <i data-lucide="key" style="width: 14px; height: 14px;"></i>
+          <span>ĐỔI MÃ PIN</span>
         </button>
         <button id="admin-logout-btn" class="btn btn-danger btn-sm" style="width: 100%;">
-          <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
-          <span>Đăng Xuất</span>
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+          <span>ĐĂNG XUẤT</span>
         </button>
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <main class="admin-main">
       <div class="admin-header">
         <div>
-          <h1 id="admin-page-title" class="admin-header-title">Quản Lý Cổng Kết Nối</h1>
-          <p style="color: var(--text-secondary); font-size: 0.9rem;">Thiết lập và quản lý các cổng kết nối trong hệ sinh thái Postlain</p>
+          <h1 id="admin-page-title" class="admin-header-title">QUẢN LÝ MASTER GATE (CỔNG KẾT NỐI)</h1>
+          <p style="color: var(--text-steel); font-size: 0.88rem; font-family: var(--font-mono);">
+            // CẤU HÌNH HỆ THỐNG CÁC Ô VUÔNG CỔNG VÀ BẢNG XEM TRƯỚC
+          </p>
         </div>
-        <div class="admin-header-actions">
+      </div>
+
+      <!-- TAB 1: MASTER GATE -->
+      <section id="tab-portals" class="tab-panel active">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-steel);">
+            DANH SÁCH CÁC WEBSITE CON & CỔNG DỊCH VỤ
+          </div>
           <button id="open-add-portal-btn" class="btn btn-primary">
-            <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
-            <span>Thêm Cổng Mới</span>
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>THÊM CỔNG MỚI</span>
           </button>
         </div>
-      </div>
 
-      <!-- Quick Metrics -->
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="metric-icon-box" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-primary);">
-            <i data-lucide="grid" style="width: 24px; height: 24px;"></i>
-          </div>
-          <div class="metric-info">
-            <div id="stat-total-portals" class="val">0</div>
-            <div class="lbl">Tổng số Cổng</div>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon-box" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">
-            <i data-lucide="check-circle" style="width: 24px; height: 24px;"></i>
-          </div>
-          <div class="metric-info">
-            <div id="stat-live-portals" class="val">0</div>
-            <div class="lbl">Đang Hoạt Động (Live)</div>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon-box" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan);">
-            <i data-lucide="flask-conical" style="width: 24px; height: 24px;"></i>
-          </div>
-          <div class="metric-info">
-            <div id="stat-beta-portals" class="val">0</div>
-            <div class="lbl">Thử Nghiệm / Sắp Ra Mắt</div>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon-box" style="background: rgba(236, 72, 153, 0.15); color: var(--accent-pink);">
-            <i data-lucide="mouse-pointer-click" style="width: 24px; height: 24px;"></i>
-          </div>
-          <div class="metric-info">
-            <div id="stat-total-clicks" class="val">0</div>
-            <div class="lbl">Tổng Lượt Click</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 1: PORTALS MANAGER -->
-      <section id="tab-portals" class="tab-panel active">
-        <!-- Toolbar -->
-        <div class="admin-toolbar">
-          <div class="search-filter-box">
-            <input 
-              type="text" 
-              id="admin-portal-search" 
-              class="admin-input" 
-              placeholder="Tìm kiếm cổng theo tên, URL, mô tả..."
-            >
-            <select id="admin-category-filter" class="admin-select" style="max-width: 200px;">
-              <option value="all">Tất cả danh mục</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Table -->
         <div class="data-table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 50px; text-align: center;">#</th>
-                <th>Tên Cổng & Đường Dẫn</th>
-                <th>Danh Mục</th>
-                <th>Trạng Thái</th>
-                <th>Lượt Xem</th>
-                <th>Thứ Tự</th>
-                <th style="width: 100px;">Thao Tác</th>
+                <th>NODE</th>
+                <th>TÊN WEBSITE & URL</th>
+                <th>1 DÒNG GIỚI THIỆU (TAGLINE)</th>
+                <th>TRẠNG THÁI</th>
+                <th>CLICKS</th>
+                <th style="width: 120px;">THAO TÁC</th>
               </tr>
             </thead>
             <tbody id="portals-table-body">
@@ -202,231 +144,108 @@
         </div>
       </section>
 
-      <!-- TAB 2: CATEGORIES MANAGER -->
-      <section id="tab-categories" class="tab-panel">
-        <div class="admin-toolbar">
-          <div style="font-weight: 600; color: var(--text-secondary);">
-            Quản lý các nhóm danh mục phân loại cho cổng kết nối
-          </div>
-          <button id="open-add-category-btn" class="btn btn-primary btn-sm">
-            <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
-            <span>Thêm Danh Mục</span>
-          </button>
-        </div>
-
-        <div id="categories-list" style="display: flex; flex-direction: column; gap: 14px;">
-          <!-- Injected via JavaScript -->
-        </div>
-      </section>
-
-      <!-- TAB 3: SETTINGS -->
-      <section id="tab-settings" class="tab-panel">
-        <form id="settings-form" style="max-width: 780px; display: flex; flex-direction: column; gap: 24px;">
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
-            <h3 style="font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-              <i data-lucide="layout" style="width: 20px; height: 20px; color: var(--accent-primary);"></i>
-              <span>Thông Tin Cổng Chính</span>
-            </h3>
-
-            <div class="form-row" style="margin-bottom: 16px;">
-              <div class="form-group">
-                <label>Tên Thương Hiệu (Site Name)</label>
-                <input type="text" id="setting-site-name" class="admin-input" placeholder="Postlain">
-              </div>
-              <div class="form-group">
-                <label>Tiêu Đề Trang Web (Site Title)</label>
-                <input type="text" id="setting-site-title" class="admin-input" placeholder="Postlain Ecosystem">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Khẩu Hiệu / Mô Tả Ngắn (Tagline)</label>
-              <textarea id="setting-tagline" class="admin-textarea" rows="2" placeholder="Cổng kết nối toàn diện đến các dịch vụ trong hệ sinh thái Postlain"></textarea>
-            </div>
-          </div>
-
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
-            <h3 style="font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-              <i data-lucide="bell" style="width: 20px; height: 20px; color: var(--accent-pink);"></i>
-              <span>Banner Thông Báo Đầu Trang</span>
-            </h3>
-
-            <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-bottom: 16px;">
-              <input type="checkbox" id="setting-announce-enable" style="width: 18px; height: 18px; cursor: pointer;">
-              <label for="setting-announce-enable" style="cursor: pointer; font-size: 0.95rem;">Hiển thị thanh thông báo nổi bật</label>
-            </div>
-
-            <div class="form-row" style="margin-bottom: 16px;">
-              <div class="form-group">
-                <label>Nhãn Badge (VD: MỚI, HOT, UPDATE)</label>
-                <input type="text" id="setting-announce-badge" class="admin-input" placeholder="MỚI">
-              </div>
-              <div class="form-group">
-                <label>Liên Kết Đính Kèm (Link)</label>
-                <input type="text" id="setting-announce-link" class="admin-input" placeholder="#portals">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Nội Dung Thông Báo</label>
-              <input type="text" id="setting-announce-text" class="admin-input" placeholder="Chào mừng bạn đến với Postlain Hub!">
-            </div>
-          </div>
-
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
-            <h3 style="font-size: 1.15rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-              <i data-lucide="share-2" style="width: 20px; height: 20px; color: var(--accent-cyan);"></i>
-              <span>Liên Kết Mạng Xã Hội & Kênh Kết Nối</span>
-            </h3>
-
-            <div class="form-row" style="margin-bottom: 14px;">
-              <div class="form-group">
-                <label>GitHub URL</label>
-                <input type="text" id="setting-social-github" class="admin-input" placeholder="https://github.com/postlainmusic">
-              </div>
-              <div class="form-group">
-                <label>Discord Server</label>
-                <input type="text" id="setting-social-discord" class="admin-input" placeholder="https://discord.gg/...">
-              </div>
+      <!-- TAB 2: ABOUT MANIFESTO EDITOR -->
+      <section id="tab-about" class="tab-panel">
+        <form id="about-form" style="max-width: 820px; display: flex; flex-direction: column; gap: 20px;">
+          <div style="background: #0d0d14; border: 1px solid var(--border-steel); border-left: 3px solid var(--red-neon); clip-path: var(--clip-corner-md); padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+            <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: #fff;">
+              THÔNG TIN ĐỊNH DANH KẺ ẨN DANH
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label>YouTube Channel</label>
-                <input type="text" id="setting-social-youtube" class="admin-input" placeholder="https://youtube.com/...">
+                <label>TIÊU ĐỀ CHÍNH (TITLE)</label>
+                <input type="text" id="form-about-title" class="admin-input" placeholder="HỒ SƠ KẺ ẨN DANH // THE ARCHITECT">
               </div>
               <div class="form-group">
-                <label>Telegram Kênh/Nhóm</label>
-                <input type="text" id="setting-social-telegram" class="admin-input" placeholder="https://t.me/...">
+                <label>PHỤ ĐỀ (SUBTITLE)</label>
+                <input type="text" id="form-about-subtitle" class="admin-input" placeholder="MỤC ĐÍCH KIẾN TẠO HỆ SINH THÁI">
               </div>
             </div>
 
-            <div class="form-group" style="margin-top: 14px;">
-              <label>Email Liên Hệ</label>
-              <input type="email" id="setting-social-email" class="admin-input" placeholder="contact@postlain.com">
+            <div class="form-group">
+              <label>BÍ DANH (ALIAS)</label>
+              <input type="text" id="form-about-alias" class="admin-input" placeholder="ANONYMOUS_ARCHITECT // 0xPOSTLAIN">
+            </div>
+
+            <div class="form-group">
+              <label>CÂU NÓI ĐẦU TRANG (QUOTE)</label>
+              <input type="text" id="form-about-quote" class="admin-input" placeholder="Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.">
+            </div>
+          </div>
+
+          <div style="background: #0d0d14; border: 1px solid var(--border-steel); border-left: 3px solid var(--red-neon); clip-path: var(--clip-corner-md); padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+            <div style="font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: #fff;">
+              NỘI DUNG TUYÊN NGÔN / TÂM THƯ KẺ ẨN DANH
+            </div>
+
+            <div class="form-group">
+              <label>NỘI DUNG CHI TIẾT (HỖ TRỢ XUỐNG DÒNG NHIỀU ĐOẠN)</label>
+              <textarea id="form-about-content" class="admin-textarea" rows="10" placeholder="Viết lý do và mục đích tạo ra hệ sinh thái các website này..."></textarea>
             </div>
           </div>
 
           <div>
-            <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">
+            <button type="submit" class="btn btn-primary" style="padding: 14px 32px;">
               <i data-lucide="save" style="width: 18px; height: 18px;"></i>
-              <span>Lưu Cấu Hình Toàn Bộ</span>
+              <span>LƯU HỒ SƠ ABOUT</span>
             </button>
           </div>
         </form>
       </section>
 
-      <!-- TAB 4: DEPLOY & BACKUP -->
+      <!-- TAB 3: DEPLOY & BACKUP -->
       <section id="tab-deploy" class="tab-panel">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
-          <!-- Export JSON Card -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
+          <!-- Export Card -->
+          <div style="background: #0d0d14; border: 1px solid var(--border-steel); clip-path: var(--clip-corner-md); padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                <i data-lucide="download" style="color: var(--accent-emerald); width: 22px; height: 22px;"></i>
-                <h3 style="font-size: 1.15rem;">Xuất & Tải Dữ Liệu portals.json</h3>
+                <i data-lucide="download" style="color: var(--red-neon); width: 22px; height: 22px;"></i>
+                <h3 style="font-size: 1.15rem; font-family: var(--font-display);">XUẤT FILE portals.json</h3>
               </div>
-              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 18px;">
-                Mọi chỉnh sửa trong trang quản trị này đều được tự động lưu tạm trong trình duyệt. Khi bạn sẵn sàng deploy chính thức lên GitHub & Cloudflare, hãy tải file <code style="color: var(--accent-cyan);">portals.json</code> này và ghi đè vào thư mục <code style="color: var(--accent-cyan);">data/portals.json</code> rồi push git!
+              <p style="font-size: 0.88rem; color: var(--text-steel); margin-bottom: 18px;">
+                Tải file cấu hình mới nhất và ghi đè vào <code>data/portals.json</code> trong mã nguồn dự án trước khi push git lên Cloudflare.
               </p>
             </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button id="download-json-btn" class="btn btn-primary">
                 <i data-lucide="file-down" style="width: 16px; height: 16px;"></i>
-                <span>Tải File portals.json</span>
+                <span>TẢI portals.json</span>
               </button>
               <button id="copy-json-btn" class="btn btn-secondary">
                 <i data-lucide="copy" style="width: 16px; height: 16px;"></i>
-                <span>Sao Chép JSON</span>
+                <span>SAO CHÉP JSON</span>
               </button>
             </div>
           </div>
 
-          <!-- Import JSON Card -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+          <!-- Import Card -->
+          <div style="background: #0d0d14; border: 1px solid var(--border-steel); clip-path: var(--clip-corner-md); padding: 24px;">
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-              <i data-lucide="upload" style="color: var(--accent-cyan); width: 22px; height: 22px;"></i>
-              <h3 style="font-size: 1.15rem;">Nhập Dữ Liệu Dự Phòng (Import)</h3>
+              <i data-lucide="upload" style="color: var(--red-neon); width: 22px; height: 22px;"></i>
+              <h3 style="font-size: 1.15rem; font-family: var(--font-display);">NHẬP DỮ LIỆU DỰ PHÒNG</h3>
             </div>
-            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px;">
-              Tải lên file JSON hoặc dán nội dung cấu hình để đồng bộ tức thì:
-            </p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
-              <input type="file" id="import-file-input" accept=".json" style="font-size: 0.85rem; color: var(--text-secondary);">
-              <textarea id="import-json-textarea" class="admin-textarea" rows="2" placeholder="Hoặc dán đoạn mã JSON vào đây..."></textarea>
+              <input type="file" id="import-file-input" accept=".json" style="font-size: 0.82rem; color: var(--text-steel); font-family: var(--font-mono);">
+              <textarea id="import-json-textarea" class="admin-textarea" rows="2" placeholder="Hoặc dán mã JSON vào đây..."></textarea>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <button id="process-import-btn" class="btn btn-secondary btn-sm">
                   <i data-lucide="check" style="width: 14px; height: 14px;"></i>
-                  <span>Áp Dụng JSON</span>
+                  <span>ÁP DỤNG</span>
                 </button>
                 <button id="reset-defaults-btn" class="btn btn-danger btn-sm">
                   <i data-lucide="rotate-ccw" style="width: 14px; height: 14px;"></i>
-                  <span>Khôi Phục Gốc</span>
+                  <span>KHÔI PHỤC GỐC</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Deploy Steps Card -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 30px;">
-          <h3 style="font-size: 1.3rem; font-family: var(--font-display); margin-bottom: 18px; display: flex; align-items: center; gap: 10px;">
-            <i data-lucide="rocket" style="color: var(--accent-pink); width: 24px; height: 24px;"></i>
-            <span>Hướng Dẫn Triển Khai GitHub & Cloudflare Pages</span>
-          </h3>
-
-          <div class="step-card">
-            <div class="step-card-header">
-              <span class="step-number">1</span>
-              <span>Lưu và tải file cấu hình portals.json mới nhất</span>
-            </div>
-            <p style="font-size: 0.9rem; color: var(--text-secondary);">
-              Sau khi thêm hoặc chỉnh sửa các cổng dịch vụ, bấm nút <strong>"Tải File portals.json"</strong> ở trên và lưu đè vào thư mục dự án: <code>data/portals.json</code>.
-            </p>
-          </div>
-
-          <div class="step-card">
-            <div class="step-card-header">
-              <span class="step-number">2</span>
-              <span>Commit và Push mã nguồn lên GitHub</span>
-            </div>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px;">
-              Chạy các lệnh terminal sau trong thư mục dự án:
-            </p>
-            <div class="code-snippet">
-              <span>git add . && git commit -m "Update postlain ecosystem portals" && git push origin main</span>
-            </div>
-          </div>
-
-          <div class="step-card">
-            <div class="step-card-header">
-              <span class="step-number">3</span>
-              <span>Kết nối Cloudflare Pages với Repo GitHub</span>
-            </div>
-            <ul style="font-size: 0.9rem; color: var(--text-secondary); margin-left: 20px; line-height: 1.8;">
-              <li>Truy cập <a href="https://dash.cloudflare.com/" target="_blank" style="color: var(--accent-cyan);">Cloudflare Dashboard</a> &gt; <strong>Workers & Pages</strong> &gt; <strong>Create application</strong> &gt; <strong>Pages</strong>.</li>
-              <li>Chọn <strong>Connect to Git</strong> và chọn repository <code>postlainmusic/postlain</code>.</li>
-              <li><strong>Framework preset</strong>: Chọn <code>None</code> (hoặc <code>Direct HTML</code>).</li>
-              <li><strong>Build output directory</strong>: Để trống hoặc điền <code>.</code> (thư mục gốc).</li>
-              <li>Bấm <strong>Save and Deploy</strong>. Cloudflare sẽ tự động build và cấp domain miễn phí dạng <code>postlain.pages.dev</code>.</li>
-            </ul>
-          </div>
-
-          <div class="step-card">
-            <div class="step-card-header">
-              <span class="step-number">4</span>
-              <span>Gắn Tên Miền Tùy Chỉnh postlain.com</span>
-            </div>
-            <p style="font-size: 0.9rem; color: var(--text-secondary);">
-              Trong trang quản lý Cloudflare Pages của bạn, chuyển sang tab <strong>Custom domains</strong> &gt; Bấm <strong>Set up a custom domain</strong> &gt; Nhập <code>postlain.com</code> và kích hoạt. Cloudflare sẽ tự động cấu hình DNS và cấp chứng chỉ SSL HTTPS miễn phí.
-            </p>
-          </div>
-        </div>
-
-        <!-- Raw JSON Viewer -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
-          <h4 style="font-size: 1rem; margin-bottom: 12px; color: var(--text-secondary);">
-            Xem trước mã nguồn JSON hiện tại (Live Preview)
+        <div style="background: #0d0d14; border: 1px solid var(--border-steel); clip-path: var(--clip-corner-md); padding: 24px;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 12px; font-family: var(--font-mono); color: var(--text-steel);">
+            // LIVE JSON CODE VIEWER
           </h4>
           <pre id="json-viewer" class="json-viewer"></pre>
         </div>
@@ -438,8 +257,8 @@
   <div id="portal-modal" class="modal-backdrop">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3 id="portal-modal-title" class="modal-title">Thêm Cổng Kết Nối Mới</h3>
-        <button class="modal-close" title="Đóng">
+        <h3 id="portal-modal-title" class="modal-title">THÊM CỔNG KẾT NỐI MỚI</h3>
+        <button class="modal-close" style="background: transparent; border: none; color: var(--text-steel); cursor: pointer;">
           <i data-lucide="x" style="width: 20px; height: 20px;"></i>
         </button>
       </div>
@@ -450,125 +269,49 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label>Tên Cổng / Website *</label>
-              <input type="text" id="form-portal-title" class="admin-input" placeholder="VD: Postlain DAW Studio" required>
+              <label>TÊN WEBSITE CỔNG *</label>
+              <input type="text" id="form-portal-title" class="admin-input" placeholder="VD: POSTLAIN STUDIO DAW" required>
             </div>
             <div class="form-group">
-              <label>Danh Mục Phân Loại</label>
+              <label>DANH MỤC</label>
               <select id="form-portal-category" class="admin-select"></select>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Đường Dẫn URL Website *</label>
+            <label>ĐƯỜNG DẪN URL *</label>
             <input type="url" id="form-portal-url" class="admin-input" placeholder="https://studio.postlain.com" required>
           </div>
 
           <div class="form-group">
-            <label>Mô Tả Ngắn</label>
-            <textarea id="form-portal-desc" class="admin-textarea" rows="2" placeholder="Mô tả chức năng chính của cổng dịch vụ này..."></textarea>
+            <label>1 DÒNG GIỚI THIỆU (TAGLINE CỐT LÕI) *</label>
+            <input type="text" id="form-portal-tagline" class="admin-input" placeholder="VD: Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt." required>
+          </div>
+
+          <div class="form-group">
+            <label>MÔ TẢ CHI TIẾT</label>
+            <textarea id="form-portal-desc" class="admin-textarea" rows="2" placeholder="Mô tả kỹ thuật bổ sung..."></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label>Icon (Tên Lucide Icon)</label>
-              <input type="text" id="form-portal-icon" class="admin-input" placeholder="disc-3, music, sparkles, cpu...">
+              <label>LUCIDE ICON</label>
+              <input type="text" id="form-portal-icon" class="admin-input" placeholder="disc-3, sliders, sparkles, cpu, box...">
             </div>
             <div class="form-group">
-              <label>Trạng Thái Hoạt Động</label>
+              <label>TRẠNG THÁI</label>
               <select id="form-portal-status" class="admin-select">
-                <option value="live">Hoạt Động (Live)</option>
-                <option value="beta">Thử Nghiệm (Beta)</option>
-                <option value="coming_soon">Sắp Ra Mắt (Coming Soon)</option>
-                <option value="maintenance">Đang Bảo Trì (Maintenance)</option>
+                <option value="ONLINE">ONLINE (HOẠT ĐỘNG)</option>
+                <option value="BETA">BETA (THỬ NGHIỆM)</option>
+                <option value="DEV">DEV (PHÁT TRIỂN)</option>
               </select>
             </div>
           </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nhãn Phụ / Badge (Tùy chọn)</label>
-              <input type="text" id="form-portal-badge" class="admin-input" placeholder="Hot, Mới, AI 2.0, Pro...">
-            </div>
-            <div class="form-group">
-              <label>Màu Sắc Điểm Nhấn (Accent Hex)</label>
-              <input type="text" id="form-portal-accent" class="admin-input" placeholder="#6366f1">
-            </div>
-          </div>
-
-          <!-- Color Swatches Quick Select -->
-          <div class="form-group">
-            <label>Bảng Màu Nhanh</label>
-            <div id="portal-color-swatches" class="color-picker-grid">
-              <div class="color-swatch active" data-color="#6366f1" style="background: #6366f1;"></div>
-              <div class="color-swatch" data-color="#ec4899" style="background: #ec4899;"></div>
-              <div class="color-swatch" data-color="#06b6d4" style="background: #06b6d4;"></div>
-              <div class="color-swatch" data-color="#8b5cf6" style="background: #8b5cf6;"></div>
-              <div class="color-swatch" data-color="#10b981" style="background: #10b981;"></div>
-              <div class="color-swatch" data-color="#f59e0b" style="background: #f59e0b;"></div>
-              <div class="color-swatch" data-color="#f43f5e" style="background: #f43f5e;"></div>
-              <div class="color-swatch" data-color="#3b82f6" style="background: #3b82f6;"></div>
-            </div>
-          </div>
-
-          <div class="form-group" style="flex-direction: row; align-items: center; gap: 10px; margin-top: 6px;">
-            <input type="checkbox" id="form-portal-featured" style="width: 18px; height: 18px; cursor: pointer;">
-            <label for="form-portal-featured" style="cursor: pointer; font-size: 0.92rem; color: #fff;">
-              Đánh dấu Spotlight nổi bật trên đầu trang chủ
-            </label>
-          </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary modal-cancel">Hủy Bỏ</button>
-          <button type="submit" class="btn btn-primary">Lưu Cổng Kết Nối</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: ADD / EDIT CATEGORY -->
-  <div id="category-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 520px;">
-      <div class="modal-header">
-        <h3 class="modal-title">Cấu Hình Danh Mục</h3>
-        <button class="modal-close" title="Đóng">
-          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
-        </button>
-      </div>
-
-      <form id="category-form">
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Mã Định Danh (Slug ID)</label>
-            <input type="text" id="form-cat-id" class="admin-input" placeholder="music, tools, ai...">
-          </div>
-
-          <div class="form-group">
-            <label>Tên Danh Mục *</label>
-            <input type="text" id="form-cat-name" class="admin-input" placeholder="Âm Nhạc, Công Cụ..." required>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Lucide Icon</label>
-              <input type="text" id="form-cat-icon" class="admin-input" placeholder="folder, music, cpu...">
-            </div>
-            <div class="form-group">
-              <label>Màu Danh Mục (Hex)</label>
-              <input type="text" id="form-cat-color" class="admin-input" placeholder="#6366f1">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Mô Tả</label>
-            <textarea id="form-cat-desc" class="admin-textarea" rows="2" placeholder="Mô tả ngắn cho danh mục..."></textarea>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-          <button type="submit" class="btn btn-primary">Lưu Danh Mục</button>
+          <button type="button" class="btn btn-secondary modal-cancel">HỦY</button>
+          <button type="submit" class="btn btn-primary">LƯU CỔNG KẾT NỐI</button>
         </div>
       </form>
     </div>
@@ -578,38 +321,37 @@
   <div id="pin-modal" class="modal-backdrop">
     <div class="modal-dialog" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 class="modal-title">Thay Đổi Mã PIN Admin</h3>
-        <button class="modal-close" title="Đóng">
+        <h3 class="modal-title">ĐỔI MÃ PIN ADMIN</h3>
+        <button class="modal-close" style="background: transparent; border: none; color: var(--text-steel); cursor: pointer;">
           <i data-lucide="x" style="width: 20px; height: 20px;"></i>
         </button>
       </div>
 
       <div class="modal-body">
         <div class="form-group">
-          <label>Mã PIN Hiện Tại</label>
-          <input type="password" id="form-current-pin" class="admin-input" placeholder="Mã PIN cũ (mặc định: 1234)">
+          <label>MÃ PIN HIỆN TẠI</label>
+          <input type="password" id="form-current-pin" class="admin-input" placeholder="••••">
         </div>
         <div class="form-group">
-          <label>Mã PIN Mới (ít nhất 4 số/ký tự)</label>
-          <input type="password" id="form-new-pin" class="admin-input" placeholder="Mã PIN mới">
+          <label>MÃ PIN MỚI (ít nhất 4 số)</label>
+          <input type="password" id="form-new-pin" class="admin-input" placeholder="••••">
         </div>
         <div class="form-group">
-          <label>Xác Nhận Mã PIN Mới</label>
-          <input type="password" id="form-confirm-pin" class="admin-input" placeholder="Nhập lại mã PIN mới">
+          <label>XÁC NHẬN MÃ PIN MỚI</label>
+          <input type="password" id="form-confirm-pin" class="admin-input" placeholder="••••">
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-        <button type="button" id="save-pin-btn" class="btn btn-primary">Cập Nhật PIN</button>
+        <button type="button" class="btn btn-secondary modal-cancel">HỦY</button>
+        <button type="button" id="save-pin-btn" class="btn btn-primary">LƯU MÃ PIN</button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 
-  <!-- Javascript Modules -->
+  <!-- Scripts -->
   <script src="../js/store.js"></script>
   <script src="../js/admin.js"></script>
 </body>

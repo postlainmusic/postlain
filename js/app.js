@@ -1,5 +1,6 @@
 /**
- * Postlain Ecosystem Portal - Frontend Logic
+ * Postlain Cyberpunk 3D Portal - Frontend Logic
+ * Controls Mode Switching, 3D Square Gate Grid, and Center 50% Expanded Preview Spotlight.
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -7,35 +8,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   await store.ready();
 
   // State
-  let currentCategory = 'all';
-  let searchQuery = '';
-  let onlyFavorites = false;
+  let currentMode = 'gate'; // 'gate' or 'about'
+  let activeExpandedPortalId = null;
+  let closeTimeout = null;
 
-  // DOM Elements
-  const announcementBanner = document.getElementById('announcement-banner');
-  const announcementBadge = document.getElementById('announcement-badge');
-  const announcementText = document.getElementById('announcement-text');
-  const announcementClose = document.getElementById('announcement-close');
+  // DOM Elements - Modes
+  const modeGateBtn = document.getElementById('mode-gate-btn');
+  const modeAboutBtn = document.getElementById('mode-about-btn');
+  const sectionGate = document.getElementById('section-gate');
+  const sectionAbout = document.getElementById('section-about');
+
+  // DOM Elements - Gate Grid & Expanded Preview
+  const gateSquareGrid = document.getElementById('gate-square-grid');
+  const gateNodeCount = document.getElementById('gate-node-count');
   
-  const siteTitleEl = document.getElementById('site-title');
-  const heroTitleEl = document.getElementById('hero-title');
-  const heroSubtitleEl = document.getElementById('hero-subtitle');
-  
-  const searchInput = document.getElementById('portal-search');
-  const searchClearBtn = document.getElementById('search-clear-btn');
-  const categoryPillsContainer = document.getElementById('category-pills');
-  
-  const spotlightSection = document.getElementById('spotlight-section');
-  const spotlightGrid = document.getElementById('spotlight-grid');
-  
-  const portalsGrid = document.getElementById('portals-grid');
-  const portalsCountEl = document.getElementById('portals-count');
-  const emptyState = document.getElementById('empty-state');
-  const resetSearchBtn = document.getElementById('reset-search-btn');
-  
-  const totalPortalsMetric = document.getElementById('total-portals-metric');
-  const livePortalsMetric = document.getElementById('live-portals-metric');
-  const totalClicksMetric = document.getElementById('total-clicks-metric');
+  const previewBackdrop = document.getElementById('expanded-preview-backdrop');
+  const previewCloseBtn = document.getElementById('preview-close-btn');
+  const previewFeedId = document.getElementById('preview-feed-id');
+  const previewScreenFrame = document.getElementById('preview-screen-frame');
+  const previewTaglineText = document.getElementById('preview-tagline-text');
+  const previewFullDesc = document.getElementById('preview-full-desc');
+  const previewMetaProtocol = document.getElementById('preview-meta-protocol');
+  const previewMetaCat = document.getElementById('preview-meta-cat');
+  const previewMetaClicks = document.getElementById('preview-meta-clicks');
+  const previewLaunchBtn = document.getElementById('preview-launch-btn');
+
+  // DOM Elements - About
+  const aboutMainTitle = document.getElementById('about-main-title');
+  const aboutAlias = document.getElementById('about-alias');
+  const aboutQuote = document.getElementById('about-quote');
+  const aboutContentBody = document.getElementById('about-content-body');
+  const aboutSpecsGrid = document.getElementById('about-specs-grid');
 
   // Initialize
   renderAll();
@@ -45,346 +48,236 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderAll();
   });
 
-  window.addEventListener('postlain-favorites-updated', () => {
-    renderPortals();
-    renderCategories();
-  });
+  // --- MODE SWITCHER ---
+  function setMode(mode) {
+    currentMode = mode;
+    if (mode === 'gate') {
+      modeGateBtn.classList.add('active');
+      modeAboutBtn.classList.remove('active');
+      sectionGate.classList.add('active');
+      sectionAbout.classList.remove('active');
+      window.location.hash = '#gate';
+    } else {
+      modeAboutBtn.classList.add('active');
+      modeGateBtn.classList.remove('active');
+      sectionAbout.classList.add('active');
+      sectionGate.classList.remove('active');
+      window.location.hash = '#about';
+    }
+    initIcons();
+  }
 
-  // --- RENDER FUNCTIONS ---
+  modeGateBtn.addEventListener('click', () => setMode('gate'));
+  modeAboutBtn.addEventListener('click', () => setMode('about'));
+
+  // Check URL hash on load
+  if (window.location.hash === '#about') {
+    setMode('about');
+  }
+
+  // --- RENDER ALL ---
   function renderAll() {
-    renderSettings();
-    renderCategories();
-    renderSpotlight();
-    renderPortals();
-    renderMetrics();
+    renderGateGrid();
+    renderAboutSection();
     initIcons();
   }
 
-  function renderSettings() {
-    const settings = store.getSettings();
-    
-    // Announcement
-    if (settings.announcement?.enabled) {
-      announcementBanner.classList.remove('hidden');
-      announcementBadge.textContent = settings.announcement.badge || 'MỚI';
-      announcementText.textContent = settings.announcement.text || '';
-      announcementText.href = settings.announcement.link || '#';
-    } else {
-      announcementBanner.classList.add('hidden');
-    }
-
-    if (siteTitleEl && settings.siteName) {
-      siteTitleEl.textContent = settings.siteName;
-    }
-    if (heroSubtitleEl && settings.tagline) {
-      heroSubtitleEl.textContent = settings.tagline;
-    }
-  }
-
-  function renderCategories() {
-    const categories = store.getCategories();
+  // --- RENDER MASTER GATE SQUARE GRID ---
+  function renderGateGrid() {
     const portals = store.getPortals();
-    const favs = store.getFavorites();
+    gateNodeCount.textContent = `[ ACTIVE_NODES: ${portals.length} ]`;
 
-    let html = `
-      <button class="category-pill ${currentCategory === 'all' && !onlyFavorites ? 'active' : ''}" data-cat="all">
-        <span class="category-pill-icon"><i data-lucide="layout-grid"></i></span>
-        <span>Tất cả</span>
-        <span class="category-pill-count">${portals.length}</span>
-      </button>
-    `;
+    gateSquareGrid.innerHTML = portals.map((portal, idx) => {
+      const indexStr = (idx + 1).toString().padStart(2, '0');
+      const statusClass = (portal.status || 'ONLINE').toLowerCase();
+      const cat = store.getCategories().find(c => c.id === portal.category);
 
-    if (favs.length > 0) {
-      html += `
-        <button class="category-pill ${onlyFavorites ? 'active' : ''}" data-cat="favorites">
-          <span class="category-pill-icon" style="color: var(--accent-amber);"><i data-lucide="star"></i></span>
-          <span>Yêu thích</span>
-          <span class="category-pill-count">${favs.length}</span>
-        </button>
-      `;
-    }
-
-    categories.forEach(cat => {
-      const count = portals.filter(p => p.category === cat.id).length;
-      const isActive = currentCategory === cat.id && !onlyFavorites;
-      html += `
-        <button class="category-pill ${isActive ? 'active' : ''}" data-cat="${cat.id}">
-          <span class="category-pill-icon" style="color: ${cat.color || 'var(--accent-primary)'};">
-            <i data-lucide="${cat.icon || 'folder'}"></i>
-          </span>
-          <span>${escapeHtml(cat.name)}</span>
-          <span class="category-pill-count">${count}</span>
-        </button>
-      `;
-    });
-
-    categoryPillsContainer.innerHTML = html;
-
-    // Attach click events
-    categoryPillsContainer.querySelectorAll('.category-pill').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const cat = btn.getAttribute('data-cat');
-        if (cat === 'favorites') {
-          onlyFavorites = true;
-          currentCategory = 'all';
-        } else {
-          onlyFavorites = false;
-          currentCategory = cat;
-        }
-        renderCategories();
-        renderPortals();
-        initIcons();
-      });
-    });
-  }
-
-  function renderSpotlight() {
-    const portals = store.getPortals();
-    const featured = portals.filter(p => p.featured);
-
-    if (featured.length === 0 || currentCategory !== 'all' || searchQuery || onlyFavorites) {
-      spotlightSection.style.display = 'none';
-      return;
-    }
-
-    spotlightSection.style.display = 'block';
-    spotlightGrid.innerHTML = featured.slice(0, 3).map(portal => {
-      const cat = store.getCategoryById(portal.category);
-      const isFav = store.isFavorite(portal.id);
       return `
-        <div class="spotlight-card" style="--card-accent: ${portal.accent || '#6366f1'};">
-          <div>
-            <div class="spotlight-header">
-              <div class="spotlight-icon-wrap" style="background: linear-gradient(135deg, ${portal.accent || '#6366f1'}, #312e81);">
-                <i data-lucide="${portal.icon || 'globe'}" style="width: 26px; height: 26px;"></i>
-              </div>
-              <div class="portal-actions-top">
-                <span class="spotlight-badge">${escapeHtml(portal.badge || 'Nổi bật')}</span>
-                <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${portal.id}" title="Ghim yêu thích">
-                  <i data-lucide="star" style="width: 18px; height: 18px; ${isFav ? 'fill: currentColor;' : ''}"></i>
-                </button>
-              </div>
-            </div>
-            <div class="portal-category-tag" style="color: ${cat?.color || 'var(--accent-primary)'};">
-              <i data-lucide="${cat?.icon || 'tag'}" style="width: 14px; height: 14px;"></i>
-              ${escapeHtml(cat?.name || 'Dịch vụ')}
-            </div>
-            <h3 class="spotlight-title">${escapeHtml(portal.title)}</h3>
-            <p class="spotlight-desc">${escapeHtml(portal.description || '')}</p>
-          </div>
-          <div class="spotlight-footer">
-            <span class="portal-clicks">
-              <i data-lucide="eye" style="width: 14px; height: 14px;"></i>
-              ${formatClicks(portal.clicks)} lượt xem
+        <div class="cyber-square-card" data-id="${portal.id}">
+          <div class="card-top-hud">
+            <span class="card-index">[ GATE_${indexStr} ]</span>
+            <span class="card-status-pill ${statusClass}">
+              <span class="dot"></span>
+              <span>${portal.status || 'ONLINE'}</span>
             </span>
-            <a href="${escapeHtml(portal.url)}" target="_blank" rel="noopener noreferrer" class="launch-btn portal-link" data-id="${portal.id}">
-              <span>Mở Cổng</span>
-              <i data-lucide="arrow-up-right" class="arrow-icon" style="width: 16px; height: 16px;"></i>
-            </a>
+          </div>
+
+          <div class="card-center-reactor">
+            <div class="reactor-icon-ring">
+              <i data-lucide="${portal.icon || 'globe'}" style="width: 32px; height: 32px;"></i>
+            </div>
+            <div class="card-title-text">${escapeHtml(portal.title)}</div>
+          </div>
+
+          <div class="card-bottom-hud">
+            <span>${escapeHtml(cat?.name || 'NODE')}</span>
+            <span class="hover-expand-hint">
+              <span>VIEW</span>
+              <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+            </span>
           </div>
         </div>
       `;
     }).join('');
 
-    attachPortalCardEvents(spotlightGrid);
+    attachSquareCardEvents();
   }
 
-  function renderPortals() {
-    let portals = store.getPortals();
-    const favs = store.getFavorites();
+  // Attach 3D Tilt & Center Zoom Events
+  function attachSquareCardEvents() {
+    const cards = gateSquareGrid.querySelectorAll('.cyber-square-card');
 
-    // Filter by favorites
-    if (onlyFavorites) {
-      portals = portals.filter(p => favs.includes(p.id));
-    } else if (currentCategory !== 'all') {
-      portals = portals.filter(p => p.category === currentCategory);
-    }
+    cards.forEach(card => {
+      const id = card.getAttribute('data-id');
 
-    // Filter by search query
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      portals = portals.filter(p => {
-        const cat = store.getCategoryById(p.category);
-        return (
-          p.title?.toLowerCase().includes(q) ||
-          p.description?.toLowerCase().includes(q) ||
-          p.url?.toLowerCase().includes(q) ||
-          p.badge?.toLowerCase().includes(q) ||
-          cat?.name?.toLowerCase().includes(q)
-        );
+      // 3D Tilt on Mousemove
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -12;
+        const rotateY = ((x - centerX) / centerX) * 12;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
       });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+
+      // Hover / Click to trigger Center 50% Spotlight Zoom
+      card.addEventListener('mouseenter', () => {
+        clearTimeout(closeTimeout);
+        openExpandedPreview(id);
+      });
+
+      card.addEventListener('click', () => {
+        openExpandedPreview(id);
+      });
+    });
+  }
+
+  // --- CENTER 50% EXPANDED PREVIEW LOGIC ---
+  function openExpandedPreview(id) {
+    const portal = store.getPortalById(id);
+    if (!portal) return;
+
+    activeExpandedPortalId = id;
+    previewFeedId.textContent = `[ DIRECT_FEED // GATE_${portal.id.toUpperCase()} ]`;
+
+    // 1 Dòng Giới Thiệu (Tagline)
+    previewTaglineText.textContent = portal.tagline || portal.description || 'Cổng kết nối dịch vụ trực tuyến.';
+    
+    // Mô tả chi tiết nếu có
+    if (previewFullDesc) {
+      previewFullDesc.textContent = portal.description || '';
     }
 
-    portalsCountEl.textContent = `${portals.length} Cổng kết nối`;
+    // Specs
+    const cat = store.getCategories().find(c => c.id === portal.category);
+    previewMetaCat.textContent = cat?.name || 'SYSTEM_NODE';
+    previewMetaProtocol.textContent = portal.url.replace(/^https?:\/\//, '');
+    previewMetaClicks.textContent = `${portal.clicks || 0} CLICKS`;
 
-    if (portals.length === 0) {
-      portalsGrid.innerHTML = '';
-      emptyState.classList.add('active');
-      return;
-    }
+    // Launch Link
+    previewLaunchBtn.href = portal.url;
+    previewLaunchBtn.setAttribute('data-id', portal.id);
 
-    emptyState.classList.remove('active');
+    // Live Preview Screen / Mockup
+    renderPreviewScreen(portal);
 
-    portalsGrid.innerHTML = portals.map(portal => {
-      const cat = store.getCategoryById(portal.category);
-      const isFav = store.isFavorite(portal.id);
-      const statusClass = portal.status || 'live';
-      const statusLabel = getStatusLabel(portal.status);
+    // Show Overlay
+    previewBackdrop.classList.add('active');
+    initIcons();
+  }
 
-      return `
-        <div class="portal-card" style="--card-accent: ${portal.accent || '#6366f1'};">
-          <div>
-            <div class="portal-card-top">
-              <div class="portal-icon-container" style="background: linear-gradient(135deg, ${portal.accent || '#6366f1'}, rgba(30, 41, 59, 0.9));">
-                <i data-lucide="${portal.icon || 'globe'}" style="width: 22px; height: 22px;"></i>
-              </div>
-              <div class="portal-actions-top">
-                <span class="status-badge ${statusClass}">
-                  <span class="dot"></span>
-                  ${statusLabel}
-                </span>
-                <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${portal.id}" title="Ghim yêu thích">
-                  <i data-lucide="star" style="width: 17px; height: 17px; ${isFav ? 'fill: currentColor;' : ''}"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="portal-body">
-              <div class="portal-category-tag" style="color: ${cat?.color || 'var(--accent-primary)'};">
-                <i data-lucide="${cat?.icon || 'tag'}" style="width: 13px; height: 13px;"></i>
-                ${escapeHtml(cat?.name || 'Hệ thống')}
-              </div>
-              <h3 class="portal-title">
-                <span>${escapeHtml(portal.title)}</span>
-                ${portal.badge ? `<span style="font-size: 0.7rem; padding: 2px 7px; border-radius: 99px; background: rgba(255,255,255,0.08); color: var(--text-secondary); font-weight: 500;">${escapeHtml(portal.badge)}</span>` : ''}
-              </h3>
-              <p class="portal-desc">${escapeHtml(portal.description || 'Truy cập cổng dịch vụ trực tuyến.')}</p>
-            </div>
-          </div>
-
-          <div class="portal-card-footer">
-            <div class="portal-clicks">
-              <i data-lucide="mouse-pointer" style="width: 13px; height: 13px;"></i>
-              <span>${formatClicks(portal.clicks)} clicks</span>
-            </div>
-            <a href="${escapeHtml(portal.url)}" target="_blank" rel="noopener noreferrer" class="launch-btn portal-link" data-id="${portal.id}">
-              <span>Truy Cập</span>
-              <i data-lucide="arrow-up-right" class="arrow-icon" style="width: 15px; height: 15px;"></i>
-            </a>
-          </div>
+  function renderPreviewScreen(portal) {
+    // Cyberpunk Terminal Preview Screen
+    previewScreenFrame.innerHTML = `
+      <div class="preview-hud-scanbeam"></div>
+      <div class="preview-fallback-display">
+        <div style="width: 58px; height: 58px; border-radius: 50%; background: #13131c; border: 1px solid var(--red-neon); display: flex; align-items: center; justify-content: center; color: var(--red-neon); box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);">
+          <i data-lucide="${portal.icon || 'globe'}" style="width: 28px; height: 28px;"></i>
         </div>
-      `;
-    }).join('');
-
-    attachPortalCardEvents(portalsGrid);
+        <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: 1px;">
+          ${escapeHtml(portal.title)}
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--red-neon);">
+          🔗 ${escapeHtml(portal.url)}
+        </div>
+      </div>
+    `;
   }
 
-  function renderMetrics() {
-    const portals = store.getPortals();
-    const total = portals.length;
-    const liveCount = portals.filter(p => p.status === 'live' || !p.status).length;
-    const totalClicks = portals.reduce((acc, curr) => acc + (curr.clicks || 0), 0);
-
-    if (totalPortalsMetric) totalPortalsMetric.textContent = total;
-    if (livePortalsMetric) livePortalsMetric.textContent = `${liveCount}/${total}`;
-    if (totalClicksMetric) totalClicksMetric.textContent = formatClicks(totalClicks);
+  function closeExpandedPreview() {
+    previewBackdrop.classList.remove('active');
+    activeExpandedPortalId = null;
   }
 
-  function attachPortalCardEvents(container) {
-    // Links click tracking
-    container.querySelectorAll('.portal-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        const id = link.getAttribute('data-id');
-        if (id) {
-          store.incrementClick(id);
-          renderMetrics();
-        }
-      });
-    });
+  previewCloseBtn.addEventListener('click', closeExpandedPreview);
 
-    // Favorite button
-    container.querySelectorAll('.fav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const id = btn.getAttribute('data-id');
-        const isNowFav = store.toggleFavorite(id);
-        showToast(isNowFav ? 'Đã thêm vào mục yêu thích ⭐' : 'Đã bỏ khỏi mục yêu thích');
-      });
-    });
-  }
-
-  // --- SEARCH EVENTS ---
-  searchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    if (searchQuery.trim()) {
-      searchClearBtn.classList.add('active');
-    } else {
-      searchClearBtn.classList.remove('active');
+  // Close when clicking outside panel
+  previewBackdrop.addEventListener('click', (e) => {
+    if (e.target === previewBackdrop) {
+      closeExpandedPreview();
     }
-    renderSpotlight();
-    renderPortals();
-    initIcons();
   });
 
-  searchClearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchQuery = '';
-    searchClearBtn.classList.remove('active');
-    renderSpotlight();
-    renderPortals();
-    initIcons();
-    searchInput.focus();
+  // Smooth hover out delay on panel
+  const previewPanel = document.getElementById('expanded-preview-panel');
+  previewPanel.addEventListener('mouseleave', () => {
+    closeTimeout = setTimeout(() => {
+      closeExpandedPreview();
+    }, 450);
   });
 
-  if (resetSearchBtn) {
-    resetSearchBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      currentCategory = 'all';
-      onlyFavorites = false;
-      searchClearBtn.classList.remove('active');
-      renderCategories();
-      renderSpotlight();
-      renderPortals();
-      initIcons();
-    });
-  }
+  previewPanel.addEventListener('mouseenter', () => {
+    clearTimeout(closeTimeout);
+  });
 
-  // Keyboard shortcut '/' or 'Ctrl+K'
+  // Track click count
+  previewLaunchBtn.addEventListener('click', () => {
+    if (activeExpandedPortalId) {
+      store.incrementClick(activeExpandedPortalId);
+    }
+  });
+
+  // Escape key to close
   window.addEventListener('keydown', (e) => {
-    if ((e.key === '/' || (e.ctrlKey && e.key === 'k') || (e.metaKey && e.key === 'k')) && document.activeElement !== searchInput) {
-      e.preventDefault();
-      searchInput.focus();
-    } else if (e.key === 'Escape' && document.activeElement === searchInput) {
-      searchInput.blur();
+    if (e.key === 'Escape') {
+      closeExpandedPreview();
     }
   });
 
-  // Announcement close
-  if (announcementClose) {
-    announcementClose.addEventListener('click', () => {
-      announcementBanner.classList.add('hidden');
-    });
+  // --- RENDER ABOUT SECTION (HỒ SƠ KẺ ẨN DANH) ---
+  function renderAboutSection() {
+    const about = store.getAbout();
+
+    if (aboutMainTitle) aboutMainTitle.textContent = about.title || 'HỒ SƠ KẺ ẨN DANH // THE ARCHITECT';
+    if (aboutAlias) aboutAlias.textContent = `[ BÍ DANH: ${about.alias || 'ANONYMOUS_ARCHITECT'} ]`;
+    if (aboutQuote) aboutQuote.textContent = `"${about.quote || 'Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.'}"`;
+    if (aboutContentBody) aboutContentBody.textContent = about.content || 'Nội dung tuyên ngôn đang được cập nhật từ Admin.';
+
+    if (aboutSpecsGrid) {
+      const defaultSpecs = [
+        { label: "CLEARANCE", value: "LEVEL 0 // ROOT" },
+        { label: "ENCRYPTION", value: "SHA-512 / AES-GCM" },
+        { label: "NODE_STATUS", value: "UNTRACEABLE" },
+        { label: "MISSION", value: "DIGITAL FREEDOM" }
+      ];
+      const specs = about.specs || defaultSpecs;
+      aboutSpecsGrid.innerHTML = specs.map(s => `
+        <div class="about-spec-item">
+          <div class="about-spec-label">${escapeHtml(s.label)}</div>
+          <div class="about-spec-val">${escapeHtml(s.value)}</div>
+        </div>
+      `).join('');
+    }
   }
 
   // --- HELPERS ---
-  function getStatusLabel(status) {
-    switch (status) {
-      case 'live': return 'Hoạt động';
-      case 'beta': return 'Beta';
-      case 'coming_soon': return 'Sắp ra mắt';
-      case 'maintenance': return 'Bảo trì';
-      default: return 'Online';
-    }
-  }
-
-  function formatClicks(num) {
-    if (!num) return '0';
-    if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
-    return num.toString();
-  }
-
   function escapeHtml(str) {
     if (!str) return '';
     return str
@@ -399,30 +292,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (window.lucide) {
       window.lucide.createIcons();
     }
-  }
-
-  function showToast(message, type = 'normal') {
-    let container = document.getElementById('toast-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'toast-container';
-      container.className = 'toast-container';
-      document.body.appendChild(container);
-    }
-
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-      <i data-lucide="info" style="width: 18px; height: 18px;"></i>
-      <span>${escapeHtml(message)}</span>
-    `;
-    container.appendChild(toast);
-    initIcons();
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
-      setTimeout(() => toast.remove(), 300);
-    }, 2800);
   }
 });

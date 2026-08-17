@@ -1,72 +1,57 @@
-/* Postlain Ecosystem Design System Variables */
+/* Postlain Cyberpunk 3D Mecha Design System */
 :root {
-  /* Color Palette - Dark Cyber & Futuristic Glass */
-  --bg-primary: #080b14;
-  --bg-secondary: #0d1322;
-  --bg-tertiary: #131c31;
-  --bg-surface: rgba(19, 28, 49, 0.7);
-  --bg-surface-hover: rgba(29, 41, 71, 0.85);
-  --bg-card: rgba(16, 24, 43, 0.65);
-  --bg-card-hover: rgba(24, 35, 63, 0.85);
-  --bg-glass: rgba(13, 19, 34, 0.55);
-  --bg-glass-strong: rgba(13, 19, 34, 0.85);
-  --bg-modal: #0f172a;
+  /* Color Palette: Void Black, Crimson Red, Chrome White */
+  --bg-void: #040406;
+  --bg-mecha: #09090d;
+  --bg-plate: #111116;
+  --bg-card: rgba(18, 18, 24, 0.85);
+  --bg-card-hover: rgba(28, 28, 38, 0.95);
+  --bg-overlay: rgba(4, 4, 6, 0.88);
+  --bg-glass: rgba(14, 14, 20, 0.75);
 
-  /* Border & Dividers */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.14);
-  --border-highlight: rgba(99, 102, 241, 0.4);
-  --border-focus: #6366f1;
+  /* Cyberpunk Crimson Neon Accents */
+  --red-neon: #ff003c;
+  --red-laser: #ff1e27;
+  --red-crimson: #e11d48;
+  --red-glow: rgba(255, 0, 60, 0.5);
+  --red-glow-subtle: rgba(255, 0, 60, 0.2);
+  --red-dim: rgba(255, 0, 60, 0.1);
+  --red-border: rgba(255, 0, 60, 0.45);
 
-  /* Typography Colors */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-dim: #475569;
-  --text-accent: #818cf8;
-
-  /* Vibrant Accents */
-  --accent-primary: #6366f1;
-  --accent-primary-hover: #4f46e5;
-  --accent-secondary: #8b5cf6;
-  --accent-cyan: #06b6d4;
-  --accent-pink: #ec4899;
-  --accent-amber: #f59e0b;
-  --accent-emerald: #10b981;
-  --accent-rose: #f43f5e;
+  /* Chrome White & Metallics */
+  --white-pure: #ffffff;
+  --chrome-white: #f8fafc;
+  --chrome-light: #e2e8f0;
+  --text-steel: #94a3b8;
+  --text-dim: #52525b;
+  --border-steel: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
 
   /* Status Colors */
-  --status-live: #10b981;
-  --status-beta: #06b6d4;
-  --status-coming: #8b5cf6;
-  --status-maintenance: #f59e0b;
+  --status-online: #ff003c;
+  --status-beta: #ffffff;
+  --status-dev: #94a3b8;
 
-  /* Glow & Shadows */
-  --glow-primary: 0 0 35px -5px rgba(99, 102, 241, 0.35);
-  --glow-pink: 0 0 35px -5px rgba(236, 72, 153, 0.35);
-  --glow-cyan: 0 0 35px -5px rgba(6, 182, 212, 0.35);
-  --glow-purple: 0 0 35px -5px rgba(139, 92, 246, 0.35);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.65);
+  /* 3D Chamfer & Mechanical Clipping */
+  --clip-corner-sm: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  --clip-corner-md: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  --clip-corner-lg: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+  --clip-corner-tab: polygon(14px 0, calc(100% - 14px) 0, 100% 100%, 0 100%);
+
+  /* Shadows & Laser Glows */
+  --shadow-3d: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 30px -5px rgba(255, 0, 60, 0.25);
+  --shadow-popup: 0 25px 70px -10px rgba(0, 0, 0, 0.95), 0 0 45px -5px rgba(255, 0, 60, 0.4);
+  --laser-glow: 0 0 20px rgba(255, 0, 60, 0.6);
+  --laser-glow-lg: 0 0 40px rgba(255, 0, 60, 0.8);
+  --white-glow: 0 0 18px rgba(255, 255, 255, 0.4);
 
   /* Typography */
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Spacing & Radius */
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius-pill: 9999px;
-
-  /* Animations */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Transitions */
+  --transition-3d: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.18s ease-out;
 }

@@ -1,12 +1,11 @@
 /**
- * Postlain Ecosystem - Central Data Store
- * Handles persistence, CRUD operations, configuration export/import, and auth.
+ * Postlain Ecosystem - Central Data Store (Cyberpunk 3D Engine)
+ * Manages Master Gate portals, Anonymous Architect manifesto, and Admin persistence.
  */
 
-const STORAGE_KEY = 'postlain_ecosystem_data_v1';
+const STORAGE_KEY = 'postlain_ecosystem_cyber_v2';
 const AUTH_KEY = 'postlain_admin_session';
 const PIN_KEY = 'postlain_admin_pin';
-const FAVORITES_KEY = 'postlain_favorites';
 const DEFAULT_PIN = '1234';
 
 class PortalStore {
@@ -25,7 +24,7 @@ class PortalStore {
         this.isInitialized = true;
         return this.data;
       } catch (e) {
-        console.warn('Failed to parse local storage data, fallback to json fetch', e);
+        console.warn('Local storage parse error, falling back to data/portals.json', e);
       }
     }
 
@@ -39,10 +38,10 @@ class PortalStore {
         return this.data;
       }
     } catch (e) {
-      console.warn('Failed to fetch data/portals.json, using built-in defaults', e);
+      console.warn('Fetch data/portals.json error, using built-in defaults', e);
     }
 
-    // 3. Built-in hardcoded fallback
+    // 3. Fallback defaults
     this.data = this.getDefaultData();
     this.saveToStorage();
     this.isInitialized = true;
@@ -61,7 +60,7 @@ class PortalStore {
     }
   }
 
-  // --- PORTAL METHODS ---
+  // --- MASTER GATE PORTALS ---
   getPortals() {
     return (this.data?.portals || []).sort((a, b) => (a.order || 999) - (b.order || 999));
   }
@@ -74,7 +73,6 @@ class PortalStore {
     if (!this.data) return false;
     if (!this.data.portals) this.data.portals = [];
 
-    // Check if updating existing or adding new
     const index = this.data.portals.findIndex(p => p.id === portal.id);
     if (index >= 0) {
       this.data.portals[index] = {
@@ -83,7 +81,6 @@ class PortalStore {
         updatedAt: new Date().toISOString()
       };
     } else {
-      // New Portal
       const newPortal = {
         ...portal,
         id: portal.id || this.generateSlug(portal.title),
@@ -113,50 +110,39 @@ class PortalStore {
     }
   }
 
-  // --- CATEGORY METHODS ---
+  // --- ABOUT SECTION (KẺ ẨN DANH) ---
+  getAbout() {
+    return this.data?.about || {
+      title: "HỒ SƠ KẺ ẨN DANH // THE ARCHITECT",
+      subtitle: "MỤC ĐÍCH KIẾN TẠO HỆ SINH THÁI",
+      alias: "ANONYMOUS_ARCHITECT // 0xPOSTLAIN",
+      quote: "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
+      content: "",
+      specs: [
+        { label: "CLEARANCE", value: "LEVEL 0 // ROOT" },
+        { label: "STATUS", value: "ACTIVE" }
+      ]
+    };
+  }
+
+  saveAbout(aboutData) {
+    if (!this.data) return false;
+    this.data.about = { ...this.data.about, ...aboutData };
+    this.saveToStorage();
+    return true;
+  }
+
+  // --- CATEGORIES ---
   getCategories() {
     return this.data?.categories || [];
   }
 
-  getCategoryById(id) {
-    return this.data?.categories?.find(c => c.id === id) || null;
-  }
-
-  saveCategory(category) {
-    if (!this.data) return false;
-    if (!this.data.categories) this.data.categories = [];
-
-    const index = this.data.categories.findIndex(c => c.id === category.id);
-    if (index >= 0) {
-      this.data.categories[index] = { ...this.data.categories[index], ...category };
-    } else {
-      const newCat = {
-        ...category,
-        id: category.id || this.generateSlug(category.name)
-      };
-      this.data.categories.push(newCat);
-    }
-
-    this.saveToStorage();
-    return true;
-  }
-
-  deleteCategory(id) {
-    if (!this.data?.categories) return false;
-    this.data.categories = this.data.categories.filter(c => c.id !== id);
-    this.saveToStorage();
-    return true;
-  }
-
-  // --- SETTINGS METHODS ---
+  // --- SETTINGS ---
   getSettings() {
     return this.data?.settings || {
-      siteTitle: "Postlain Ecosystem",
-      siteName: "Postlain",
-      tagline: "Cổng kết nối toàn diện đến các dịch vụ trong hệ sinh thái Postlain",
-      announcement: { enabled: true, badge: "MỚI", text: "Chào mừng bạn đến với Postlain Hub!", link: "#portals" },
-      socials: {},
-      theme: { accentColor: "#6366f1", glowColor: "#a855f7" }
+      siteName: "POSTLAIN",
+      siteTitle: "POSTLAIN // MASTER SYSTEM GATEWAY",
+      tagline: "HỆ THỐNG CỔNG KẾT NỐI TRUNG TÂM PHÂN TÁN"
     };
   }
 
@@ -165,33 +151,6 @@ class PortalStore {
     this.data.settings = { ...this.data.settings, ...settings };
     this.saveToStorage();
     return true;
-  }
-
-  // --- FAVORITES ---
-  getFavorites() {
-    try {
-      const favs = localStorage.getItem(FAVORITES_KEY);
-      return favs ? JSON.parse(favs) : [];
-    } catch {
-      return [];
-    }
-  }
-
-  toggleFavorite(id) {
-    const favs = this.getFavorites();
-    let updated;
-    if (favs.includes(id)) {
-      updated = favs.filter(item => item !== id);
-    } else {
-      updated = [...favs, id];
-    }
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
-    window.dispatchEvent(new CustomEvent('postlain-favorites-updated', { detail: updated }));
-    return updated.includes(id);
-  }
-
-  isFavorite(id) {
-    return this.getFavorites().includes(id);
   }
 
   // --- ADMIN AUTH & PIN ---
@@ -222,7 +181,7 @@ class PortalStore {
     sessionStorage.removeItem(AUTH_KEY);
   }
 
-  // --- BACKUP & JSON EXPORT/IMPORT ---
+  // --- BACKUP & JSON ---
   exportJSON() {
     return JSON.stringify(this.data, null, 2);
   }
@@ -231,7 +190,7 @@ class PortalStore {
     try {
       const parsed = JSON.parse(jsonString);
       if (!parsed.portals || !Array.isArray(parsed.portals)) {
-        throw new Error('Dữ liệu JSON không đúng định dạng: thiếu mảng portals');
+        throw new Error('Thiếu mảng portals');
       }
       this.data = parsed;
       this.saveToStorage();
@@ -257,7 +216,7 @@ class PortalStore {
   }
 
   generateSlug(text) {
-    if (!text) return 'item-' + Date.now();
+    if (!text) return 'gate-' + Date.now();
     return text
       .toString()
       .toLowerCase()
@@ -265,83 +224,54 @@ class PortalStore {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/[đĐ]/g, 'd')
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '') || ('item-' + Date.now());
+      .replace(/(^-|-$)+/g, '') || ('gate-' + Date.now());
   }
 
   getDefaultData() {
     return {
       settings: {
-        siteTitle: "Postlain Ecosystem",
-        siteName: "Postlain",
-        tagline: "Cổng kết nối toàn diện đến các dịch vụ trong hệ sinh thái Postlain",
-        announcement: {
-          enabled: true,
-          badge: "MỚI",
-          text: "Chào mừng bạn đến với Postlain Hub! Tất cả các dịch vụ vệ tinh đã sẵn sàng kết nối.",
-          link: "#portals"
-        },
-        socials: {
-          github: "https://github.com/postlainmusic",
-          youtube: "https://youtube.com",
-          discord: "https://discord.gg",
-          telegram: "https://t.me",
-          email: "contact@postlain.com"
-        },
-        theme: {
-          accentColor: "#6366f1",
-          glowColor: "#a855f7"
-        }
+        siteName: "POSTLAIN",
+        siteTitle: "POSTLAIN // MASTER SYSTEM GATEWAY",
+        tagline: "HỆ THỐNG CỔNG KẾT NỐI TRUNG TÂM PHÂN TÁN"
+      },
+      about: {
+        title: "HỒ SƠ KẺ ẨN DANH // THE ARCHITECT",
+        subtitle: "MỤC ĐÍCH KIẾN TẠO HỆ SINH THÁI",
+        alias: "ANONYMOUS_ARCHITECT // 0xPOSTLAIN",
+        quote: "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
+        content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nHệ sinh thái này không được xây dựng vì danh vọng hay những con số thương mại. Mục đích duy nhất của tôi là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số.\n\nHãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       categories: [
-        { id: "music", name: "Âm Nhạc & Sáng Tạo", icon: "music", color: "#ec4899" },
-        { id: "tools", name: "Công Cụ & Ứng Dụng", icon: "cpu", color: "#06b6d4" },
-        { id: "ai", name: "AI & Công Nghệ Mới", icon: "sparkles", color: "#8b5cf6" },
-        { id: "community", name: "Cộng Đồng & Diễn Đàn", icon: "users", color: "#10b981" },
-        { id: "store", name: "Cửa Hàng & Dịch Vụ", icon: "shopping-bag", color: "#f59e0b" },
-        { id: "docs", name: "Tài Liệu & API", icon: "book-open", color: "#64748b" }
+        { id: "music", name: "ÂM NHẠC", icon: "disc-3", color: "#ff003c" },
+        { id: "ai", name: "AI TECH", icon: "cpu", color: "#ff3366" },
+        { id: "tools", name: "CÔNG CỤ", icon: "terminal", color: "#ffffff" }
       ],
       portals: [
         {
           id: "postlain-music",
-          title: "Postlain Music Player",
+          title: "POSTLAIN MUSIC",
           url: "https://music.postlain.com",
+          tagline: "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu.",
+          description: "Trình phát nhạc cao cấp hỗ trợ FLAC 24-bit với bộ cân bằng 3D.",
           category: "music",
-          description: "Nền tảng stream nhạc chất lượng cao với giao diện hiện đại.",
           icon: "disc-3",
-          badge: "Phổ biến",
-          status: "live",
-          featured: true,
-          accent: "#ec4899",
+          badge: "FLAGSHIP",
+          status: "ONLINE",
           order: 1,
           clicks: 1420
         },
         {
           id: "postlain-studio",
-          title: "Postlain Studio DAW",
+          title: "STUDIO DAW",
           url: "https://studio.postlain.com",
+          tagline: "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.",
+          description: "Sản xuất nhạc trực tuyến tích hợp Synth ảo và Sampler cơ khí.",
           category: "music",
-          description: "Trình tạo nhạc và phối âm trực tiếp trên trình duyệt.",
           icon: "sliders",
-          badge: "Hot",
-          status: "live",
-          featured: true,
-          accent: "#f43f5e",
+          badge: "HOT",
+          status: "ONLINE",
           order: 2,
           clicks: 980
-        },
-        {
-          id: "postlain-ai-lab",
-          title: "Postlain AI Sound Lab",
-          url: "https://ai.postlain.com",
-          category: "ai",
-          description: "Bộ công cụ AI tách giọng (Stem Separation) và phân tích hòa âm.",
-          icon: "sparkles",
-          badge: "AI 2.0",
-          status: "live",
-          featured: true,
-          accent: "#8b5cf6",
-          order: 3,
-          clicks: 2150
         }
       ]
     };
