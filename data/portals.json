@@ -1,166 +1,66 @@
 {
-  "settings": {
-    "siteName": "POSTLAIN",
-    "siteTitle": "POSTLAIN // MASTER SYSTEM GATEWAY",
-    "tagline": "HỆ THỐNG CỔNG KẾT NỐI TRUNG TÂM PHÂN TÁN",
-    "theme": {
-      "accentColor": "#ff003c",
-      "glowColor": "#ff1e27",
-      "mode": "cyberpunk-3d"
-    },
-    "socials": {
-      "github": "https://github.com/postlainmusic",
-      "discord": "https://discord.gg",
-      "youtube": "https://youtube.com",
-      "telegram": "https://t.me",
-      "email": "contact@postlain.com"
-    }
-  },
   "about": {
-    "title": "HỒ SƠ KẺ ẨN DANH // THE ARCHITECT",
-    "subtitle": "MỤC ĐÍCH KIẾN TẠO HỆ SINH THÁI PHÂN TÁN",
-    "alias": "ANONYMOUS_ARCHITECT // 0xPOSTLAIN",
-    "quote": "Trong một thế giới đầy rẫy sự kiểm soát và khuôn mẫu, chúng ta kiến tạo những không gian độc lập để âm thanh, công nghệ và tư duy được giải phóng hoàn toàn.",
-    "content": "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nHệ sinh thái này không được xây dựng vì danh vọng hay những con số thương mại. Mục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối (Portal) là một vũ khí công nghệ được trau chuốt tỉ mỉ. Tất cả được liên kết về Master Gate này để bạn có thể tự do dịch chuyển qua lại giữa các không gian sáng tạo chỉ bằng một cú nhấp chuột.\n\nHãy sử dụng những công cụ này để tạo nên những điều phi thường.",
-    "specs": [
-      { "label": "CLEARANCE", "value": "LEVEL 0 // ROOT" },
-      { "label": "ENCRYPTION", "value": "SHA-512 / AES-GCM" },
-      { "label": "NODE_STATUS", "value": "UNTRACEABLE" },
-      { "label": "LOCATION", "value": "CYBERSPACE // 0.0.0.0" }
-    ]
+    "title": "Giới Thiệu // The Architect",
+    "alias": "ANONYMOUS_CREATOR",
+    "quote": "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
+    "content": "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
   },
-  "categories": [
-    { "id": "music", "name": "ÂM NHẠC & PHÒNG THU", "icon": "disc-3", "color": "#ff003c" },
-    { "id": "ai", "name": "AI & CÔNG NGHỆ MỚI", "icon": "cpu", "color": "#ff3366" },
-    { "id": "tools", "name": "BỘ CÔNG CỤ", "icon": "terminal", "color": "#ffffff" },
-    { "id": "community", "name": "CỘNG ĐỒNG VỆ TINH", "icon": "network", "color": "#e11d48" }
-  ],
   "portals": [
     {
       "id": "hidden-music",
-      "title": "HIDDEN MUSIC",
+      "title": "Hidden Music",
       "url": "https://hiddenmusic.postlain.com",
-      "tagline": "Âm nhạc ẩn - Không gian âm thanh độc lập bí mật.",
-      "description": "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm.",
-      "category": "music",
-      "icon": "disc-3",
-      "badge": "NEW",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 1,
-      "clicks": 520
+      "tagline": "Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.",
+      "image": ""
     },
     {
       "id": "postlain-music",
-      "title": "POSTLAIN MUSIC",
+      "title": "Postlain Music",
       "url": "https://music.postlain.com",
-      "tagline": "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu không gián đoạn.",
-      "description": "Trình phát nhạc cao cấp hỗ trợ định dạng FLAC 24-bit với bộ cân bằng âm học 3D và thư viện âm thanh tuyển chọn.",
-      "category": "music",
-      "icon": "disc-3",
-      "badge": "FLAGSHIP",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 2,
-      "clicks": 1420
+      "tagline": "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.",
+      "image": ""
     },
     {
-      "id": "postlain-studio",
-      "title": "STUDIO DAW",
+      "id": "studio-daw",
+      "title": "Studio DAW",
       "url": "https://studio.postlain.com",
-      "tagline": "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.",
-      "description": "Hệ thống sản xuất nhạc trực tuyến tích hợp bộ tổng hợp âm thanh ảo Synth, Step Sequencer và Sampler cơ khí.",
-      "category": "music",
-      "icon": "sliders",
-      "badge": "HOT",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 2,
-      "clicks": 980
+      "tagline": "Trạm thu âm & phối khí trực tuyến trên trình duyệt.",
+      "image": ""
     },
     {
-      "id": "postlain-ai-lab",
-      "title": "AI SOUND LAB",
+      "id": "ai-sound-lab",
+      "title": "AI Sound Lab",
       "url": "https://ai.postlain.com",
-      "tagline": "Trí tuệ nhân tạo tách Stem giọng hát, trích xuất beat và phân tích phổ tần số.",
-      "description": "Bộ thuật toán AI neural network xử lý tín hiệu âm thanh thế hệ mới cho các nhà sản xuất độc lập.",
-      "category": "ai",
-      "icon": "sparkles",
-      "badge": "AI 2.0",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 3,
-      "clicks": 2150
+      "tagline": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.",
+      "image": ""
     },
     {
-      "id": "postlain-store",
-      "title": "SOUND VAULT",
+      "id": "sound-vault",
+      "title": "Sound Vault",
       "url": "https://store.postlain.com",
-      "tagline": "Kho sound kit, loop mẫu bản quyền và preset synthesizer chuyên sâu.",
-      "description": "Thư viện mẫu âm thanh chuẩn công nghiệp phục vụ việc sáng tác và sản xuất thương mại.",
-      "category": "music",
-      "icon": "box",
-      "badge": "STORE",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 4,
-      "clicks": 640
+      "tagline": "Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.",
+      "image": ""
     },
     {
-      "id": "postlain-community",
-      "title": "HUB COMMUNITY",
+      "id": "hub-community",
+      "title": "Hub Community",
       "url": "https://hub.postlain.com",
-      "tagline": "Mạng lưới kết nối kín giữa các nhà sáng tạo âm nhạc và lập trình viên.",
-      "description": "Diễn đàn trao đổi kinh nghiệm, chia sẻ project file và hợp tác phát triển các dự án âm thanh độc lập.",
-      "category": "community",
-      "icon": "users",
-      "badge": "NETWORK",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 5,
-      "clicks": 530
+      "tagline": "Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.",
+      "image": ""
     },
     {
-      "id": "postlain-tools",
-      "title": "AUDIO SUITE",
+      "id": "audio-suite",
+      "title": "Audio Suite",
       "url": "https://tools.postlain.com",
-      "tagline": "Bộ công cụ chuyển đổi định dạng, cắt ghép và tối ưu metadata âm thanh.",
-      "description": "Tiện ích xử lý file âm thanh đa năng trên nền tảng WebAssembly siêu tốc.",
-      "category": "tools",
-      "icon": "wand-2",
-      "badge": "PRO",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 6,
-      "clicks": 710
+      "tagline": "Bộ công cụ cắt ghép, chuyển đổi định dạng và tối ưu metadata audio.",
+      "image": ""
     },
     {
-      "id": "postlain-lyrics",
-      "title": "LYRIC SYNC",
+      "id": "lyric-sync",
+      "title": "Lyric Sync",
       "url": "https://lyrics.postlain.com",
-      "tagline": "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc / .srt) với beat detector.",
-      "description": "Công cụ phân tách và gắn nhãn thời gian lời bài hát chính xác từng mili-giây.",
-      "category": "tools",
-      "icon": "mic-2",
-      "badge": "BETA",
-      "status": "BETA",
-      "previewImage": "",
-      "order": 7,
-      "clicks": 420
-    },
-    {
-      "id": "postlain-docs",
-      "title": "CORE API // SDK",
-      "url": "https://docs.postlain.com",
-      "tagline": "Tài liệu kỹ thuật và cổng API mở cho lập trình viên tích hợp hệ sinh thái.",
-      "description": "RESTful endpoints, Webhooks và SDK hỗ trợ mở rộng kết nối với các ứng dụng bên thứ ba.",
-      "category": "tools",
-      "icon": "terminal",
-      "badge": "DEV",
-      "status": "ONLINE",
-      "previewImage": "",
-      "order": 8,
-      "clicks": 310
+      "tagline": "Trình đồng bộ lời bài hát (.lrc / .srt) thời gian thực.",
+      "image": ""
     }
   ]
 }

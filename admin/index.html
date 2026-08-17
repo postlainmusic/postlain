@@ -9,15 +9,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #0b0c10;
-      color: #e0e2ec;
+      background-color: #0f1117;
+      color: #e2e8f0;
       min-height: 100vh;
       line-height: 1.5;
     }
+
+    /* Auth Screen */
     .auth-overlay {
       position: fixed;
       inset: 0;
-      background: #0b0c10;
+      background: #0f1117;
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -25,72 +27,62 @@
       padding: 20px;
     }
     .auth-overlay.hidden { display: none !important; }
-    .auth-card {
-      background: #14161f;
-      border: 1px solid #232738;
+    .auth-box {
+      background: #181b24;
+      border: 1px solid #272c3d;
       border-radius: 8px;
       padding: 32px;
-      max-width: 380px;
+      max-width: 360px;
       width: 100%;
       text-align: center;
     }
-    .auth-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; color: #fff; }
-    .auth-pin-input {
+    .auth-input {
       width: 100%;
-      padding: 12px;
-      font-size: 1.3rem;
-      letter-spacing: 6px;
+      padding: 10px;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
       text-align: center;
-      background: #090a0f;
-      border: 1px solid #2d3247;
+      background: #0d0e14;
+      border: 1px solid #272c3d;
       border-radius: 6px;
       color: #fff;
-      outline: none;
       margin: 16px 0;
+      outline: none;
     }
-    .auth-pin-input:focus { border-color: #e11d48; }
-    .btn-primary-auth {
-      width: 100%;
-      padding: 12px;
-      background: #e11d48;
-      border: none;
-      border-radius: 6px;
-      color: #fff;
-      font-weight: 700;
-      cursor: pointer;
-    }
+    .auth-input:focus { border-color: #3b82f6; }
 
+    /* Layout */
     .admin-layout { display: flex; min-height: 100vh; }
     .admin-sidebar {
-      width: 240px;
-      background: #10121a;
-      border-right: 1px solid #1f2333;
+      width: 220px;
+      background: #141720;
+      border-right: 1px solid #212534;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       flex-shrink: 0;
     }
-    .admin-nav { display: flex; flex-direction: column; gap: 6px; margin-top: 24px; }
-    .admin-nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
+    .sidebar-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
+    .nav-list { display: flex; flex-direction: column; gap: 4px; }
+    .nav-tab-btn {
+      padding: 8px 12px;
       color: #94a3b8;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
+      background: transparent;
+      border: none;
       border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: left;
       cursor: pointer;
     }
-    .admin-nav-item:hover, .admin-nav-item.active { background: #1b1e2b; color: #fff; }
-    .admin-nav-item.active { border-left: 3px solid #e11d48; }
+    .nav-tab-btn:hover, .nav-tab-btn.active { background: #212636; color: #fff; }
+    .nav-tab-btn.active { color: #3b82f6; }
 
-    .admin-main { flex: 1; padding: 28px 36px; overflow-y: auto; }
-    .admin-header { margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #1f2333; }
-    .admin-header h1 { font-size: 1.4rem; font-weight: 700; color: #fff; }
+    .admin-content { flex: 1; padding: 28px 36px; overflow-y: auto; }
+    .page-heading { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
 
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -98,312 +90,257 @@
       padding: 8px 16px;
       font-size: 0.85rem;
       font-weight: 600;
-      cursor: pointer;
       border-radius: 6px;
-      border: 1px solid transparent;
+      border: none;
+      cursor: pointer;
       text-decoration: none;
     }
-    .btn-primary { background: #e11d48; color: #fff; }
-    .btn-primary:hover { background: #f43f5e; }
-    .btn-secondary { background: #1b1e2b; border-color: #2d3247; color: #e2e8f0; }
-    .btn-danger { background: rgba(225, 29, 72, 0.15); border-color: rgba(225, 29, 72, 0.4); color: #fb7185; }
-    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #212636; color: #cbd5e1; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-sm { padding: 4px 10px; font-size: 0.78rem; }
 
-    .data-table-container { background: #12141d; border: 1px solid #1f2333; border-radius: 6px; overflow: hidden; }
+    /* Table */
+    .table-container {
+      background: #141720;
+      border: 1px solid #212534;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th {
-      background: #161824;
+      background: #181c27;
       padding: 12px 16px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: #fb7185;
-      border-bottom: 1px solid #1f2333;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      border-bottom: 1px solid #212534;
     }
-    .data-table td { padding: 14px 16px; border-bottom: 1px solid #171a26; font-size: 0.88rem; }
-    .data-table tr:hover td { background: #161926; }
+    .data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #1a1e2b;
+      font-size: 0.88rem;
+    }
+    .data-table tr:hover td { background: #181c28; }
 
+    /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-    .form-group label { font-size: 0.78rem; font-weight: 600; color: #94a3b8; }
-    .admin-input, .admin-select, .admin-textarea {
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: #94a3b8; }
+    .form-control {
       width: 100%;
-      padding: 9px 12px;
-      background: #090a0f;
-      border: 1px solid #232738;
+      padding: 8px 12px;
+      background: #0d0e14;
+      border: 1px solid #272c3d;
       border-radius: 6px;
       color: #fff;
       font-size: 0.88rem;
       outline: none;
     }
-    .admin-input:focus, .admin-select:focus, .admin-textarea:focus { border-color: #e11d48; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-control:focus { border-color: #3b82f6; }
 
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
 
-    .modal-backdrop {
+    /* Modal */
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.75);
       z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
-    .modal-backdrop.active { display: flex !important; }
-    .modal-dialog {
-      background: #141622;
-      border: 1px solid #2d3247;
+    .modal-overlay.active { display: flex !important; }
+    .modal-box {
+      background: #181b24;
+      border: 1px solid #272c3d;
       border-radius: 8px;
-      max-width: 560px;
+      max-width: 520px;
       width: 100%;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
     }
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid #232738;
+    .modal-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid #272c3d;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .modal-body { padding: 20px; overflow-y: auto; }
-    .modal-footer { padding: 14px 20px; border-top: 1px solid #232738; display: flex; justify-content: flex-end; gap: 8px; }
-
-    .json-viewer {
-      background: #090a0f;
-      border: 1px solid #1f2333;
-      padding: 14px;
-      font-family: monospace;
-      font-size: 0.82rem;
-      color: #fb7185;
-      max-height: 360px;
-      overflow-y: auto;
-      white-space: pre-wrap;
+    .modal-body { padding: 18px; }
+    .modal-foot {
+      padding: 12px 18px;
+      border-top: 1px solid #272c3d;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
     }
 
-    .toast-box {
+    .toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 10000;
-      background: #1b1e2b;
-      border: 1px solid #e11d48;
-      padding: 12px 20px;
+      bottom: 20px;
+      right: 20px;
+      background: #181b24;
+      border: 1px solid #3b82f6;
+      padding: 10px 18px;
       border-radius: 6px;
       color: #fff;
-      font-size: 0.88rem;
       display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
-  <!-- PIN Auth Gate -->
+  <!-- PIN Gate -->
   <div id="auth-overlay" class="auth-overlay">
-    <div class="auth-card">
-      <h2 class="auth-title">Postlain Admin</h2>
-      <p style="color: #94a3b8; font-size: 0.85rem;">Nhập mã PIN để truy cập</p>
-      <input type="password" id="admin-pin-input" class="auth-pin-input" placeholder="••••" maxlength="8" autofocus>
-      <div id="pin-error-msg" style="color: #fb7185; font-size: 0.8rem; margin-bottom: 12px; display: none;">Mã PIN không đúng</div>
-      <button id="admin-pin-submit" class="btn-primary-auth">ĐĂNG NHẬP</button>
-      <div style="font-size: 0.75rem; color: #64748b; margin-top: 12px;">Mặc định: 1234</div>
+    <div class="auth-box">
+      <h2 style="color: #fff; margin-bottom: 6px;">Postlain Admin</h2>
+      <p style="color: #94a3b8; font-size: 0.85rem;">Nhập mã PIN truy cập</p>
+      <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="8" autofocus>
+      <button id="pin-submit" class="btn btn-primary" style="width: 100%;">ĐĂNG NHẬP</button>
+      <div style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">Mặc định: 1234</div>
     </div>
   </div>
 
   <div class="admin-layout">
     <aside class="admin-sidebar">
       <div>
-        <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">Postlain Admin</div>
-        <nav class="admin-nav">
-          <div class="admin-nav-item active" data-tab="portals">Cửa Sổ Màn Hình</div>
-          <div class="admin-nav-item" data-tab="about">Soạn Thảo About</div>
-          <div class="admin-nav-item" data-tab="deploy">Xuất JSON</div>
+        <div class="sidebar-title">Postlain Admin</div>
+        <nav class="nav-list">
+          <button class="nav-tab-btn active" data-tab="portals">Danh Sách Website</button>
+          <button class="nav-tab-btn" data-tab="about">Soạn Thảo About</button>
+          <button class="nav-tab-btn" data-tab="backup">Sao Lưu & JSON</button>
         </nav>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="/" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">Xem Trang Chủ</a>
-        <button id="change-pin-btn" class="btn btn-secondary btn-sm" style="width: 100%;">Đổi Mã PIN</button>
-        <button id="admin-logout-btn" class="btn btn-danger btn-sm" style="width: 100%;">Đăng Xuất</button>
+        <a href="/" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%; text-align: center;">Xem Trang Chủ</a>
+        <button id="btn-logout" class="btn btn-danger btn-sm" style="width: 100%;">Đăng Xuất</button>
       </div>
     </aside>
 
-    <main class="admin-main">
-      <div class="admin-header">
-        <h1 id="admin-page-title">Quản Lý Cửa Sổ Màn Hình</h1>
-      </div>
-
+    <main class="admin-content">
       <!-- TAB 1: PORTALS -->
-      <section id="tab-portals" class="tab-panel active">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <div style="font-size: 0.85rem; color: #94a3b8;">Danh sách các cửa sổ màn hình website</div>
-          <button id="open-add-portal-btn" class="btn btn-primary">+ Thêm Cửa Sổ Mới</button>
+      <section id="tab-portals" class="tab-section active">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h1 class="page-heading" style="margin: 0;">Quản Lý Cổng Website</h1>
+          <button id="btn-add-portal" class="btn btn-primary">+ Thêm Website Mới</button>
         </div>
 
-        <div class="data-table-container">
+        <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
                 <th style="width: 50px;">#</th>
-                <th>Tên & URL</th>
-                <th>1 Dòng Giới Thiệu (Tagline)</th>
-                <th>Loại Màn Hình</th>
-                <th>Trạng Thái</th>
+                <th>Tên Website & URL</th>
+                <th>1 Dòng Giới Thiệu</th>
                 <th style="width: 120px;">Thao Tác</th>
               </tr>
             </thead>
-            <tbody id="portals-table-body"></tbody>
+            <tbody id="portals-tbody"></tbody>
           </table>
         </div>
       </section>
 
       <!-- TAB 2: ABOUT -->
-      <section id="tab-about" class="tab-panel">
-        <form id="about-form" style="max-width: 720px;">
+      <section id="tab-about" class="tab-section">
+        <h1 class="page-heading">Soạn Thảo Giới Thiệu (About)</h1>
+        <form id="about-form" style="max-width: 680px;">
           <div class="form-group">
             <label>Tiêu Đề</label>
-            <input type="text" id="form-about-title" class="admin-input">
+            <input type="text" id="about-title-input" class="form-control">
           </div>
           <div class="form-group">
             <label>Bí Danh (Alias)</label>
-            <input type="text" id="form-about-alias" class="admin-input">
+            <input type="text" id="about-alias-input" class="form-control">
           </div>
           <div class="form-group">
-            <label>Câu Châm Ngôn (Quote)</label>
-            <input type="text" id="form-about-quote" class="admin-input">
+            <label>Trích Dẫn (Quote)</label>
+            <input type="text" id="about-quote-input" class="form-control">
           </div>
           <div class="form-group">
-            <label>Nội Dung Tâm Thư / Giới Thiệu Kẻ Ẩn Danh</label>
-            <textarea id="form-about-content" class="admin-textarea" rows="8"></textarea>
+            <label>Nội Dung</label>
+            <textarea id="about-content-input" class="form-control" rows="8"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Lưu Nội Dung About</button>
+          <button type="submit" class="btn btn-primary">Lưu Nội Dung About</button>
         </form>
       </section>
 
-      <!-- TAB 3: DEPLOY -->
-      <section id="tab-deploy" class="tab-panel">
-        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-          <button id="download-json-btn" class="btn btn-primary">Tải portals.json</button>
-          <button id="copy-json-btn" class="btn btn-secondary">Sao Chép JSON</button>
+      <!-- TAB 3: BACKUP -->
+      <section id="tab-backup" class="tab-section">
+        <h1 class="page-heading">Xuất & Sao Lưu JSON</h1>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button id="btn-download-json" class="btn btn-primary">Tải portals.json</button>
+          <button id="btn-copy-json" class="btn btn-secondary">Sao Chép JSON</button>
         </div>
-        <div class="form-group" style="max-width: 500px; margin-bottom: 20px;">
+        <div class="form-group" style="max-width: 480px; margin-bottom: 16px;">
           <label>Nhập file JSON dự phòng:</label>
-          <input type="file" id="import-file-input" accept=".json" style="font-size: 0.85rem; color: #94a3b8;">
+          <input type="file" id="import-json-file" accept=".json">
         </div>
-        <pre id="json-viewer" class="json-viewer"></pre>
+        <pre id="json-preview" style="background: #0d0e14; border: 1px solid #212534; padding: 14px; border-radius: 6px; font-size: 0.8rem; color: #38bdf8; max-height: 340px; overflow-y: auto;"></pre>
       </section>
     </main>
   </div>
 
-  <!-- MODAL: ADD/EDIT PORTAL -->
-  <div id="portal-modal" class="modal-backdrop">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3 id="portal-modal-title" style="font-size: 1.1rem; color: #fff;">Thêm Cửa Sổ Mới</h3>
-        <button type="button" class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem;">✕</button>
+  <!-- MODAL: ADD/EDIT -->
+  <div id="modal-portal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="modal-title" style="font-size: 1rem; color: #fff;">Thêm Website Mới</h3>
+        <button type="button" class="btn-close-modal" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">✕</button>
       </div>
       <form id="portal-form">
         <div class="modal-body">
-          <input type="hidden" id="form-portal-id">
+          <input type="hidden" id="portal-id">
           <div class="form-group">
-            <label>Tên Website / Cửa Sổ *</label>
-            <input type="text" id="form-portal-title" class="admin-input" placeholder="VD: HIDDEN MUSIC" required>
+            <label>Tên Website *</label>
+            <input type="text" id="portal-title" class="form-control" placeholder="VD: Hidden Music" required>
           </div>
           <div class="form-group">
             <label>Đường Dẫn URL *</label>
-            <input type="url" id="form-portal-url" class="admin-input" placeholder="https://hiddenmusic.postlain.com" required>
+            <input type="url" id="portal-url" class="form-control" placeholder="https://hiddenmusic.postlain.com" required>
           </div>
           <div class="form-group">
             <label>1 Dòng Giới Thiệu (Tagline) *</label>
-            <input type="text" id="form-portal-tagline" class="admin-input" placeholder="VD: Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." required>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Loại Giao Diện Màn Hình</label>
-              <select id="form-portal-type" class="admin-select">
-                <option value="music">Music Hi-Fi Audio (Sóng nhạc)</option>
-                <option value="daw">Studio DAW (Multitrack Timeline)</option>
-                <option value="ai">AI Neural Lab (Phổ tần số AI)</option>
-                <option value="store">Store / Vault (Thư viện)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Trạng Thái</label>
-              <select id="form-portal-status" class="admin-select">
-                <option value="ONLINE">ONLINE</option>
-                <option value="BETA">BETA</option>
-                <option value="DEV">DEV</option>
-              </select>
-            </div>
+            <input type="text" id="portal-tagline" class="form-control" placeholder="VD: Nền tảng phát nhạc độc lập." required>
           </div>
           <div class="form-group">
-            <label>Link Ảnh Chụp Màn Hình (Tùy chọn - nếu muốn hiển thị ảnh thật)</label>
-            <input type="text" id="form-portal-image" class="admin-input" placeholder="https://... hoặc /images/preview.png">
+            <label>Link Ảnh Chụp Màn Hình (Tùy chọn)</label>
+            <input type="text" id="portal-image" class="form-control" placeholder="https://... (để trống nếu dùng giao diện live)">
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-          <button type="submit" id="portal-submit-btn" class="btn btn-primary">Lưu Cửa Sổ</button>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-secondary btn-close-modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu Website</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: PIN -->
-  <div id="pin-modal" class="modal-backdrop">
-    <div class="modal-dialog" style="max-width: 380px;">
-      <div class="modal-header">
-        <h3 style="font-size: 1rem; color: #fff;">Đổi Mã PIN</h3>
-        <button type="button" class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem;">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Mã PIN Cũ</label>
-          <input type="password" id="form-current-pin" class="admin-input">
-        </div>
-        <div class="form-group">
-          <label>Mã PIN Mới</label>
-          <input type="password" id="form-new-pin" class="admin-input">
-        </div>
-        <div class="form-group">
-          <label>Xác Nhận PIN Mới</label>
-          <input type="password" id="form-confirm-pin" class="admin-input">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-        <button type="button" id="save-pin-btn" class="btn btn-primary">Lưu PIN</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast-box" class="toast-box"></div>
+  <div id="toast-msg" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'postlain_portal_data_v5';
-    const PIN_KEY = 'postlain_admin_pin_v5';
-    const AUTH_KEY = 'postlain_admin_auth_v5';
+    const STORAGE_KEY = 'postlain_data_v6';
+    const AUTH_KEY = 'postlain_admin_logged_v6';
     const DEFAULT_PIN = '1234';
 
-    const INITIAL_DATA = {
+    const DEFAULT_DATA = {
       about: {
-        title: "HỒ SƠ KẺ ẨN DANH // THE ARCHITECT",
-        alias: "ANONYMOUS_ARCHITECT",
+        title: "Giới Thiệu // The Architect",
+        alias: "ANONYMOUS_CREATOR",
         quote: "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
-        content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối (Portal) là một vũ khí công nghệ được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
+        content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       portals: [
-        { id: "hidden-music", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", tagline: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm.", type: "music", status: "ONLINE" },
-        { id: "postlain-music", title: "POSTLAIN MUSIC", url: "https://music.postlain.com", tagline: "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu không gián đoạn.", type: "music", status: "ONLINE" },
-        { id: "postlain-studio", title: "STUDIO DAW", url: "https://studio.postlain.com", tagline: "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.", type: "daw", status: "ONLINE" },
-        { id: "postlain-ai-lab", title: "AI SOUND LAB", url: "https://ai.postlain.com", tagline: "Trí tuệ nhân tạo tách Stem giọng hát, trích xuất beat và phân tích phổ tần số.", type: "ai", status: "ONLINE" },
-        { id: "postlain-store", title: "SOUND VAULT", url: "https://store.postlain.com", tagline: "Kho sound kit, loop mẫu bản quyền và preset synthesizer chuyên sâu.", type: "store", status: "ONLINE" },
-        { id: "postlain-community", title: "HUB COMMUNITY", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối kín giữa các nhà sáng tạo âm nhạc và lập trình viên.", type: "community", status: "ONLINE" },
-        { id: "postlain-tools", title: "AUDIO SUITE", url: "https://tools.postlain.com", tagline: "Bộ công cụ chuyển đổi định dạng, cắt ghép và tối ưu metadata âm thanh.", type: "tools", status: "ONLINE" },
-        { id: "postlain-lyrics", title: "LYRIC SYNC", url: "https://lyrics.postlain.com", tagline: "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc / .srt) với beat detector.", type: "lyrics", status: "BETA" }
+        { id: "hidden-music", title: "Hidden Music", url: "https://hiddenmusic.postlain.com", tagline: "Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.", image: "" },
+        { id: "postlain-music", title: "Postlain Music", url: "https://music.postlain.com", tagline: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.", image: "" },
+        { id: "studio-daw", title: "Studio DAW", url: "https://studio.postlain.com", tagline: "Trạm thu âm & phối khí trực tuyến trên trình duyệt.", image: "" },
+        { id: "ai-sound-lab", title: "AI Sound Lab", url: "https://ai.postlain.com", tagline: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.", image: "" },
+        { id: "sound-vault", title: "Sound Vault", url: "https://store.postlain.com", tagline: "Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.", image: "" },
+        { id: "hub-community", title: "Hub Community", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.", image: "" },
+        { id: "audio-suite", title: "Audio Suite", url: "https://tools.postlain.com", tagline: "Bộ công cụ cắt ghép, chuyển đổi định dạng và tối ưu metadata audio.", image: "" },
+        { id: "lyric-sync", title: "Lyric Sync", url: "https://lyrics.postlain.com", tagline: "Trình đồng bộ lời bài hát (.lrc / .srt) thời gian thực.", image: "" }
       ]
     };
 
@@ -415,64 +352,53 @@
           if (parsed && Array.isArray(parsed.portals) && parsed.portals.length > 0) return parsed;
         }
       } catch (e) {}
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DATA));
-      return INITIAL_DATA;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_DATA));
+      return DEFAULT_DATA;
     }
 
     function saveData(data) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
 
-    function showToast(msg) {
-      const box = document.getElementById('toast-box');
-      box.textContent = msg;
-      box.style.display = 'block';
-      setTimeout(() => { box.style.display = 'none'; }, 2500);
+    function notify(msg) {
+      const el = document.getElementById('toast-msg');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 2200);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       let currentData = loadData();
 
       const authOverlay = document.getElementById('auth-overlay');
-      const pinInput = document.getElementById('admin-pin-input');
-      const pinSubmit = document.getElementById('admin-pin-submit');
-      const pinError = document.getElementById('pin-error-msg');
-      const logoutBtn = document.getElementById('admin-logout-btn');
-      const changePinBtn = document.getElementById('change-pin-btn');
+      const pinInput = document.getElementById('pin-input');
+      const pinSubmit = document.getElementById('pin-submit');
+      const btnLogout = document.getElementById('btn-logout');
 
-      const navItems = document.querySelectorAll('.admin-nav-item');
-      const tabPanels = document.querySelectorAll('.tab-panel');
-      const pageTitle = document.getElementById('admin-page-title');
+      const navBtns = document.querySelectorAll('.nav-tab-btn');
+      const tabSections = document.querySelectorAll('.tab-section');
 
-      const portalsTable = document.getElementById('portals-table-body');
-      const openAddBtn = document.getElementById('open-add-portal-btn');
-      const portalModal = document.getElementById('portal-modal');
-      const portalModalTitle = document.getElementById('portal-modal-title');
-      const portalForm = document.getElementById('portal-form');
-      const formPortalId = document.getElementById('form-portal-id');
-      const formPortalTitle = document.getElementById('form-portal-title');
-      const formPortalUrl = document.getElementById('form-portal-url');
-      const formPortalTagline = document.getElementById('form-portal-tagline');
-      const formPortalType = document.getElementById('form-portal-type');
-      const formPortalStatus = document.getElementById('form-portal-status');
-      const formPortalImage = document.getElementById('form-portal-image');
+      const tbody = document.getElementById('portals-tbody');
+      const btnAdd = document.getElementById('btn-add-portal');
+      const modal = document.getElementById('modal-portal');
+      const modalTitle = document.getElementById('modal-title');
+      const form = document.getElementById('portal-form');
+      const inpId = document.getElementById('portal-id');
+      const inpTitle = document.getElementById('portal-title');
+      const inpUrl = document.getElementById('portal-url');
+      const inpTagline = document.getElementById('portal-tagline');
+      const inpImage = document.getElementById('portal-image');
 
       const aboutForm = document.getElementById('about-form');
-      const formAboutTitle = document.getElementById('form-about-title');
-      const formAboutAlias = document.getElementById('form-about-alias');
-      const formAboutQuote = document.getElementById('form-about-quote');
-      const formAboutContent = document.getElementById('form-about-content');
+      const inpAboutTitle = document.getElementById('about-title-input');
+      const inpAboutAlias = document.getElementById('about-alias-input');
+      const inpAboutQuote = document.getElementById('about-quote-input');
+      const inpAboutContent = document.getElementById('about-content-input');
 
-      const jsonViewer = document.getElementById('json-viewer');
-      const copyJsonBtn = document.getElementById('copy-json-btn');
-      const downloadJsonBtn = document.getElementById('download-json-btn');
-      const importFileInput = document.getElementById('import-file-input');
-
-      const pinModal = document.getElementById('pin-modal');
-      const formCurrentPin = document.getElementById('form-current-pin');
-      const formNewPin = document.getElementById('form-new-pin');
-      const formConfirmPin = document.getElementById('form-confirm-pin');
-      const savePinBtn = document.getElementById('save-pin-btn');
+      const jsonPreview = document.getElementById('json-preview');
+      const btnCopyJson = document.getElementById('btn-copy-json');
+      const btnDownloadJson = document.getElementById('btn-download-json');
+      const inpImport = document.getElementById('import-json-file');
 
       function checkAuth() {
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
@@ -485,53 +411,50 @@
         }
       }
 
-      function doLogin() {
-        const stored = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
-        if (pinInput.value.trim() === stored) {
+      pinSubmit.addEventListener('click', () => {
+        if (pinInput.value.trim() === DEFAULT_PIN) {
           sessionStorage.setItem(AUTH_KEY, 'true');
           authOverlay.classList.add('hidden');
-          pinError.style.display = 'none';
           renderAll();
-          showToast('Đăng nhập thành công!');
+          notify('Đăng nhập thành công!');
         } else {
-          pinError.style.display = 'block';
+          alert('Mã PIN không đúng.');
           pinInput.value = '';
           pinInput.focus();
         }
-      }
+      });
 
-      pinSubmit.addEventListener('click', doLogin);
-      pinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
-      logoutBtn.addEventListener('click', () => {
+      pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') pinSubmit.click();
+      });
+
+      btnLogout.addEventListener('click', () => {
         sessionStorage.removeItem(AUTH_KEY);
         checkAuth();
       });
 
       // Tabs
-      navItems.forEach(item => {
-        item.addEventListener('click', () => {
-          const tab = item.getAttribute('data-tab');
-          navItems.forEach(n => n.classList.remove('active'));
-          tabPanels.forEach(p => p.classList.remove('active'));
-          item.classList.add('active');
+      navBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.getAttribute('data-tab');
+          navBtns.forEach(b => b.classList.remove('active'));
+          tabSections.forEach(s => s.classList.remove('active'));
+          btn.classList.add('active');
           document.getElementById('tab-' + tab).classList.add('active');
-          pageTitle.textContent = tab === 'portals' ? 'Quản Lý Cửa Sổ Màn Hình' : tab === 'about' ? 'Soạn Thảo About' : 'Xuất JSON';
-          if (tab === 'deploy') renderJson();
+          if (tab === 'backup') renderJson();
         });
       });
 
       function renderTable() {
         currentData = loadData();
-        portalsTable.innerHTML = currentData.portals.map((p, idx) => `
+        tbody.innerHTML = currentData.portals.map((p, idx) => `
           <tr>
-            <td style="font-weight: 700; color: #fb7185;">${idx + 1}</td>
+            <td style="font-weight: 700; color: #94a3b8;">${idx + 1}</td>
             <td>
               <div style="font-weight: 700; color: #fff;">${p.title}</div>
-              <div style="font-size: 0.78rem; color: #94a3b8;">${p.url}</div>
+              <div style="font-size: 0.78rem; color: #64748b; font-family: monospace;">${p.url}</div>
             </td>
             <td style="color: #cbd5e1;">${p.tagline || ''}</td>
-            <td><span style="font-size: 0.75rem; color: #38bdf8;">${(p.type || 'music').toUpperCase()}</span></td>
-            <td><span style="font-size: 0.75rem; padding: 2px 7px; border: 1px solid #2d3247; border-radius: 4px;">${p.status || 'ONLINE'}</span></td>
             <td>
               <div style="display: flex; gap: 6px;">
                 <button class="btn btn-secondary btn-sm" onclick="editPortal('${p.id}')">Sửa</button>
@@ -545,141 +468,109 @@
       window.editPortal = function(id) {
         const p = currentData.portals.find(item => item.id === id);
         if (!p) return;
-        portalModalTitle.textContent = 'Chỉnh Sửa Cửa Sổ';
-        formPortalId.value = p.id;
-        formPortalTitle.value = p.title || '';
-        formPortalUrl.value = p.url || '';
-        formPortalTagline.value = p.tagline || '';
-        formPortalType.value = p.type || 'music';
-        formPortalStatus.value = p.status || 'ONLINE';
-        formPortalImage.value = p.previewImage || '';
-        portalModal.classList.add('active');
+        modalTitle.textContent = 'Chỉnh Sửa Website';
+        inpId.value = p.id;
+        inpTitle.value = p.title || '';
+        inpUrl.value = p.url || '';
+        inpTagline.value = p.tagline || '';
+        inpImage.value = p.image || '';
+        modal.classList.add('active');
       };
 
       window.deletePortal = function(id) {
-        if (confirm('Bạn có chắc muốn xóa cửa sổ này?')) {
+        if (confirm('Bạn có chắc muốn xóa cổng này?')) {
           currentData.portals = currentData.portals.filter(p => p.id !== id);
           saveData(currentData);
           renderTable();
-          showToast('Đã xóa thành công!');
+          notify('Đã xóa thành công!');
         }
       };
 
-      openAddBtn.addEventListener('click', () => {
-        portalModalTitle.textContent = 'Thêm Cửa Sổ Mới';
-        portalForm.reset();
-        formPortalId.value = '';
-        formPortalType.value = 'music';
-        formPortalStatus.value = 'ONLINE';
-        formPortalImage.value = '';
-        portalModal.classList.add('active');
+      btnAdd.addEventListener('click', () => {
+        modalTitle.textContent = 'Thêm Website Mới';
+        form.reset();
+        inpId.value = '';
+        modal.classList.add('active');
       });
 
-      portalForm.addEventListener('submit', (e) => {
+      form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const id = formPortalId.value.trim();
-        const title = formPortalTitle.value.trim();
-        const url = formPortalUrl.value.trim();
-        const tagline = formPortalTagline.value.trim();
-        const type = formPortalType.value;
-        const status = formPortalStatus.value;
-        const previewImage = formPortalImage.value.trim();
+        const id = inpId.value.trim();
+        const title = inpTitle.value.trim();
+        const url = inpUrl.value.trim();
+        const tagline = inpTagline.value.trim();
+        const image = inpImage.value.trim();
 
         if (id) {
           const idx = currentData.portals.findIndex(p => p.id === id);
-          if (idx >= 0) {
-            currentData.portals[idx] = { ...currentData.portals[idx], title, url, tagline, type, status, previewImage };
-          }
+          if (idx >= 0) currentData.portals[idx] = { id, title, url, tagline, image };
         } else {
-          const newId = 'gate-' + Date.now();
-          currentData.portals.push({ id: newId, title, url, tagline, type, status, previewImage });
+          currentData.portals.push({ id: 'site-' + Date.now(), title, url, tagline, image });
         }
 
         saveData(currentData);
-        portalModal.classList.remove('active');
+        modal.classList.remove('active');
         renderTable();
-        showToast('Đã lưu cửa sổ thành công!');
+        notify('Đã lưu website thành công!');
       });
 
       function renderAbout() {
-        const a = currentData.about || INITIAL_DATA.about;
-        formAboutTitle.value = a.title || '';
-        formAboutAlias.value = a.alias || '';
-        formAboutQuote.value = a.quote || '';
-        formAboutContent.value = a.content || '';
+        const a = currentData.about || DEFAULT_DATA.about;
+        inpAboutTitle.value = a.title || '';
+        inpAboutAlias.value = a.alias || '';
+        inpAboutQuote.value = a.quote || '';
+        inpAboutContent.value = a.content || '';
       }
 
       aboutForm.addEventListener('submit', (e) => {
         e.preventDefault();
         currentData.about = {
-          title: formAboutTitle.value.trim(),
-          alias: formAboutAlias.value.trim(),
-          quote: formAboutQuote.value.trim(),
-          content: formAboutContent.value.trim()
+          title: inpAboutTitle.value.trim(),
+          alias: inpAboutAlias.value.trim(),
+          quote: inpAboutQuote.value.trim(),
+          content: inpAboutContent.value.trim()
         };
         saveData(currentData);
-        showToast('Đã lưu About thành công!');
+        notify('Đã lưu nội dung About!');
       });
 
       function renderJson() {
-        jsonViewer.textContent = JSON.stringify(currentData, null, 2);
+        jsonPreview.textContent = JSON.stringify(currentData, null, 2);
       }
 
-      copyJsonBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => {
-          showToast('Đã sao chép JSON!');
-        });
+      btnCopyJson.addEventListener('click', () => {
+        navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => notify('Đã sao chép JSON!'));
       });
 
-      downloadJsonBtn.addEventListener('click', () => {
+      btnDownloadJson.addEventListener('click', () => {
         const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = 'portals.json';
         a.click();
-        showToast('Đã tải portals.json!');
+        notify('Đã tải file portals.json!');
       });
 
-      importFileInput.addEventListener('change', (e) => {
+      inpImport.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (evt) => {
+        const r = new FileReader();
+        r.onload = (evt) => {
           try {
             const parsed = JSON.parse(evt.target.result);
             if (parsed && Array.isArray(parsed.portals)) {
               currentData = parsed;
               saveData(currentData);
               renderAll();
-              showToast('Nhập JSON thành công!');
+              notify('Nhập JSON thành công!');
             }
-          } catch (err) { alert('Lỗi file JSON'); }
+          } catch(err) { alert('Lỗi file JSON'); }
         };
-        reader.readAsText(file);
+        r.readAsText(file);
       });
 
-      changePinBtn.addEventListener('click', () => {
-        formCurrentPin.value = '';
-        formNewPin.value = '';
-        formConfirmPin.value = '';
-        pinModal.classList.add('active');
-      });
-
-      savePinBtn.addEventListener('click', () => {
-        const stored = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
-        if (formCurrentPin.value.trim() !== stored) { alert('Mã PIN cũ không đúng.'); return; }
-        if (formNewPin.value.trim().length < 4) { alert('Mã PIN mới phải từ 4 số trở lên.'); return; }
-        if (formNewPin.value.trim() !== formConfirmPin.value.trim()) { alert('Xác nhận PIN không khớp.'); return; }
-        localStorage.setItem(PIN_KEY, formNewPin.value.trim());
-        pinModal.classList.remove('active');
-        showToast('Đã đổi mã PIN!');
-      });
-
-      document.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
-        btn.addEventListener('click', () => {
-          portalModal.classList.remove('active');
-          pinModal.classList.remove('active');
-        });
+      document.querySelectorAll('.btn-close-modal').forEach(btn => {
+        btn.addEventListener('click', () => modal.classList.remove('active'));
       });
 
       function renderAll() {
