@@ -1,6 +1,5 @@
 /**
- * Postlain Cyberpunk 3D Admin Dashboard - Logic
- * Handles Master Gate CRUD, About Manifesto Editor, and JSON Sync.
+ * Postlain Minimal Admin Logic
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -15,45 +14,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   const logoutBtn = document.getElementById('admin-logout-btn');
   const changePinBtn = document.getElementById('change-pin-btn');
 
-  // Navigation & Tabs
+  // Navigation
   const navItems = document.querySelectorAll('.admin-nav-item');
   const tabPanels = document.querySelectorAll('.tab-panel');
   const pageTitleEl = document.getElementById('admin-page-title');
 
-  // Tab 1: Portals Elements
+  // Tab 1: Portals
   const portalsTableBody = document.getElementById('portals-table-body');
   const openAddPortalBtn = document.getElementById('open-add-portal-btn');
   const portalModal = document.getElementById('portal-modal');
   const portalModalTitle = document.getElementById('portal-modal-title');
   const portalForm = document.getElementById('portal-form');
-  const modalCloseBtns = document.querySelectorAll('.modal-close, .modal-cancel');
-
-  // Portal Inputs
   const formPortalId = document.getElementById('form-portal-id');
   const formPortalTitle = document.getElementById('form-portal-title');
   const formPortalUrl = document.getElementById('form-portal-url');
   const formPortalTagline = document.getElementById('form-portal-tagline');
-  const formPortalDesc = document.getElementById('form-portal-desc');
   const formPortalIcon = document.getElementById('form-portal-icon');
   const formPortalStatus = document.getElementById('form-portal-status');
-  const formPortalCategory = document.getElementById('form-portal-category');
 
-  // Tab 2: About Editor Elements
+  // Tab 2: About
   const aboutForm = document.getElementById('about-form');
   const formAboutTitle = document.getElementById('form-about-title');
-  const formAboutSubtitle = document.getElementById('form-about-subtitle');
   const formAboutAlias = document.getElementById('form-about-alias');
   const formAboutQuote = document.getElementById('form-about-quote');
   const formAboutContent = document.getElementById('form-about-content');
 
-  // Tab 3: Backup & Deploy Elements
+  // Tab 3: Deploy
   const jsonViewer = document.getElementById('json-viewer');
   const copyJsonBtn = document.getElementById('copy-json-btn');
   const downloadJsonBtn = document.getElementById('download-json-btn');
   const importFileInput = document.getElementById('import-file-input');
-  const importTextarea = document.getElementById('import-json-textarea');
-  const processImportBtn = document.getElementById('process-import-btn');
-  const resetDefaultsBtn = document.getElementById('reset-defaults-btn');
 
   // PIN Modal
   const pinModal = document.getElementById('pin-modal');
@@ -62,49 +52,59 @@ document.addEventListener('DOMContentLoaded', async () => {
   const formConfirmPin = document.getElementById('form-confirm-pin');
   const savePinBtn = document.getElementById('save-pin-btn');
 
+  // Modal Closers
+  document.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
+    btn.addEventListener('click', closeAllModals);
+  });
+
   // --- AUTH ---
   checkAuth();
 
   function checkAuth() {
     if (store.isAdminLoggedIn()) {
-      authOverlay.classList.add('hidden');
+      if (authOverlay) authOverlay.classList.add('hidden');
       loadAllAdminData();
     } else {
-      authOverlay.classList.remove('hidden');
-      pinInput.value = '';
-      pinInput.focus();
+      if (authOverlay) authOverlay.classList.remove('hidden');
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.focus();
+      }
     }
   }
 
   function handleLogin() {
     const pin = pinInput.value.trim();
     if (store.verifyPin(pin)) {
-      authOverlay.classList.add('hidden');
-      pinErrorMsg.style.display = 'none';
+      if (authOverlay) authOverlay.classList.add('hidden');
+      if (pinErrorMsg) pinErrorMsg.style.display = 'none';
       loadAllAdminData();
-      showToast('ĐĂNG NHẬP ADMIN THÀNH CÔNG // ROOT_ACCESS', 'success');
+      showToast('Đăng nhập Admin thành công!');
     } else {
-      pinErrorMsg.style.display = 'block';
-      pinErrorMsg.textContent = 'Mã PIN sai! (Mặc định: 1234)';
-      pinInput.value = '';
-      pinInput.focus();
+      if (pinErrorMsg) pinErrorMsg.style.display = 'block';
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.focus();
+      }
     }
   }
 
-  pinSubmitBtn.addEventListener('click', handleLogin);
-  pinInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') handleLogin();
-  });
+  if (pinSubmitBtn) pinSubmitBtn.addEventListener('click', handleLogin);
+  if (pinInput) {
+    pinInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+  }
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       store.logoutAdmin();
       checkAuth();
-      showToast('ĐÃ ĐĂNG XUẤT HỆ THỐNG');
+      showToast('Đã đăng xuất');
     });
   }
 
-  // --- TAB NAVIGATION ---
+  // --- TABS ---
   navItems.forEach(item => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
@@ -118,109 +118,74 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (panel) panel.classList.add('active');
 
       const titleMap = {
-        'portals': 'QUẢN LÝ MASTER GATE (CỔNG KẾT NỐI)',
-        'about': 'SOẠN THẢO HỒ SƠ KẺ ẨN DANH (ABOUT)',
-        'deploy': 'XUẤT DỮ LIỆU & CLOUDFLARE DEPLOY'
+        'portals': 'Quản Lý Master Gate',
+        'about': 'Soạn Thảo Hồ Sơ About',
+        'deploy': 'Xuất & Tải JSON'
       };
-      pageTitleEl.textContent = titleMap[targetTab] || 'ADMIN PANEL';
+      if (pageTitleEl) pageTitleEl.textContent = titleMap[targetTab] || 'Admin';
 
       if (targetTab === 'deploy') renderJsonViewer();
       initIcons();
     });
   });
 
-  // --- LOAD DATA ---
+  // --- LOAD ALL DATA ---
   function loadAllAdminData() {
     renderPortalsTable();
     loadAboutForm();
-    renderCategorySelect();
     renderJsonViewer();
     initIcons();
   }
 
-  function renderCategorySelect() {
-    const categories = store.getCategories();
-    if (formPortalCategory) {
-      formPortalCategory.innerHTML = categories.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
-    }
-  }
-
-  // --- TAB 1: MASTER GATE CRUD ---
+  // --- TAB 1: PORTALS TABLE ---
   function renderPortalsTable() {
     const portals = store.getPortals();
+
+    if (!portalsTableBody) return;
 
     if (portals.length === 0) {
       portalsTableBody.innerHTML = `
         <tr>
-          <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-steel);">
-            Chưa có cổng kết nối nào.
+          <td colspan="6" style="text-align: center; padding: 24px; color: #94a3b8;">
+            Chưa có cổng kết nối nào. Hãy bấm "Thêm Cổng Mới".
           </td>
         </tr>
       `;
-      initIcons();
       return;
     }
 
-    portalsTableBody.innerHTML = portals.map((portal, idx) => {
-      const indexStr = (idx + 1).toString().padStart(2, '0');
-      return `
-        <tr data-id="${portal.id}">
-          <td style="font-family: var(--font-mono); color: var(--red-neon); font-weight: 700; width: 60px;">
-            ${indexStr}
-          </td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <div class="table-icon-mini">
-                <i data-lucide="${portal.icon || 'globe'}" style="width: 20px; height: 20px;"></i>
-              </div>
-              <div>
-                <div style="font-weight: 800; font-family: var(--font-display); color: #fff;">
-                  ${escapeHtml(portal.title)}
-                </div>
-                <div style="font-size: 0.8rem; color: var(--text-steel); font-family: var(--font-mono);">
-                  ${escapeHtml(portal.url)}
-                </div>
-              </div>
-            </div>
-          </td>
-          <td style="max-width: 320px; font-size: 0.85rem; color: #cbd5e1;">
-            <strong style="color: var(--red-neon);">//</strong> ${escapeHtml(portal.tagline || portal.description || '')}
-          </td>
-          <td>
-            <span style="font-family: var(--font-mono); font-size: 0.78rem; padding: 2px 8px; border: 1px solid var(--red-border); color: #fff; background: rgba(255,0,60,0.1);">
-              ${escapeHtml(portal.status || 'ONLINE')}
-            </span>
-          </td>
-          <td style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-steel);">
-            ${portal.clicks || 0}
-          </td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <button class="btn btn-secondary btn-sm edit-portal-btn" data-id="${portal.id}" title="Chỉnh sửa">
-                <i data-lucide="pencil" style="width: 14px; height: 14px;"></i>
-              </button>
-              <button class="btn btn-danger btn-sm delete-portal-btn" data-id="${portal.id}" title="Xóa">
-                <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
+    portalsTableBody.innerHTML = portals.map((portal, idx) => `
+      <tr data-id="${portal.id}">
+        <td style="font-weight: 700; color: #fb7185;">${idx + 1}</td>
+        <td>
+          <div style="font-weight: 700; color: #fff;">${escapeHtml(portal.title)}</div>
+          <div style="font-size: 0.78rem; color: #94a3b8;">${escapeHtml(portal.url)}</div>
+        </td>
+        <td style="color: #cbd5e1; max-width: 320px;">${escapeHtml(portal.tagline || portal.description || '')}</td>
+        <td>
+          <span style="font-size: 0.75rem; padding: 2px 7px; border: 1px solid #2d3247; border-radius: 4px; color: #fff;">
+            ${escapeHtml(portal.status || 'ONLINE')}
+          </span>
+        </td>
+        <td style="color: #94a3b8;">${portal.clicks || 0}</td>
+        <td>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary btn-sm edit-btn" data-id="${portal.id}">Sửa</button>
+            <button class="btn btn-danger btn-sm del-btn" data-id="${portal.id}">Xóa</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
 
-    attachPortalTableEvents();
-    initIcons();
-  }
-
-  function attachPortalTableEvents() {
-    portalsTableBody.querySelectorAll('.edit-portal-btn').forEach(btn => {
+    // Attach Edit / Delete
+    portalsTableBody.querySelectorAll('.edit-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         openEditPortalModal(id);
       });
     });
 
-    portalsTableBody.querySelectorAll('.delete-portal-btn').forEach(btn => {
+    portalsTableBody.querySelectorAll('.del-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
         const portal = store.getPortalById(id);
@@ -228,204 +193,181 @@ document.addEventListener('DOMContentLoaded', async () => {
           store.deletePortal(id);
           renderPortalsTable();
           renderJsonViewer();
-          showToast(`ĐÃ XÓA CỔNG [ ${portal?.title || id} ]`, 'success');
+          showToast('Đã xóa cổng thành công!');
         }
       });
     });
+
+    initIcons();
   }
 
-  openAddPortalBtn.addEventListener('click', () => {
-    portalModalTitle.textContent = 'THÊM CỔNG KẾT NỐI MỚI (NEW NODE)';
-    portalForm.reset();
-    formPortalId.value = '';
-    formPortalIcon.value = 'globe';
-    formPortalStatus.value = 'ONLINE';
-    openModal(portalModal);
-  });
+  if (openAddPortalBtn) {
+    openAddPortalBtn.addEventListener('click', () => {
+      if (portalModalTitle) portalModalTitle.textContent = 'Thêm Cổng Kết Nối Mới';
+      if (portalForm) portalForm.reset();
+      if (formPortalId) formPortalId.value = '';
+      if (formPortalIcon) formPortalIcon.value = 'globe';
+      if (formPortalStatus) formPortalStatus.value = 'ONLINE';
+      openModal(portalModal);
+    });
+  }
 
   function openEditPortalModal(id) {
     const portal = store.getPortalById(id);
     if (!portal) return;
 
-    portalModalTitle.textContent = 'CHỈNH SỬA CỔNG KẾT NỐI (EDIT NODE)';
-    formPortalId.value = portal.id;
-    formPortalTitle.value = portal.title || '';
-    formPortalUrl.value = portal.url || '';
-    formPortalTagline.value = portal.tagline || '';
-    formPortalDesc.value = portal.description || '';
-    formPortalIcon.value = portal.icon || 'globe';
-    formPortalStatus.value = portal.status || 'ONLINE';
-    formPortalCategory.value = portal.category || 'music';
+    if (portalModalTitle) portalModalTitle.textContent = 'Chỉnh Sửa Cổng Kết Nối';
+    if (formPortalId) formPortalId.value = portal.id;
+    if (formPortalTitle) formPortalTitle.value = portal.title || '';
+    if (formPortalUrl) formPortalUrl.value = portal.url || '';
+    if (formPortalTagline) formPortalTagline.value = portal.tagline || portal.description || '';
+    if (formPortalIcon) formPortalIcon.value = portal.icon || 'globe';
+    if (formPortalStatus) formPortalStatus.value = portal.status || 'ONLINE';
 
     openModal(portalModal);
   }
 
-  portalForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  if (portalForm) {
+    portalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = formPortalId.value.trim();
+      const title = formPortalTitle.value.trim();
+      const url = formPortalUrl.value.trim();
+      const tagline = formPortalTagline.value.trim();
+      const icon = formPortalIcon.value.trim() || 'globe';
+      const status = formPortalStatus.value;
 
-    const id = formPortalId.value.trim();
-    const title = formPortalTitle.value.trim();
-    const url = formPortalUrl.value.trim();
-    const tagline = formPortalTagline.value.trim();
-    const description = formPortalDesc.value.trim();
-    const icon = formPortalIcon.value.trim() || 'globe';
-    const status = formPortalStatus.value;
-    const category = formPortalCategory.value;
+      if (!title || !url) {
+        alert('Vui lòng điền tên và URL');
+        return;
+      }
 
-    if (!title || !url) {
-      alert('Vui lòng nhập tên website và URL.');
-      return;
-    }
+      store.savePortal({
+        id: id || undefined,
+        title,
+        url,
+        tagline,
+        description: tagline,
+        icon,
+        status
+      });
 
-    const portalData = {
-      id: id || undefined,
-      title,
-      url,
-      tagline,
-      description,
-      icon,
-      status,
-      category
-    };
-
-    store.savePortal(portalData);
-    closeAllModals();
-    renderPortalsTable();
-    renderJsonViewer();
-    showToast(id ? 'ĐÃ CẬP NHẬT CỔNG THÀNH CÔNG' : 'ĐÃ TẠO CỔNG MỚI THÀNH CÔNG', 'success');
-  });
-
-  // --- TAB 2: ABOUT MANIFESTO EDITOR ---
-  function loadAboutForm() {
-    const about = store.getAbout();
-    formAboutTitle.value = about.title || '';
-    formAboutSubtitle.value = about.subtitle || '';
-    formAboutAlias.value = about.alias || '';
-    formAboutQuote.value = about.quote || '';
-    formAboutContent.value = about.content || '';
+      closeAllModals();
+      renderPortalsTable();
+      renderJsonViewer();
+      showToast('Đã lưu cổng kết nối thành công!');
+    });
   }
 
-  aboutForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const newAbout = {
-      title: formAboutTitle.value.trim(),
-      subtitle: formAboutSubtitle.value.trim(),
-      alias: formAboutAlias.value.trim(),
-      quote: formAboutQuote.value.trim(),
-      content: formAboutContent.value.trim()
-    };
+  // --- TAB 2: ABOUT FORM ---
+  function loadAboutForm() {
+    const about = store.getAbout();
+    if (formAboutTitle) formAboutTitle.value = about.title || '';
+    if (formAboutAlias) formAboutAlias.value = about.alias || '';
+    if (formAboutQuote) formAboutQuote.value = about.quote || '';
+    if (formAboutContent) formAboutContent.value = about.content || '';
+  }
 
-    store.saveAbout(newAbout);
-    renderJsonViewer();
-    showToast('ĐÃ LƯU TUYÊN NGÔN KẺ ẨN DANH THÀNH CÔNG // ABOUT_UPDATED', 'success');
-  });
+  if (aboutForm) {
+    aboutForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      store.saveAbout({
+        title: formAboutTitle.value.trim(),
+        alias: formAboutAlias.value.trim(),
+        quote: formAboutQuote.value.trim(),
+        content: formAboutContent.value.trim()
+      });
+      renderJsonViewer();
+      showToast('Đã lưu nội dung About thành công!');
+    });
+  }
 
-  // --- TAB 3: BACKUP & JSON ---
+  // --- TAB 3: JSON DEPLOY ---
   function renderJsonViewer() {
     if (jsonViewer) {
       jsonViewer.textContent = store.exportJSON();
     }
   }
 
-  copyJsonBtn.addEventListener('click', () => {
-    const json = store.exportJSON();
-    navigator.clipboard.writeText(json).then(() => {
-      showToast('ĐÃ SAO CHÉP MÃ NGUỒN JSON VÀO CLIPBOARD', 'success');
+  if (copyJsonBtn) {
+    copyJsonBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(store.exportJSON()).then(() => {
+        showToast('Đã sao chép JSON vào clipboard!');
+      });
     });
-  });
+  }
 
-  downloadJsonBtn.addEventListener('click', () => {
-    const json = store.exportJSON();
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'portals.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('ĐÃ TẢI XUỐNG FILE portals.json', 'success');
-  });
+  if (downloadJsonBtn) {
+    downloadJsonBtn.addEventListener('click', () => {
+      const blob = new Blob([store.exportJSON()], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'portals.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Đã tải file portals.json!');
+    });
+  }
 
-  importFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const res = store.importJSON(event.target.result);
-      if (res.success) {
-        loadAllAdminData();
-        showToast('NHẬP DỮ LIỆU JSON THÀNH CÔNG', 'success');
-      } else {
-        alert('Lỗi file JSON: ' + res.error);
-      }
-    };
-    reader.readAsText(file);
-  });
+  if (importFileInput) {
+    importFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const res = store.importJSON(event.target.result);
+        if (res.success) {
+          loadAllAdminData();
+          showToast('Nhập JSON thành công!');
+        } else {
+          alert('Lỗi JSON: ' + res.error);
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
 
-  processImportBtn.addEventListener('click', () => {
-    const text = importTextarea.value.trim();
-    if (!text) {
-      alert('Vui lòng dán JSON trước khi bấm Áp dụng.');
-      return;
-    }
-    const res = store.importJSON(text);
-    if (res.success) {
-      importTextarea.value = '';
-      loadAllAdminData();
-      showToast('ĐÃ ÁP DỤNG JSON THÀNH CÔNG', 'success');
-    } else {
-      alert('Lỗi cấu trúc JSON: ' + res.error);
-    }
-  });
-
-  resetDefaultsBtn.addEventListener('click', async () => {
-    if (confirm('CẢNH BÁO: Khôi phục lại toàn bộ dữ liệu mẫu mặc định?')) {
-      await store.resetToDefaults();
-      loadAllAdminData();
-      showToast('ĐÃ KHÔI PHỤC DỮ LIỆU MẪU GỐC', 'success');
-    }
-  });
-
-  // --- PIN CHANGE ---
+  // --- CHANGE PIN ---
   if (changePinBtn) {
     changePinBtn.addEventListener('click', () => {
-      formCurrentPin.value = '';
-      formNewPin.value = '';
-      formConfirmPin.value = '';
+      if (formCurrentPin) formCurrentPin.value = '';
+      if (formNewPin) formNewPin.value = '';
+      if (formConfirmPin) formConfirmPin.value = '';
       openModal(pinModal);
     });
   }
 
   if (savePinBtn) {
     savePinBtn.addEventListener('click', () => {
-      const current = formCurrentPin.value.trim();
-      const newPin = formNewPin.value.trim();
-      const confirmPin = formConfirmPin.value.trim();
+      const cur = formCurrentPin.value.trim();
+      const nPin = formNewPin.value.trim();
+      const cPin = formConfirmPin.value.trim();
 
-      if (!store.verifyPin(current)) {
-        alert('Mã PIN hiện tại không đúng.');
+      if (!store.verifyPin(cur)) {
+        alert('Mã PIN cũ không đúng.');
         return;
       }
-      if (newPin.length < 4) {
-        alert('Mã PIN mới phải từ 4 ký tự trở lên.');
+      if (nPin.length < 4) {
+        alert('Mã PIN mới phải từ 4 số trở lên.');
         return;
       }
-      if (newPin !== confirmPin) {
+      if (nPin !== cPin) {
         alert('Mã PIN xác nhận không khớp.');
         return;
       }
 
-      store.setAdminPin(newPin);
+      store.setAdminPin(nPin);
       closeAllModals();
-      showToast('ĐÃ ĐỔI MÃ PIN ADMIN THÀNH CÔNG', 'success');
+      showToast('Đã đổi mã PIN Admin thành công!');
     });
   }
 
-  // --- MODAL UTILS ---
+  // --- MODAL HELPERS ---
   function openModal(modalEl) {
-    modalEl.classList.add('active');
+    if (modalEl) modalEl.classList.add('active');
     initIcons();
   }
 
@@ -433,41 +375,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('active'));
   }
 
-  modalCloseBtns.forEach(btn => btn.addEventListener('click', closeAllModals));
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAllModals();
   });
 
   function escapeHtml(str) {
     if (!str) return '';
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   function initIcons() {
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function showToast(message, type = 'normal') {
-    let container = document.getElementById('toast-container');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'toast-container';
-      container.className = 'toast-container';
-      document.body.appendChild(container);
+  function showToast(msg) {
+    let box = document.getElementById('toast-container');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'toast-container';
+      box.className = 'toast-container';
+      document.body.appendChild(box);
     }
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = `
-      <i data-lucide="terminal" style="width: 16px; height: 16px; color: var(--red-neon);"></i>
-      <span>${escapeHtml(message)}</span>
-    `;
-    container.appendChild(toast);
-    initIcons();
-    setTimeout(() => toast.remove(), 2600);
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    box.appendChild(t);
+    setTimeout(() => t.remove(), 2500);
   }
 });
