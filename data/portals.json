@@ -37,6 +37,20 @@
   ],
   "portals": [
     {
+      "id": "hidden-music",
+      "title": "HIDDEN MUSIC",
+      "url": "https://hiddenmusic.postlain.com",
+      "tagline": "Âm nhạc ẩn - Không gian âm thanh độc lập bí mật.",
+      "description": "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm.",
+      "category": "music",
+      "icon": "disc-3",
+      "badge": "NEW",
+      "status": "ONLINE",
+      "previewImage": "",
+      "order": 1,
+      "clicks": 520
+    },
+    {
       "id": "postlain-music",
       "title": "POSTLAIN MUSIC",
       "url": "https://music.postlain.com",
@@ -47,7 +61,7 @@
       "badge": "FLAGSHIP",
       "status": "ONLINE",
       "previewImage": "",
-      "order": 1,
+      "order": 2,
       "clicks": 1420
     },
     {
