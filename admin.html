@@ -12,17 +12,16 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #050507;
+      background-color: #08080a;
       color: #e5e5e5;
       min-height: 100vh;
       line-height: 1.5;
     }
 
-    /* Auth Gate */
     .auth-overlay {
       position: fixed;
       inset: 0;
-      background: #030305;
+      background: #060608;
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -56,7 +55,6 @@
     }
     .auth-input:focus { border-color: rgba(255, 255, 255, 0.35); }
 
-    /* Layout */
     .admin-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -104,7 +102,6 @@
     .btn-danger { background: #dc2626; color: #fff; }
     .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
 
-    /* Table */
     .table-box {
       background: rgba(14, 14, 20, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -128,7 +125,6 @@
     }
     .data-table tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
-    /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
     .form-group label { font-size: 0.82rem; font-weight: 600; color: #a3a3a3; }
     .form-input, .form-textarea {
@@ -146,7 +142,6 @@
     .section-tab { display: none; }
     .section-tab.active { display: block; }
 
-    /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -196,7 +191,6 @@
   </style>
 </head>
 <body>
-  <!-- PIN Gate -->
   <div id="auth-overlay" class="auth-overlay">
     <div class="auth-card">
       <h2 style="color: #fff; margin-bottom: 6px; font-family: 'Space Grotesk', sans-serif;">POSTLAIN // HUB</h2>
@@ -211,7 +205,7 @@
     <header class="admin-nav-bar">
       <div class="nav-tabs">
         <button class="tab-btn active" data-tab="portals">4 Khung Dự Án</button>
-        <button class="tab-btn" data-tab="about">Nội Dung About</button>
+        <button class="tab-btn" data-tab="about">Nội Dung About & Links</button>
         <button class="tab-btn" data-tab="backup">Sao Lưu JSON</button>
       </div>
       <div style="display: flex; gap: 8px;">
@@ -247,8 +241,8 @@
 
       <!-- TAB 2: ABOUT -->
       <section id="tab-about" class="section-tab">
-        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Soạn Thảo Giới Thiệu</h2>
-        <form id="about-form" style="max-width: 680px;">
+        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Soạn Thảo Giới Thiệu & Liên Kết</h2>
+        <form id="about-form" style="max-width: 720px;">
           <div class="form-group">
             <label>Tiêu Đề</label>
             <input type="text" id="about-title" class="form-input">
@@ -300,11 +294,11 @@
             <input type="text" id="form-title" class="form-input" placeholder="VD: HIDDEN MUSIC" required>
           </div>
           <div class="form-group">
-            <label>2. URL Website (Để trống nếu muốn hiển thị 'Đang trong thời gian phát triển')</label>
+            <label>2. URL Website (Để trống nếu muốn hiển thị 'ĐANG TRONG THỜI GIAN PHÁT TRIỂN')</label>
             <input type="text" id="form-url" class="form-input" placeholder="https://hiddenmusic.postlain.com">
           </div>
           <div class="form-group">
-            <label>3. Link Ảnh Preview (Tùy chọn - nếu muốn thay thế Live Iframe bằng ảnh)</label>
+            <label>3. Link Ảnh Preview (Tùy chọn - nếu muốn thay thế Live Iframe bằng ảnh chụp sắc nét)</label>
             <input type="text" id="form-image" class="form-input" placeholder="https://... hoặc để trống">
           </div>
           <div class="form-group">
@@ -323,8 +317,8 @@
   <div id="toast-box" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v12';
-    const AUTH_KEY = 'postlain_admin_logged_v12';
+    const STORAGE_KEY = 'postlain_data_v14';
+    const AUTH_KEY = 'postlain_admin_logged_v14';
     const DEFAULT_PIN = '1234';
 
     const DEFAULT_DATA = {
@@ -334,6 +328,14 @@
         quote: "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
         content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
+      links: [
+        { name: "Website Portal", tag: "GATEWAY", url: "https://postlain.com", icon: "globe" },
+        { name: "Spotify", tag: "STREAMING", url: "https://open.spotify.com", icon: "spotify" },
+        { name: "Apple Music", tag: "LOSSLESS", url: "https://music.apple.com", icon: "apple" },
+        { name: "YouTube", tag: "OFFICIAL", url: "https://youtube.com/@postlain", icon: "youtube" },
+        { name: "Instagram", tag: "SOCIAL", url: "https://instagram.com/postlainmusic", icon: "instagram" },
+        { name: "Amazon Music", tag: "HI-RES", url: "https://music.amazon.com", icon: "amazon" }
+      ],
       portals: [
         { id: "project-1", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", image: "", desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." },
         { id: "project-2", title: "POSTLAIN MUSIC", url: "", image: "", desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chuẩn phòng thu." },
@@ -431,7 +433,6 @@
         checkAuth();
       });
 
-      // Tabs
       tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           const tab = btn.getAttribute('data-tab');
@@ -497,7 +498,7 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const id = inpId.value.trim();
-        const title = inpTitle.value.trim();
+        const title = formTitle.value.trim();
         const url = inpUrl.value.trim();
         const image = inpImage.value.trim();
         const desc = inpDesc.value.trim();

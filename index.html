@@ -19,18 +19,19 @@
     }
 
     :root {
-      --bg-deep: #050507;
-      --bg-card: rgba(13, 13, 18, 0.65);
+      --bg-deep: #08080a;
+      --bg-card: rgba(18, 18, 22, 0.72);
       --border-glass: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(255, 255, 255, 0.28);
-      --text-white: #ffffff;
+      --border-hover: rgba(255, 255, 255, 0.25);
+      --text-white: #f5f5f5;
       --text-muted: #9ca3af;
-      --text-dim: #52525b;
+      --text-dim: #737373;
       --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --font-display: 'Space Grotesk', sans-serif;
       --card-radius: 16px;
-      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --inner-radius: 12px;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     html, body {
@@ -45,25 +46,111 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ==========================================================================
-       1. PRELOADER SIÊU MƯỢT (0-100% COUNTER + SHIMMER TEXT + 1PX LINE)
-       ========================================================================== */
+    /* 1. AMBIENT GLOW VÀ CHIỀU SÂU KHÔNG GIAN */
+    .ambient-glow-wrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb-top {
+      position: absolute;
+      top: -10%;
+      left: 15%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(120, 140, 180, 0.09) 0%, transparent 65%);
+      filter: blur(90px);
+      animation: floatOrbTop 20s ease-in-out infinite alternate;
+    }
+
+    .ambient-orb-bottom {
+      position: absolute;
+      bottom: -10%;
+      right: 12%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(140, 100, 190, 0.08) 0%, transparent 65%);
+      filter: blur(100px);
+      animation: floatOrbBottom 25s ease-in-out infinite alternate;
+    }
+
+    .ambient-orb-center {
+      position: absolute;
+      top: 40%;
+      left: 45%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(60, 180, 220, 0.05) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: floatOrbCenter 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatOrbTop {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-40px, 80px) scale(0.95); }
+    }
+
+    @keyframes floatOrbBottom {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-70px, -50px) scale(1.12); }
+      100% { transform: translate(50px, -30px) scale(0.9); }
+    }
+
+    @keyframes floatOrbCenter {
+      0% { transform: translate(0, 0) scale(0.9); }
+      100% { transform: translate(-50px, -40px) scale(1.15); }
+    }
+
+    .ambient-subtle-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at center, black 50%, transparent 95%);
+      -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 95%);
+    }
+
+    .mouse-spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 65%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    body:hover .mouse-spotlight {
+      opacity: 1;
+    }
+
+    /* 2. PRELOADER OVERLAY */
     .preloader-overlay {
       position: fixed;
       inset: 0;
-      background-color: #030305;
+      background-color: #060608;
       z-index: 999999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.8s var(--ease-out-expo), opacity 0.8s var(--ease-out-expo), visibility 0.8s;
-      overflow: hidden;
+      transition: transform 0.75s var(--ease-expo), opacity 0.75s var(--ease-expo), visibility 0.75s;
     }
 
     .preloader-overlay.fade-out {
       opacity: 0;
-      transform: scale(1.04) translateY(-20px);
+      transform: scale(1.03) translateY(-15px);
       visibility: hidden;
       pointer-events: none;
     }
@@ -72,7 +159,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
+      gap: 22px;
       position: relative;
       z-index: 2;
     }
@@ -85,24 +172,24 @@
       text-transform: uppercase;
       background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.25) 0%,
         rgba(255, 255, 255, 1) 50%,
-        rgba(255, 255, 255, 0.2) 100%
+        rgba(255, 255, 255, 0.25) 100%
       );
       background-size: 200% auto;
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
-      animation: metallicShine 2.5s linear infinite;
-      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+      animation: metallicShimmer 2.4s linear infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
     }
 
-    @keyframes metallicShine {
+    @keyframes metallicShimmer {
       to { background-position: 200% center; }
     }
 
     .preloader-line-track {
-      width: 220px;
+      width: 200px;
       height: 1px;
       background: rgba(255, 255, 255, 0.08);
       position: relative;
@@ -115,97 +202,20 @@
       left: 0;
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #ffffff, rgba(255, 255, 255, 0.8));
-      box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), #ffffff, rgba(255, 255, 255, 0.8));
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
       transition: width 0.05s linear;
     }
 
     .preloader-counter {
       font-family: var(--font-mono);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: #71717a;
       letter-spacing: 2px;
     }
 
-    /* ==========================================================================
-       2. AMBIENT GLOW VÀ MOUSE SPOTLIGHT
-       ========================================================================== */
-    .ambient-glow-wrapper {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .glow-orb-1 {
-      position: absolute;
-      top: 15%;
-      left: 20%;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(79, 172, 254, 0.07) 0%, transparent 70%);
-      filter: blur(80px);
-      animation: orbDrift1 22s ease-in-out infinite alternate;
-    }
-
-    .glow-orb-2 {
-      position: absolute;
-      bottom: 10%;
-      right: 15%;
-      width: 750px;
-      height: 750px;
-      background: radial-gradient(circle, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
-      filter: blur(90px);
-      animation: orbDrift2 26s ease-in-out infinite alternate;
-    }
-
-    @keyframes orbDrift1 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(80px, -60px) scale(1.15); }
-      100% { transform: translate(-50px, 40px) scale(0.9); }
-    }
-
-    @keyframes orbDrift2 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-100px, 50px) scale(1.1); }
-      100% { transform: translate(60px, -70px) scale(0.95); }
-    }
-
-    .ambient-cyber-grid {
-      position: absolute;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
-    }
-
-    .mouse-spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      transition: opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    body:hover .mouse-spotlight {
-      opacity: 1;
-    }
-
-    /* ==========================================================================
-       3. APP SCREEN & FLOATING SEGMENTED CONTROL
-       ========================================================================== */
+    /* 3. APP SCREEN & FLOATING PILL HEADER */
     .app-screen {
       position: relative;
       z-index: 2;
@@ -229,12 +239,12 @@
     .segmented-control-pill {
       position: relative;
       display: inline-flex;
-      background: rgba(18, 18, 24, 0.7);
+      background: rgba(18, 18, 24, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 36px;
       padding: 4px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
@@ -248,7 +258,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 28px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      transition: transform 0.35s var(--ease-out-expo), width 0.35s var(--ease-out-expo);
+      transition: transform 0.35s var(--ease-expo), width 0.35s var(--ease-expo);
       pointer-events: none;
     }
 
@@ -292,17 +302,15 @@
     .tab-view.active {
       display: flex;
       flex-direction: column;
-      animation: viewSlideFade 0.4s var(--ease-out-expo);
+      animation: viewFadeIn 0.38s var(--ease-expo);
     }
 
-    @keyframes viewSlideFade {
+    @keyframes viewFadeIn {
       from { opacity: 0; transform: translateY(6px) scale(0.995); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ==========================================================================
-       4. GRID 2x2 (PREMIUM GLASS CARDS + 3D PARALLAX TILT)
-       ========================================================================== */
+    /* 4. GRID 2x2 (4 KHUNG CHỮ NHẬT 16:9 HIGH-END CARD UI) */
     .grid-2x2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -320,6 +328,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--card-radius);
+      padding: 10px 10px 12px;
       overflow: hidden;
       text-decoration: none;
       color: inherit;
@@ -333,46 +342,46 @@
     }
 
     .project-card.active-portal:hover {
-      border-color: var(--border-glow);
+      border-color: var(--border-hover);
       box-shadow: 
-        0 20px 50px rgba(0, 0, 0, 0.9),
-        0 0 30px rgba(255, 255, 255, 0.08),
-        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.05),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
     }
 
     .project-card.disabled {
       cursor: default;
       pointer-events: none;
-      opacity: 0.75;
-      border-color: rgba(255, 255, 255, 0.05) !important;
+      opacity: 0.85;
     }
 
-    /* Lớp Phủ Gradient Ánh Sáng Phản Chiếu (Gleam Reflection) */
-    .card-gleam-overlay {
+    /* Glare Effect */
+    .card-glare-layer {
       position: absolute;
       inset: 0;
       background: radial-gradient(
-        800px circle at var(--mouse-card-x, 50%) var(--mouse-card-y, 50%),
-        rgba(255, 255, 255, 0.08),
+        700px circle at var(--mouse-card-x, 50%) var(--mouse-card-y, 50%),
+        rgba(255, 255, 255, 0.07),
         transparent 40%
       );
       pointer-events: none;
       z-index: 10;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.25s ease;
     }
 
-    .project-card:hover .card-gleam-overlay {
+    .project-card:hover .card-glare-layer {
       opacity: 1;
     }
 
-    /* KHUNG PREVIEW */
+    /* KHUNG RUỘT PREVIEW 16:9 */
     .preview-box {
       position: relative;
       flex: 1;
       width: 100%;
       min-height: 0;
       background: #000000;
+      border-radius: var(--inner-radius);
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -389,99 +398,93 @@
       pointer-events: none;
       transform-origin: top left;
       background: #000000;
-      transition: transform 0.4s var(--ease-out-expo);
+      border-radius: var(--inner-radius);
+      transition: transform 0.4s var(--ease-expo);
     }
 
     .preview-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center;
       display: block;
-      transition: transform 0.45s var(--ease-out-expo);
+      border-radius: var(--inner-radius);
+      transition: transform 0.45s var(--ease-expo);
     }
 
     .project-card.active-portal:hover .preview-image {
-      transform: scale(1.035);
+      transform: scale(1.02);
     }
 
-    /* ==========================================================================
-       5. HIỆU ỨNG HOLOGRAM / RADAR CHO KHUNG ĐANG PHÁT TRIỂN
-       ========================================================================== */
-    .dev-hologram-stage {
+    /* KHUNG ĐANG PHÁT TRIỂN */
+    .dev-smoke-stage {
       width: 100%;
       height: 100%;
+      border-radius: var(--inner-radius);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
-      background-color: #08080c;
-      background-image: 
-        radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 100% 100%, 32px 32px, 32px 32px;
+      gap: 12px;
+      background: radial-gradient(ellipse at center, rgba(35, 35, 42, 0.6) 0%, rgba(10, 10, 14, 0.95) 100%);
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    .dev-hologram-stage::before {
+    .dev-smoke-stage::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 0%,
-        rgba(255, 255, 255, 0.03) 50%,
-        transparent 100%
-      );
-      height: 100%;
-      animation: radarScan 4s linear infinite;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
       pointer-events: none;
     }
 
-    @keyframes radarScan {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100%); }
+    .dev-silver-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #a1a1aa;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
     }
 
-    .dev-holo-icon {
-      width: 32px;
-      height: 32px;
-      opacity: 0.35;
-      color: #a1a1aa;
+    .dev-silver-badge svg {
+      width: 18px;
+      height: 18px;
     }
 
     .dev-pulse-text {
-      font-family: var(--font-mono);
-      color: #71717a;
-      font-size: 0.82rem;
+      font-family: var(--font-display);
+      color: #888888;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      animation: neonHeartbeat 2.8s ease-in-out infinite;
+      animation: neonBreath 3s ease-in-out infinite;
     }
 
-    @keyframes neonHeartbeat {
-      0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 0px transparent); }
-      50% { opacity: 0.85; color: #d4d4d8; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)); }
+    @keyframes neonBreath {
+      0%, 100% { opacity: 0.45; filter: drop-shadow(0 0 0px transparent); }
+      50% { opacity: 0.9; color: #d4d4d8; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35)); }
     }
 
-    /* ==========================================================================
-       6. THÔNG TIN DƯỚI CARD
-       ========================================================================== */
     .project-info {
-      padding: 12px 18px;
-      background: rgba(11, 11, 15, 0.95);
-      border-top: 1px solid var(--border-glass);
+      padding: 10px 6px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
       flex-shrink: 0;
-      position: relative;
-      z-index: 2;
     }
 
     .project-text-group {
@@ -493,16 +496,16 @@
 
     .project-title {
       font-family: var(--font-display);
-      font-size: 0.96rem;
+      font-size: 0.98rem;
       font-weight: 700;
-      letter-spacing: 0.8px;
-      color: var(--text-white);
+      letter-spacing: 1px;
+      color: #f5f5f5;
       text-transform: uppercase;
     }
 
     .project-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.8rem;
+      color: var(--text-dim);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -510,8 +513,8 @@
 
     .card-arrow-indicator {
       color: #71717a;
-      font-size: 1rem;
-      transition: transform 0.25s var(--ease-out-expo), color 0.25s ease;
+      font-size: 1.05rem;
+      transition: transform 0.25s var(--ease-expo), color 0.25s ease;
     }
 
     .project-card.active-portal:hover .card-arrow-indicator {
@@ -519,64 +522,199 @@
       transform: translate(3px, -3px);
     }
 
-    /* ==========================================================================
-       7. ABOUT SECTION
-       ========================================================================== */
-    .about-wrapper {
+    /* 5. TAB "GIỚI THIỆU" (PORTFOLIO VIEW 2 CỘT) */
+    .about-portfolio-container {
       flex: 1;
       overflow-y: auto;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 24px;
+      justify-content: center;
+      padding: 20px 0;
     }
 
-    .about-card {
-      max-width: 760px;
+    .portfolio-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 32px;
+      max-width: 1280px;
       width: 100%;
-      background: rgba(14, 14, 20, 0.75);
+      align-items: stretch;
+    }
+
+    .portfolio-left-column {
+      background: var(--bg-card);
       border: 1px solid var(--border-glass);
       border-radius: var(--card-radius);
-      padding: 44px;
+      padding: 36px 32px;
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
     }
 
-    .about-title {
+    .portfolio-brand-shimmer {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 2.2rem;
       font-weight: 800;
-      letter-spacing: 0.6px;
-      color: #ffffff;
-      margin-bottom: 6px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        #ffffff 50%,
+        rgba(255, 255, 255, 0.3) 100%
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: metallicShimmer 3s linear infinite;
     }
 
-    .about-alias {
-      font-size: 0.84rem;
+    .portfolio-alias-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #71717a;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .portfolio-quote-box {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid rgba(255, 255, 255, 0.35);
+      padding: 14px 18px;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #e5e5e5;
+      border-radius: 4px;
+      line-height: 1.6;
+    }
+
+    .portfolio-bio-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      white-space: pre-line;
+    }
+
+    .portfolio-right-column {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--card-radius);
+      padding: 36px 32px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .portfolio-links-header {
+      margin-bottom: 20px;
+    }
+
+    .portfolio-links-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    .portfolio-links-sub {
+      font-size: 0.82rem;
+      color: #71717a;
+      margin-top: 4px;
+    }
+
+    .official-links-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .official-link-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 30px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s var(--ease-expo);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .official-link-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .link-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .link-icon-wrap {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      color: #f5f5f5;
+    }
+
+    .link-icon-wrap svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .link-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .link-name {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #f5f5f5;
+    }
+
+    .link-tag {
+      font-size: 0.72rem;
       color: #71717a;
       font-family: var(--font-mono);
-      letter-spacing: 0.8px;
-      margin-bottom: 24px;
     }
 
-    .about-quote {
-      background: rgba(255, 255, 255, 0.03);
-      border-left: 3px solid rgba(255, 255, 255, 0.4);
-      padding: 16px 20px;
-      font-size: 1rem;
-      font-style: italic;
-      color: #f1f5f9;
-      border-radius: 4px;
-      margin-bottom: 24px;
-      line-height: 1.65;
+    .link-arrow {
+      color: #71717a;
+      font-size: 0.95rem;
+      transition: transform 0.2s ease, color 0.2s ease;
     }
 
-    .about-text {
-      font-size: 0.96rem;
-      color: var(--text-muted);
-      line-height: 1.9;
-      white-space: pre-line;
+    .official-link-card:hover .link-arrow {
+      color: #ffffff;
+      transform: translate(2px, -2px);
+    }
+
+    @media (max-width: 900px) {
+      .portfolio-grid-layout { grid-template-columns: 1fr; gap: 20px; }
+      .official-links-list { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -589,11 +727,12 @@
   </style>
 </head>
 <body>
-  <!-- AMBIENT GLOW & CYBER GRID -->
+  <!-- AMBIENT GLOW ORBS & CYBER GRID -->
   <div class="ambient-glow-wrapper">
-    <div class="glow-orb-1"></div>
-    <div class="glow-orb-2"></div>
-    <div class="ambient-cyber-grid"></div>
+    <div class="ambient-orb-top"></div>
+    <div class="ambient-orb-bottom"></div>
+    <div class="ambient-orb-center"></div>
+    <div class="ambient-subtle-grid"></div>
   </div>
 
   <!-- MOUSE SPOTLIGHT -->
@@ -623,25 +762,41 @@
 
     <!-- VIEWS CONTAINER -->
     <div class="views-container">
-      <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 CỐ ĐỊNH 4 KHUNG KÍNH KIM LOẠI) -->
+      <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 CỐ ĐỊNH 4 KHUNG 16:9) -->
       <main id="view-portals" class="tab-view active">
         <div id="projects-grid" class="grid-2x2">
           <!-- Rendered via JavaScript -->
         </div>
       </main>
 
-      <!-- VIEW 2: GIỚI THIỆU -->
+      <!-- VIEW 2: GIỚI THIỆU (PORTFOLIO VIEW 2 CỘT CHUẨN MỰC) -->
       <section id="view-about" class="tab-view">
-        <div class="about-wrapper">
-          <div class="about-card">
-            <h1 id="about-title" class="about-title">Giới Thiệu // The Architect</h1>
-            <div id="about-alias" class="about-alias">[ ANONYMOUS_CREATOR ]</div>
-            <div id="about-quote" class="about-quote">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
-            <div id="about-content" class="about-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
+        <div class="about-portfolio-container">
+          <div class="portfolio-grid-layout">
+            <!-- CỘT TRÁI: THE ARCHITECT BIO -->
+            <div class="portfolio-left-column">
+              <div>
+                <div class="portfolio-brand-shimmer">POSTLAIN</div>
+                <div id="portfolio-alias" class="portfolio-alias-badge">[ THE ARCHITECT // ANONYMOUS CREATOR ]</div>
+              </div>
+              <div id="portfolio-quote" class="portfolio-quote-box">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
+              <div id="portfolio-bio" class="portfolio-bio-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
 
 Mục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.
 
 Mỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường.</div>
+            </div>
+
+            <!-- CỘT PHẢI: OFFICIAL LINKS ECOSYSTEM -->
+            <div class="portfolio-right-column">
+              <div class="portfolio-links-header">
+                <div class="portfolio-links-title">Hệ Sinh Thái Chính Thức</div>
+                <div class="portfolio-links-sub">Official Streaming Platforms & Direct Portals</div>
+              </div>
+              <div id="official-links-list" class="official-links-list">
+                <!-- Rendered via JavaScript -->
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -649,7 +804,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
   </div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v12';
+    const STORAGE_KEY = 'postlain_data_v14';
 
     const DEFAULT_PORTALS = [
       {
@@ -689,19 +844,48 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
       content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
     };
 
+    const DEFAULT_LINKS = [
+      { name: "Website Portal", tag: "GATEWAY", url: "https://postlain.com", icon: "globe" },
+      { name: "Spotify", tag: "STREAMING", url: "https://open.spotify.com", icon: "spotify" },
+      { name: "Apple Music", tag: "LOSSLESS", url: "https://music.apple.com", icon: "apple" },
+      { name: "YouTube", tag: "OFFICIAL", url: "https://youtube.com/@postlain", icon: "youtube" },
+      { name: "Instagram", tag: "SOCIAL", url: "https://instagram.com/postlainmusic", icon: "instagram" },
+      { name: "Amazon Music", tag: "HI-RES", url: "https://music.amazon.com", icon: "amazon" }
+    ];
+
     function getData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && Array.isArray(parsed.portals) && parsed.portals.length > 0) {
+            if (!parsed.links) parsed.links = DEFAULT_LINKS;
             return parsed;
           }
         }
       } catch (e) {}
-      const init = { portals: DEFAULT_PORTALS, about: DEFAULT_ABOUT };
+      const init = { portals: DEFAULT_PORTALS, about: DEFAULT_ABOUT, links: DEFAULT_LINKS };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(init));
       return init;
+    }
+
+    function getIconSvg(type) {
+      switch (type) {
+        case 'globe':
+          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`;
+        case 'spotify':
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.435-5.308-1.76-8.792-.963-.335.077-.67-.133-.746-.468-.077-.334.132-.67.467-.746 3.808-.87 7.076-.502 9.72 1.114.295.18.388.563.208.856zm1.225-2.724c-.226.367-.707.482-1.074.256-2.69-1.653-6.79-2.134-9.97-1.168-.413.125-.85-.107-.975-.52-.125-.414.108-.85.52-.976 3.633-1.103 8.147-.568 11.243 1.334.367.226.482.707.256 1.074zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.494.15-1.018-.13-1.168-.624-.15-.494.13-1.018.624-1.168 3.532-1.072 9.404-.866 13.115 1.338.445.264.59.838.327 1.282-.264.444-.838.59-1.28.327z"/></svg>`;
+        case 'apple':
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.85-.9.04-2.02.6-2.66 1.34-.56.65-1.06 1.7-0.93 2.72 1.01.08 2.05-.46 2.67-1.21z"/></svg>`;
+        case 'youtube':
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+        case 'instagram':
+          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
+        case 'amazon':
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.95 10.37c-.12-.03-.28-.05-.48-.05-1.57 0-2.5.82-2.5 2.18 0 1.34.82 2.07 2.05 2.07.72 0 1.25-.23 1.58-.67v-3.53zm3.17 6.4c-.2.17-.48.18-.7.05-.98-.78-1.15-1.15-1.68-1.92-1.6 1.63-2.73 2.07-4.47 2.07-2.18 0-3.88-1.37-3.88-3.88 0-2.02 1.13-3.47 2.85-4.13 1.48-.57 3.57-.67 5.4-.67v-.23c0-.75-.48-1.33-1.63-1.33-.97 0-1.97.35-2.6.8-.2.15-.47.12-.63-.07l-.92-1.07c-.15-.18-.12-.45.07-.62C10.22 4.7 12.02 4.2 13.9 4.2c2.8 0 4.18 1.42 4.18 3.98v5.52c0 1.22.48 1.77.93 2.45.17.25.13.57-.1.75l-1.79 1.87zM2.38 18.8c.18-.15.43-.13.58.05 3.8 4.45 13.1 5.48 18.28 1.43.23-.18.57-.13.72.1.15.23.08.57-.15.75-5.75 4.5-16.1 3.35-20.01-1.57-.15-.2-.1-.53.13-.68l.45-.08z"/></svg>`;
+        default:
+          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+      }
     }
 
     function switchTab(tabName) {
@@ -765,8 +949,8 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
           const centerX = rect.width / 2;
           const centerY = rect.height / 2;
 
-          const rotateX = ((y - centerY) / centerY) * -7;
-          const rotateY = ((x - centerX) / centerX) * 7;
+          const rotateX = ((y - centerY) / centerY) * -6;
+          const rotateY = ((x - centerX) / centerX) * 6;
 
           card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
           card.style.setProperty('--mouse-card-x', `${x}px`);
@@ -797,7 +981,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
       let current = 0;
       const target = 100;
       const startTime = performance.now();
-      const duration = 1100;
+      const duration = 1000;
 
       function updateCounter(now) {
         const elapsed = now - startTime;
@@ -815,7 +999,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
           fillEl.style.width = `100%`;
           setTimeout(() => {
             preloader.classList.add('fade-out');
-          }, 180);
+          }, 150);
         }
       }
 
@@ -835,7 +1019,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
           title: `Dự án ${portals.length + 1}`,
           url: "",
           image: "",
-          desc: "Đang trong thời gian phát triển."
+          desc: "Hệ thống đang trong quá trình phát triển."
         });
       }
 
@@ -856,7 +1040,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
 
           return `
             <a href="${linkTarget}" target="_blank" rel="noopener noreferrer" class="project-card active-portal">
-              <div class="card-gleam-overlay"></div>
+              <div class="card-glare-layer"></div>
               <div class="preview-box">
                 ${previewContent}
               </div>
@@ -873,18 +1057,20 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
           return `
             <div class="project-card disabled">
               <div class="preview-box">
-                <div class="dev-hologram-stage">
-                  <svg class="dev-holo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                  </svg>
-                  <span class="dev-pulse-text">Đang trong thời gian phát triển</span>
+                <div class="dev-smoke-stage">
+                  <div class="dev-silver-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                  </div>
+                  <span class="dev-pulse-text">ĐANG TRONG THỜI GIAN PHÁT TRIỂN</span>
                 </div>
               </div>
               <div class="project-info">
                 <div class="project-text-group">
                   <div class="project-title">${p.title}</div>
-                  <div class="project-desc">${p.desc || 'Hệ thống đang được xây dựng.'}</div>
+                  <div class="project-desc">${p.desc || 'Hệ thống đang trong quá trình phát triển.'}</div>
                 </div>
               </div>
             </div>
@@ -892,16 +1078,33 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
         }
       }).join('');
 
+      // Render 2-Column Portfolio About
       const about = data.about || DEFAULT_ABOUT;
-      const elTitle = document.getElementById('about-title');
-      const elAlias = document.getElementById('about-alias');
-      const elQuote = document.getElementById('about-quote');
-      const elContent = document.getElementById('about-content');
+      const links = data.links || DEFAULT_LINKS;
 
-      if (elTitle) elTitle.textContent = about.title || 'Giới Thiệu // The Architect';
-      if (elAlias) elAlias.textContent = `[ ${about.alias || 'ANONYMOUS'} ]`;
+      const elAlias = document.getElementById('portfolio-alias');
+      const elQuote = document.getElementById('portfolio-quote');
+      const elBio = document.getElementById('portfolio-bio');
+      const elLinksList = document.getElementById('official-links-list');
+
+      if (elAlias) elAlias.textContent = `[ ${about.alias || 'THE ARCHITECT // ANONYMOUS CREATOR'} ]`;
       if (elQuote) elQuote.textContent = `"${about.quote || ''}"`;
-      if (elContent) elContent.textContent = about.content || '';
+      if (elBio) elBio.textContent = about.content || '';
+
+      if (elLinksList) {
+        elLinksList.innerHTML = links.map(lnk => `
+          <a href="${lnk.url}" target="_blank" rel="noopener noreferrer" class="official-link-card">
+            <div class="link-card-left">
+              <div class="link-icon-wrap">${getIconSvg(lnk.icon)}</div>
+              <div class="link-meta">
+                <div class="link-name">${lnk.name}</div>
+                <div class="link-tag">${lnk.tag}</div>
+              </div>
+            </div>
+            <div class="link-arrow">↗</div>
+          </a>
+        `).join('');
+      }
 
       const btnPortals = document.getElementById('tab-btn-portals');
       const indicator = document.getElementById('segmented-indicator');
