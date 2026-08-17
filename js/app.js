@@ -1,145 +1,123 @@
 /**
  * Postlain Cyberpunk 3D Portal - Frontend Logic
- * Controls Mode Switching, 3D Square Gate Grid, and Center 50% Expanded Preview Spotlight.
+ * Direct in-place switching & Big Square Cards with Center 50% Zoom Preview.
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
   const store = window.portalStore;
   await store.ready();
 
-  // State
-  let currentMode = 'gate'; // 'gate' or 'about'
-  let activeExpandedPortalId = null;
-  let closeTimeout = null;
+  let activePortalId = null;
+  let hoverTimeout = null;
 
-  // DOM Elements - Modes
+  // DOM Elements - Switcher
   const modeGateBtn = document.getElementById('mode-gate-btn');
   const modeAboutBtn = document.getElementById('mode-about-btn');
   const sectionGate = document.getElementById('section-gate');
   const sectionAbout = document.getElementById('section-about');
 
-  // DOM Elements - Gate Grid & Expanded Preview
-  const gateSquareGrid = document.getElementById('gate-square-grid');
-  const gateNodeCount = document.getElementById('gate-node-count');
-  
-  const previewBackdrop = document.getElementById('expanded-preview-backdrop');
+  // DOM Elements - Big Square Grid
+  const bigSquareGrid = document.getElementById('big-square-grid');
+
+  // DOM Elements - Center 50% Zoom Modal
+  const previewBackdrop = document.getElementById('center-preview-backdrop');
+  const previewPanel = document.getElementById('center-preview-panel');
   const previewCloseBtn = document.getElementById('preview-close-btn');
   const previewFeedId = document.getElementById('preview-feed-id');
-  const previewScreenFrame = document.getElementById('preview-screen-frame');
+  const previewScreenContent = document.getElementById('preview-screen-content');
   const previewTaglineText = document.getElementById('preview-tagline-text');
-  const previewFullDesc = document.getElementById('preview-full-desc');
-  const previewMetaProtocol = document.getElementById('preview-meta-protocol');
-  const previewMetaCat = document.getElementById('preview-meta-cat');
-  const previewMetaClicks = document.getElementById('preview-meta-clicks');
+  const previewUrlText = document.getElementById('preview-url-text');
   const previewLaunchBtn = document.getElementById('preview-launch-btn');
 
   // DOM Elements - About
-  const aboutMainTitle = document.getElementById('about-main-title');
+  const aboutTitle = document.getElementById('about-title');
   const aboutAlias = document.getElementById('about-alias');
   const aboutQuote = document.getElementById('about-quote');
-  const aboutContentBody = document.getElementById('about-content-body');
-  const aboutSpecsGrid = document.getElementById('about-specs-grid');
+  const aboutContent = document.getElementById('about-content');
 
-  // Initialize
+  // Initial Render
   renderAll();
 
-  // Listen for data updates
   window.addEventListener('postlain-data-updated', () => {
     renderAll();
   });
 
-  // --- MODE SWITCHER ---
-  function setMode(mode) {
-    currentMode = mode;
-    if (mode === 'gate') {
-      modeGateBtn.classList.add('active');
-      modeAboutBtn.classList.remove('active');
-      sectionGate.classList.add('active');
-      sectionAbout.classList.remove('active');
-      window.location.hash = '#gate';
-    } else {
-      modeAboutBtn.classList.add('active');
-      modeGateBtn.classList.remove('active');
-      sectionAbout.classList.add('active');
-      sectionGate.classList.remove('active');
-      window.location.hash = '#about';
-    }
+  // --- TRỰC TIẾP CHUYỂN ĐỔI GIỮA MASTER GATE VÀ ABOUT (KHÔNG CẦN CHUYỂN TRANG) ---
+  modeGateBtn.addEventListener('click', () => {
+    modeGateBtn.classList.add('active');
+    modeAboutBtn.classList.remove('active');
+    sectionGate.classList.add('active');
+    sectionAbout.classList.remove('active');
     initIcons();
-  }
+  });
 
-  modeGateBtn.addEventListener('click', () => setMode('gate'));
-  modeAboutBtn.addEventListener('click', () => setMode('about'));
+  modeAboutBtn.addEventListener('click', () => {
+    modeAboutBtn.classList.add('active');
+    modeGateBtn.classList.remove('active');
+    sectionAbout.classList.add('active');
+    sectionGate.classList.remove('active');
+    initIcons();
+  });
 
-  // Check URL hash on load
-  if (window.location.hash === '#about') {
-    setMode('about');
-  }
-
-  // --- RENDER ALL ---
   function renderAll() {
-    renderGateGrid();
-    renderAboutSection();
+    renderBigSquareCards();
+    renderAboutData();
     initIcons();
   }
 
-  // --- RENDER MASTER GATE SQUARE GRID ---
-  function renderGateGrid() {
+  // --- RENDER CÁC HÌNH VUÔNG THẬT TO (BIG SQUARE CARDS) ---
+  function renderBigSquareCards() {
     const portals = store.getPortals();
-    gateNodeCount.textContent = `[ ACTIVE_NODES: ${portals.length} ]`;
 
-    gateSquareGrid.innerHTML = portals.map((portal, idx) => {
+    bigSquareGrid.innerHTML = portals.map((portal, idx) => {
       const indexStr = (idx + 1).toString().padStart(2, '0');
-      const statusClass = (portal.status || 'ONLINE').toLowerCase();
-      const cat = store.getCategories().find(c => c.id === portal.category);
-
       return `
-        <div class="cyber-square-card" data-id="${portal.id}">
+        <div class="big-square-card" data-id="${portal.id}">
           <div class="card-top-hud">
             <span class="card-index">[ GATE_${indexStr} ]</span>
-            <span class="card-status-pill ${statusClass}">
+            <span class="card-status-pill">
               <span class="dot"></span>
               <span>${portal.status || 'ONLINE'}</span>
             </span>
           </div>
 
           <div class="card-center-reactor">
-            <div class="reactor-icon-ring">
-              <i data-lucide="${portal.icon || 'globe'}" style="width: 32px; height: 32px;"></i>
+            <div class="big-reactor-icon">
+              <i data-lucide="${portal.icon || 'globe'}" style="width: 44px; height: 44px;"></i>
             </div>
-            <div class="card-title-text">${escapeHtml(portal.title)}</div>
+            <div class="big-card-title">${escapeHtml(portal.title)}</div>
           </div>
 
           <div class="card-bottom-hud">
-            <span>${escapeHtml(cat?.name || 'NODE')}</span>
-            <span class="hover-expand-hint">
-              <span>VIEW</span>
-              <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+            <span>NODE // 0${idx + 1}</span>
+            <span class="hover-open-hint">
+              <span>XEM TRƯỚC</span>
+              <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
             </span>
           </div>
         </div>
       `;
     }).join('');
 
-    attachSquareCardEvents();
+    attachCardInteractions();
   }
 
-  // Attach 3D Tilt & Center Zoom Events
-  function attachSquareCardEvents() {
-    const cards = gateSquareGrid.querySelectorAll('.cyber-square-card');
+  // --- HIỆU ỨNG ĐƯA CHUỘT PHÓNG TO 50% GIỮA MÀN HÌNH ---
+  function attachCardInteractions() {
+    const cards = bigSquareGrid.querySelectorAll('.big-square-card');
 
     cards.forEach(card => {
       const id = card.getAttribute('data-id');
 
-      // 3D Tilt on Mousemove
+      // 3D Tilt
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -12;
-        const rotateY = ((x - centerX) / centerX) * 12;
-
+        const rotateX = ((y - centerY) / centerY) * -10;
+        const rotateY = ((x - centerX) / centerX) * 10;
         card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.03, 1.03, 1.03)`;
       });
 
@@ -147,137 +125,80 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
       });
 
-      // Hover / Click to trigger Center 50% Spotlight Zoom
+      // Hover / Click opens Center 50% Zoom
       card.addEventListener('mouseenter', () => {
-        clearTimeout(closeTimeout);
-        openExpandedPreview(id);
+        clearTimeout(hoverTimeout);
+        openCenterPreview(id);
       });
 
       card.addEventListener('click', () => {
-        openExpandedPreview(id);
+        openCenterPreview(id);
       });
     });
   }
 
-  // --- CENTER 50% EXPANDED PREVIEW LOGIC ---
-  function openExpandedPreview(id) {
+  function openCenterPreview(id) {
     const portal = store.getPortalById(id);
     if (!portal) return;
 
-    activeExpandedPortalId = id;
+    activePortalId = id;
     previewFeedId.textContent = `[ DIRECT_FEED // GATE_${portal.id.toUpperCase()} ]`;
-
-    // 1 Dòng Giới Thiệu (Tagline)
-    previewTaglineText.textContent = portal.tagline || portal.description || 'Cổng kết nối dịch vụ trực tuyến.';
-    
-    // Mô tả chi tiết nếu có
-    if (previewFullDesc) {
-      previewFullDesc.textContent = portal.description || '';
-    }
-
-    // Specs
-    const cat = store.getCategories().find(c => c.id === portal.category);
-    previewMetaCat.textContent = cat?.name || 'SYSTEM_NODE';
-    previewMetaProtocol.textContent = portal.url.replace(/^https?:\/\//, '');
-    previewMetaClicks.textContent = `${portal.clicks || 0} CLICKS`;
-
-    // Launch Link
+    previewTaglineText.textContent = portal.tagline || portal.description || 'Cổng dịch vụ trực tuyến.';
+    previewUrlText.textContent = portal.url;
     previewLaunchBtn.href = portal.url;
-    previewLaunchBtn.setAttribute('data-id', portal.id);
 
-    // Live Preview Screen / Mockup
-    renderPreviewScreen(portal);
+    // Render Preview Screen
+    previewScreenContent.innerHTML = `
+      <div style="width: 60px; height: 60px; border-radius: 50%; background: #161622; border: 2px solid #ff003c; display: flex; align-items: center; justify-content: center; color: #ff003c; box-shadow: 0 0 25px rgba(255, 0, 60, 0.5);">
+        <i data-lucide="${portal.icon || 'globe'}" style="width: 32px; height: 32px;"></i>
+      </div>
+      <div style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 800; color: #fff; letter-spacing: 1px;">
+        ${escapeHtml(portal.title)}
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 0.82rem; color: #ff003c;">
+        🔗 ${escapeHtml(portal.url)}
+      </div>
+    `;
 
-    // Show Overlay
     previewBackdrop.classList.add('active');
     initIcons();
   }
 
-  function renderPreviewScreen(portal) {
-    // Cyberpunk Terminal Preview Screen
-    previewScreenFrame.innerHTML = `
-      <div class="preview-hud-scanbeam"></div>
-      <div class="preview-fallback-display">
-        <div style="width: 58px; height: 58px; border-radius: 50%; background: #13131c; border: 1px solid var(--red-neon); display: flex; align-items: center; justify-content: center; color: var(--red-neon); box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);">
-          <i data-lucide="${portal.icon || 'globe'}" style="width: 28px; height: 28px;"></i>
-        </div>
-        <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: 1px;">
-          ${escapeHtml(portal.title)}
-        </div>
-        <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--red-neon);">
-          🔗 ${escapeHtml(portal.url)}
-        </div>
-      </div>
-    `;
-  }
-
-  function closeExpandedPreview() {
+  function closeCenterPreview() {
     previewBackdrop.classList.remove('active');
-    activeExpandedPortalId = null;
+    activePortalId = null;
   }
 
-  previewCloseBtn.addEventListener('click', closeExpandedPreview);
-
-  // Close when clicking outside panel
+  previewCloseBtn.addEventListener('click', closeCenterPreview);
   previewBackdrop.addEventListener('click', (e) => {
-    if (e.target === previewBackdrop) {
-      closeExpandedPreview();
-    }
+    if (e.target === previewBackdrop) closeCenterPreview();
   });
 
-  // Smooth hover out delay on panel
-  const previewPanel = document.getElementById('expanded-preview-panel');
   previewPanel.addEventListener('mouseleave', () => {
-    closeTimeout = setTimeout(() => {
-      closeExpandedPreview();
-    }, 450);
+    hoverTimeout = setTimeout(closeCenterPreview, 400);
   });
 
   previewPanel.addEventListener('mouseenter', () => {
-    clearTimeout(closeTimeout);
+    clearTimeout(hoverTimeout);
   });
 
-  // Track click count
-  previewLaunchBtn.addEventListener('click', () => {
-    if (activeExpandedPortalId) {
-      store.incrementClick(activeExpandedPortalId);
-    }
-  });
-
-  // Escape key to close
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeExpandedPreview();
-    }
+    if (e.key === 'Escape') closeCenterPreview();
   });
 
-  // --- RENDER ABOUT SECTION (HỒ SƠ KẺ ẨN DANH) ---
-  function renderAboutSection() {
-    const about = store.getAbout();
+  previewLaunchBtn.addEventListener('click', () => {
+    if (activePortalId) store.incrementClick(activePortalId);
+  });
 
-    if (aboutMainTitle) aboutMainTitle.textContent = about.title || 'HỒ SƠ KẺ ẨN DANH // THE ARCHITECT';
+  // --- RENDER ABOUT DATA ---
+  function renderAboutData() {
+    const about = store.getAbout();
+    if (aboutTitle) aboutTitle.textContent = about.title || 'HỒ SƠ KẺ ẨN DANH // THE ARCHITECT';
     if (aboutAlias) aboutAlias.textContent = `[ BÍ DANH: ${about.alias || 'ANONYMOUS_ARCHITECT'} ]`;
     if (aboutQuote) aboutQuote.textContent = `"${about.quote || 'Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.'}"`;
-    if (aboutContentBody) aboutContentBody.textContent = about.content || 'Nội dung tuyên ngôn đang được cập nhật từ Admin.';
-
-    if (aboutSpecsGrid) {
-      const defaultSpecs = [
-        { label: "CLEARANCE", value: "LEVEL 0 // ROOT" },
-        { label: "ENCRYPTION", value: "SHA-512 / AES-GCM" },
-        { label: "NODE_STATUS", value: "UNTRACEABLE" },
-        { label: "MISSION", value: "DIGITAL FREEDOM" }
-      ];
-      const specs = about.specs || defaultSpecs;
-      aboutSpecsGrid.innerHTML = specs.map(s => `
-        <div class="about-spec-item">
-          <div class="about-spec-label">${escapeHtml(s.label)}</div>
-          <div class="about-spec-val">${escapeHtml(s.value)}</div>
-        </div>
-      `).join('');
-    }
+    if (aboutContent) aboutContent.textContent = about.content || 'Nội dung đang được cập nhật từ Admin.';
   }
 
-  // --- HELPERS ---
   function escapeHtml(str) {
     if (!str) return '';
     return str
@@ -289,8 +210,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function initIcons() {
-    if (window.lucide) {
-      window.lucide.createIcons();
-    }
+    if (window.lucide) window.lucide.createIcons();
   }
 });

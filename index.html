@@ -5,18 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>POSTLAIN // MASTER GATEWAY</title>
-  <meta name="description" content="Cổng kết nối 3D trung tâm dẫn tới hệ sinh thái dịch vụ, phòng thu và ứng dụng của Postlain.">
-  
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://postlain.com/">
-  <meta property="og:title" content="POSTLAIN // MASTER GATEWAY">
-  <meta property="og:description" content="Cổng kết nối 3D trung tâm dẫn tới hệ sinh thái dịch vụ, phòng thu và ứng dụng của Postlain.">
+  <meta name="description" content="Cổng kết nối hệ sinh thái Postlain.">
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -26,172 +20,94 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <!-- 3D Cyber Ambient Canvas Background -->
+  <!-- Ambient Cyber Background -->
   <div class="cyber-canvas-bg">
     <div class="perspective-grid"></div>
     <div class="ambient-scanline"></div>
-    <div class="ambient-glow-core"></div>
   </div>
 
   <!-- Master App -->
   <div class="cyber-app">
-    <!-- Top HUD Header -->
-    <header class="hud-header">
-      <a href="./" class="brand-hud">
-        <div class="brand-symbol">
-          <i data-lucide="layers" style="width: 20px; height: 20px;"></i>
-        </div>
-        <div class="brand-title-wrap">
-          <div class="brand-main-title">POSTLAIN</div>
-          <div class="brand-status-tag">
-            <span class="pulse-dot"></span>
-            <span>SYSTEM_CORE // ACTIVE</span>
-          </div>
-        </div>
-      </a>
-
-      <div class="hud-actions">
-        <a href="./admin/" class="hud-admin-btn" title="Trang Quản Trị Cổng">
-          <i data-lucide="shield-alert" style="width: 14px; height: 14px; color: var(--red-neon);"></i>
-          <span>[ 0xADMIN ]</span>
-        </a>
-      </div>
-    </header>
-
-    <!-- CYBER MODE SWITCHER (HUD 3D SWITCH) -->
-    <div class="mode-switcher-container">
-      <div class="mode-switcher">
-        <button id="mode-gate-btn" class="mode-btn active" title="Cổng kết nối Master Gate">
-          <span class="mode-btn-icon"><i data-lucide="grid" style="width: 18px; height: 18px;"></i></span>
-          <span>01 // MASTER GATE</span>
+    <!-- NÚT CHUYỂN ĐỔI NHỎ GỌN TRỰC TIẾP GIỮA MASTER GATE VÀ ABOUT -->
+    <div class="minimal-switcher-bar">
+      <div class="minimal-switcher">
+        <button id="mode-gate-btn" class="mini-switch-btn active" title="Cổng kết nối Master Gate">
+          <i data-lucide="grid" style="width: 15px; height: 15px;"></i>
+          <span>MASTER GATE</span>
         </button>
-        <button id="mode-about-btn" class="mode-btn" title="Hồ sơ Kẻ Ẩn Danh">
-          <span class="mode-btn-icon"><i data-lucide="user-x" style="width: 18px; height: 18px;"></i></span>
-          <span>02 // ABOUT</span>
+        <button id="mode-about-btn" class="mini-switch-btn" title="Hồ sơ Kẻ Ẩn Danh">
+          <i data-lucide="user-x" style="width: 15px; height: 15px;"></i>
+          <span>ABOUT</span>
         </button>
       </div>
     </div>
 
-    <!-- MAIN VIEWS -->
+    <!-- MAIN CONTENT -->
     <main>
-      <!-- SECTION 1: MASTER GATE (SQUARE 3D GRID) -->
+      <!-- PHẦN 1: MASTER GATE (CÁC HÌNH VUÔNG THẬT TO) -->
       <section id="section-gate" class="section-view active">
-        <div class="gate-header-bar">
-          <div class="gate-section-title">
-            <i data-lucide="cpu" style="color: var(--red-neon); width: 22px; height: 22px;"></i>
-            <span>GATEWAY MATRIX</span>
-          </div>
-          <div id="gate-node-count" class="gate-node-count">[ ACTIVE_NODES: 0 ]</div>
-        </div>
-
-        <!-- Square 3D Grid -->
-        <div id="gate-square-grid" class="gate-square-grid">
+        <div id="big-square-grid" class="big-square-grid">
           <!-- Injected via JavaScript -->
         </div>
       </section>
 
-      <!-- SECTION 2: ABOUT (HỒ SƠ KẺ ẨN DANH) -->
+      <!-- PHẦN 2: ABOUT (HỒ SƠ KẺ ẨN DANH) -->
       <section id="section-about" class="section-view">
         <div class="about-manifesto-container">
-          <div class="about-header-grid">
-            <div class="anonymous-avatar-box">
-              <i data-lucide="user-x" style="width: 64px; height: 64px;"></i>
-            </div>
-            <div class="about-identity-info">
-              <div class="about-clearance-badge">
-                <span class="pulse-dot"></span>
-                <span>CLASSIFIED // TOP SECRET</span>
-              </div>
-              <h1 id="about-main-title" class="about-main-title">HỒ SƠ KẺ ẨN DANH // THE ARCHITECT</h1>
-              <div id="about-alias" class="about-alias">[ BÍ DANH: ANONYMOUS_ARCHITECT // 0xPOSTLAIN ]</div>
-            </div>
-          </div>
+          <h1 id="about-title" class="about-title">HỒ SƠ KẺ ẨN DANH // THE ARCHITECT</h1>
+          <div id="about-alias" class="about-alias">[ BÍ DANH: ANONYMOUS_ARCHITECT ]</div>
 
-          <!-- Quote -->
           <div id="about-quote" class="about-quote-box">
             "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."
           </div>
 
-          <!-- Content Body -->
-          <div id="about-content-body" class="about-content-body">
+          <div id="about-content" class="about-content-text">
             <!-- Injected via JavaScript / Admin -->
-          </div>
-
-          <!-- Specs Grid -->
-          <div id="about-specs-grid" class="about-specs-grid">
-            <!-- Injected via JavaScript -->
           </div>
         </div>
       </section>
     </main>
 
-    <!-- CENTER 50% EXPANDED PREVIEW MODAL -->
-    <div id="expanded-preview-backdrop" class="expanded-preview-backdrop">
-      <div id="expanded-preview-panel" class="expanded-preview-panel">
+    <!-- BẢNG XEM TRƯỚC PHÓNG TO 50% GIỮA MÀN HÌNH KHI ĐƯA CHUỘT VÀO Ô VUÔNG -->
+    <div id="center-preview-backdrop" class="center-preview-backdrop">
+      <div id="center-preview-panel" class="center-preview-panel">
         <!-- Top Bar -->
         <div class="preview-top-bar">
           <div id="preview-feed-id" class="preview-feed-id">[ DIRECT_FEED // GATE_01 ]</div>
           <button id="preview-close-btn" class="preview-close-btn" title="Đóng">
-            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+            <i data-lucide="x" style="width: 16px; height: 16px;"></i>
           </button>
         </div>
 
         <!-- Body -->
         <div class="preview-body">
-          <!-- Screen Frame -->
-          <div id="preview-screen-frame" class="preview-screen-frame">
-            <!-- Injected via JS -->
+          <!-- Bảng xem trước website -->
+          <div id="preview-mockup-screen" class="preview-mockup-screen">
+            <div class="preview-scanbeam"></div>
+            <div id="preview-screen-content" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+              <!-- Injected via JS -->
+            </div>
           </div>
 
-          <!-- 1-Line Tagline Box -->
+          <!-- 1 Dòng Giới Thiệu Cốt Lõi -->
           <div class="preview-tagline-box">
-            <div class="tagline-label">// ĐẶC ĐIỂM CỐT LÕI:</div>
+            <div class="tagline-label">// GIỚI THIỆU:</div>
             <div id="preview-tagline-text" class="tagline-text"></div>
-          </div>
-
-          <!-- Full Desc -->
-          <div id="preview-full-desc" style="font-size: 0.92rem; color: var(--text-steel); line-height: 1.6;"></div>
-
-          <!-- Meta Grid -->
-          <div class="preview-meta-row">
-            <div class="preview-meta-item">
-              <div class="meta-lbl">TARGET PROTOCOL</div>
-              <div id="preview-meta-protocol" class="meta-val">https://...</div>
-            </div>
-            <div class="preview-meta-item">
-              <div class="meta-lbl">SECTOR CATEGORY</div>
-              <div id="preview-meta-cat" class="meta-val">SYSTEM</div>
-            </div>
-            <div class="preview-meta-item">
-              <div class="meta-lbl">NETWORK TRAFFIC</div>
-              <div id="preview-meta-clicks" class="meta-val">0 CLICKS</div>
-            </div>
           </div>
         </div>
 
         <!-- Footer -->
         <div class="preview-footer">
-          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-dim);">
-            STATUS: <span style="color: var(--red-neon); font-weight: 700;">READY</span>
+          <div id="preview-url-text" style="font-family: var(--font-mono); font-size: 0.85rem; color: #94a3b8;">
+            https://...
           </div>
-          <a id="preview-launch-btn" href="#" target="_blank" rel="noopener noreferrer" class="launch-cyber-btn">
-            <span>INITIATE PROTOCOL // TRUY CẬP WEBSITE</span>
+          <a id="preview-launch-btn" href="#" target="_blank" rel="noopener noreferrer" class="launch-btn-cyber">
+            <span>TRUY CẬP WEBSITE</span>
             <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
           </a>
         </div>
       </div>
     </div>
-
-    <!-- Cyber Footer -->
-    <footer class="cyber-footer">
-      <div>POSTLAIN ARCHITECTURE © 2026 // ALL RIGHTS RESERVED</div>
-      <div>
-        <a href="./admin/" style="color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 6px;">
-          <i data-lucide="lock" style="width: 12px; height: 12px; color: var(--red-neon);"></i>
-          <span>SETUP PORTAL (/admin)</span>
-        </a>
-      </div>
-    </footer>
   </div>
 
   <!-- Scripts -->
