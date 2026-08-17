@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Postlain Admin</title>
   <meta name="robots" content="noindex, nofollow">
-  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -219,7 +218,7 @@
       <div>
         <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">Postlain Admin</div>
         <nav class="admin-nav">
-          <div class="admin-nav-item active" data-tab="portals">Master Gate</div>
+          <div class="admin-nav-item active" data-tab="portals">Cửa Sổ Màn Hình</div>
           <div class="admin-nav-item" data-tab="about">Soạn Thảo About</div>
           <div class="admin-nav-item" data-tab="deploy">Xuất JSON</div>
         </nav>
@@ -234,14 +233,14 @@
 
     <main class="admin-main">
       <div class="admin-header">
-        <h1 id="admin-page-title">Quản Lý Master Gate</h1>
+        <h1 id="admin-page-title">Quản Lý Cửa Sổ Màn Hình</h1>
       </div>
 
       <!-- TAB 1: PORTALS -->
       <section id="tab-portals" class="tab-panel active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <div style="font-size: 0.85rem; color: #94a3b8;">Danh sách các cổng website</div>
-          <button id="open-add-portal-btn" class="btn btn-primary">+ Thêm Cổng Mới</button>
+          <div style="font-size: 0.85rem; color: #94a3b8;">Danh sách các cửa sổ màn hình website</div>
+          <button id="open-add-portal-btn" class="btn btn-primary">+ Thêm Cửa Sổ Mới</button>
         </div>
 
         <div class="data-table-container">
@@ -251,6 +250,7 @@
                 <th style="width: 50px;">#</th>
                 <th>Tên & URL</th>
                 <th>1 Dòng Giới Thiệu (Tagline)</th>
+                <th>Loại Màn Hình</th>
                 <th>Trạng Thái</th>
                 <th style="width: 120px;">Thao Tác</th>
               </tr>
@@ -302,14 +302,14 @@
   <div id="portal-modal" class="modal-backdrop">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3 id="portal-modal-title" style="font-size: 1.1rem; color: #fff;">Thêm Cổng Mới</h3>
+        <h3 id="portal-modal-title" style="font-size: 1.1rem; color: #fff;">Thêm Cửa Sổ Mới</h3>
         <button type="button" class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem;">✕</button>
       </div>
       <form id="portal-form">
         <div class="modal-body">
           <input type="hidden" id="form-portal-id">
           <div class="form-group">
-            <label>Tên Cổng / Website *</label>
+            <label>Tên Website / Cửa Sổ *</label>
             <input type="text" id="form-portal-title" class="admin-input" placeholder="VD: HIDDEN MUSIC" required>
           </div>
           <div class="form-group">
@@ -318,12 +318,17 @@
           </div>
           <div class="form-group">
             <label>1 Dòng Giới Thiệu (Tagline) *</label>
-            <input type="text" id="form-portal-tagline" class="admin-input" placeholder="VD: Nền tảng âm nhạc độc lập." required>
+            <input type="text" id="form-portal-tagline" class="admin-input" placeholder="VD: Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Icon (disc-3, sliders, cpu, globe, box...)</label>
-              <input type="text" id="form-portal-icon" class="admin-input" placeholder="globe">
+              <label>Loại Giao Diện Màn Hình</label>
+              <select id="form-portal-type" class="admin-select">
+                <option value="music">Music Hi-Fi Audio (Sóng nhạc)</option>
+                <option value="daw">Studio DAW (Multitrack Timeline)</option>
+                <option value="ai">AI Neural Lab (Phổ tần số AI)</option>
+                <option value="store">Store / Vault (Thư viện)</option>
+              </select>
             </div>
             <div class="form-group">
               <label>Trạng Thái</label>
@@ -334,10 +339,14 @@
               </select>
             </div>
           </div>
+          <div class="form-group">
+            <label>Link Ảnh Chụp Màn Hình (Tùy chọn - nếu muốn hiển thị ảnh thật)</label>
+            <input type="text" id="form-portal-image" class="admin-input" placeholder="https://... hoặc /images/preview.png">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-          <button type="submit" id="portal-submit-btn" class="btn btn-primary">Lưu Cổng</button>
+          <button type="submit" id="portal-submit-btn" class="btn btn-primary">Lưu Cửa Sổ</button>
         </div>
       </form>
     </div>
@@ -353,15 +362,15 @@
       <div class="modal-body">
         <div class="form-group">
           <label>Mã PIN Cũ</label>
-          <input type="password" id="form-current-pin" class="admin-input" placeholder="••••">
+          <input type="password" id="form-current-pin" class="admin-input">
         </div>
         <div class="form-group">
           <label>Mã PIN Mới</label>
-          <input type="password" id="form-new-pin" class="admin-input" placeholder="••••">
+          <input type="password" id="form-new-pin" class="admin-input">
         </div>
         <div class="form-group">
           <label>Xác Nhận PIN Mới</label>
-          <input type="password" id="form-confirm-pin" class="admin-input" placeholder="••••">
+          <input type="password" id="form-confirm-pin" class="admin-input">
         </div>
       </div>
       <div class="modal-footer">
@@ -373,11 +382,10 @@
 
   <div id="toast-box" class="toast-box"></div>
 
-  <!-- Self-contained Script -->
   <script>
-    const STORAGE_KEY = 'postlain_portal_data_v4';
-    const PIN_KEY = 'postlain_admin_pin_v4';
-    const AUTH_KEY = 'postlain_admin_auth_v4';
+    const STORAGE_KEY = 'postlain_portal_data_v5';
+    const PIN_KEY = 'postlain_admin_pin_v5';
+    const AUTH_KEY = 'postlain_admin_auth_v5';
     const DEFAULT_PIN = '1234';
 
     const INITIAL_DATA = {
@@ -388,14 +396,14 @@
         content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối (Portal) là một vũ khí công nghệ được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       portals: [
-        { id: "postlain-music", title: "POSTLAIN MUSIC", url: "https://music.postlain.com", tagline: "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu.", icon: "disc-3", status: "ONLINE", order: 1 },
-        { id: "postlain-studio", title: "STUDIO DAW", url: "https://studio.postlain.com", tagline: "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.", icon: "sliders", status: "ONLINE", order: 2 },
-        { id: "postlain-ai-lab", title: "AI SOUND LAB", url: "https://ai.postlain.com", tagline: "Trí tuệ nhân tạo tách Stem giọng hát, trích xuất beat và phân tích phổ tần số.", icon: "sparkles", status: "ONLINE", order: 3 },
-        { id: "postlain-store", title: "SOUND VAULT", url: "https://store.postlain.com", tagline: "Kho sound kit, loop mẫu bản quyền và preset synthesizer chuyên sâu.", icon: "box", status: "ONLINE", order: 4 },
-        { id: "postlain-community", title: "HUB COMMUNITY", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối kín giữa các nhà sáng tạo âm nhạc và lập trình viên.", icon: "users", status: "ONLINE", order: 5 },
-        { id: "postlain-tools", title: "AUDIO SUITE", url: "https://tools.postlain.com", tagline: "Bộ công cụ chuyển đổi định dạng, cắt ghép và tối ưu metadata âm thanh.", icon: "wand-2", status: "ONLINE", order: 6 },
-        { id: "postlain-lyrics", title: "LYRIC SYNC", url: "https://lyrics.postlain.com", tagline: "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc / .srt).", icon: "mic-2", status: "BETA", order: 7 },
-        { id: "postlain-docs", title: "CORE API // SDK", url: "https://docs.postlain.com", tagline: "Tài liệu kỹ thuật và cổng API mở cho lập trình viên tích hợp.", icon: "terminal", status: "ONLINE", order: 8 }
+        { id: "hidden-music", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", tagline: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm.", type: "music", status: "ONLINE" },
+        { id: "postlain-music", title: "POSTLAIN MUSIC", url: "https://music.postlain.com", tagline: "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu không gián đoạn.", type: "music", status: "ONLINE" },
+        { id: "postlain-studio", title: "STUDIO DAW", url: "https://studio.postlain.com", tagline: "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.", type: "daw", status: "ONLINE" },
+        { id: "postlain-ai-lab", title: "AI SOUND LAB", url: "https://ai.postlain.com", tagline: "Trí tuệ nhân tạo tách Stem giọng hát, trích xuất beat và phân tích phổ tần số.", type: "ai", status: "ONLINE" },
+        { id: "postlain-store", title: "SOUND VAULT", url: "https://store.postlain.com", tagline: "Kho sound kit, loop mẫu bản quyền và preset synthesizer chuyên sâu.", type: "store", status: "ONLINE" },
+        { id: "postlain-community", title: "HUB COMMUNITY", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối kín giữa các nhà sáng tạo âm nhạc và lập trình viên.", type: "community", status: "ONLINE" },
+        { id: "postlain-tools", title: "AUDIO SUITE", url: "https://tools.postlain.com", tagline: "Bộ công cụ chuyển đổi định dạng, cắt ghép và tối ưu metadata âm thanh.", type: "tools", status: "ONLINE" },
+        { id: "postlain-lyrics", title: "LYRIC SYNC", url: "https://lyrics.postlain.com", tagline: "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc / .srt) với beat detector.", type: "lyrics", status: "BETA" }
       ]
     };
 
@@ -445,8 +453,9 @@
       const formPortalTitle = document.getElementById('form-portal-title');
       const formPortalUrl = document.getElementById('form-portal-url');
       const formPortalTagline = document.getElementById('form-portal-tagline');
-      const formPortalIcon = document.getElementById('form-portal-icon');
+      const formPortalType = document.getElementById('form-portal-type');
       const formPortalStatus = document.getElementById('form-portal-status');
+      const formPortalImage = document.getElementById('form-portal-image');
 
       const aboutForm = document.getElementById('about-form');
       const formAboutTitle = document.getElementById('form-about-title');
@@ -465,7 +474,6 @@
       const formConfirmPin = document.getElementById('form-confirm-pin');
       const savePinBtn = document.getElementById('save-pin-btn');
 
-      // Check Auth
       function checkAuth() {
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
           authOverlay.classList.add('hidden');
@@ -507,12 +515,11 @@
           tabPanels.forEach(p => p.classList.remove('active'));
           item.classList.add('active');
           document.getElementById('tab-' + tab).classList.add('active');
-          pageTitle.textContent = tab === 'portals' ? 'Quản Lý Master Gate' : tab === 'about' ? 'Soạn Thảo About' : 'Xuất JSON';
+          pageTitle.textContent = tab === 'portals' ? 'Quản Lý Cửa Sổ Màn Hình' : tab === 'about' ? 'Soạn Thảo About' : 'Xuất JSON';
           if (tab === 'deploy') renderJson();
         });
       });
 
-      // Render Table
       function renderTable() {
         currentData = loadData();
         portalsTable.innerHTML = currentData.portals.map((p, idx) => `
@@ -523,6 +530,7 @@
               <div style="font-size: 0.78rem; color: #94a3b8;">${p.url}</div>
             </td>
             <td style="color: #cbd5e1;">${p.tagline || ''}</td>
+            <td><span style="font-size: 0.75rem; color: #38bdf8;">${(p.type || 'music').toUpperCase()}</span></td>
             <td><span style="font-size: 0.75rem; padding: 2px 7px; border: 1px solid #2d3247; border-radius: 4px;">${p.status || 'ONLINE'}</span></td>
             <td>
               <div style="display: flex; gap: 6px;">
@@ -537,61 +545,62 @@
       window.editPortal = function(id) {
         const p = currentData.portals.find(item => item.id === id);
         if (!p) return;
-        portalModalTitle.textContent = 'Chỉnh Sửa Cổng';
+        portalModalTitle.textContent = 'Chỉnh Sửa Cửa Sổ';
         formPortalId.value = p.id;
         formPortalTitle.value = p.title || '';
         formPortalUrl.value = p.url || '';
         formPortalTagline.value = p.tagline || '';
-        formPortalIcon.value = p.icon || 'globe';
+        formPortalType.value = p.type || 'music';
         formPortalStatus.value = p.status || 'ONLINE';
+        formPortalImage.value = p.previewImage || '';
         portalModal.classList.add('active');
       };
 
       window.deletePortal = function(id) {
-        if (confirm('Bạn có chắc muốn xóa cổng này?')) {
+        if (confirm('Bạn có chắc muốn xóa cửa sổ này?')) {
           currentData.portals = currentData.portals.filter(p => p.id !== id);
           saveData(currentData);
           renderTable();
-          showToast('Đã xóa cổng thành công!');
+          showToast('Đã xóa thành công!');
         }
       };
 
       openAddBtn.addEventListener('click', () => {
-        portalModalTitle.textContent = 'Thêm Cổng Mới';
+        portalModalTitle.textContent = 'Thêm Cửa Sổ Mới';
         portalForm.reset();
         formPortalId.value = '';
-        formPortalIcon.value = 'globe';
+        formPortalType.value = 'music';
         formPortalStatus.value = 'ONLINE';
+        formPortalImage.value = '';
         portalModal.classList.add('active');
       });
 
-      // Submit Form
       portalForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const id = formPortalId.value.trim();
         const title = formPortalTitle.value.trim();
         const url = formPortalUrl.value.trim();
         const tagline = formPortalTagline.value.trim();
-        const icon = formPortalIcon.value.trim() || 'globe';
+        const type = formPortalType.value;
         const status = formPortalStatus.value;
+        const previewImage = formPortalImage.value.trim();
 
         if (id) {
           const idx = currentData.portals.findIndex(p => p.id === id);
           if (idx >= 0) {
-            currentData.portals[idx] = { ...currentData.portals[idx], title, url, tagline, icon, status };
+            currentData.portals[idx] = { ...currentData.portals[idx], title, url, tagline, type, status, previewImage };
           }
         } else {
           const newId = 'gate-' + Date.now();
-          currentData.portals.push({ id: newId, title, url, tagline, icon, status, order: currentData.portals.length + 1 });
+          currentData.portals.push({ id: newId, title, url, tagline, type, status, previewImage });
         }
 
         saveData(currentData);
         portalModal.classList.remove('active');
         renderTable();
-        showToast('Đã lưu cổng kết nối thành công!');
+        showToast('Đã lưu cửa sổ thành công!');
       });
 
-      // About Form
       function renderAbout() {
         const a = currentData.about || INITIAL_DATA.about;
         formAboutTitle.value = a.title || '';
@@ -609,17 +618,16 @@
           content: formAboutContent.value.trim()
         };
         saveData(currentData);
-        showToast('Đã lưu nội dung About thành công!');
+        showToast('Đã lưu About thành công!');
       });
 
-      // JSON Deploy
       function renderJson() {
         jsonViewer.textContent = JSON.stringify(currentData, null, 2);
       }
 
       copyJsonBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => {
-          showToast('Đã sao chép JSON vào clipboard!');
+          showToast('Đã sao chép JSON!');
         });
       });
 
@@ -629,7 +637,7 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'portals.json';
         a.click();
-        showToast('Đã tải file portals.json!');
+        showToast('Đã tải portals.json!');
       });
 
       importFileInput.addEventListener('change', (e) => {
@@ -650,7 +658,6 @@
         reader.readAsText(file);
       });
 
-      // Change PIN
       changePinBtn.addEventListener('click', () => {
         formCurrentPin.value = '';
         formNewPin.value = '';
@@ -665,10 +672,9 @@
         if (formNewPin.value.trim() !== formConfirmPin.value.trim()) { alert('Xác nhận PIN không khớp.'); return; }
         localStorage.setItem(PIN_KEY, formNewPin.value.trim());
         pinModal.classList.remove('active');
-        showToast('Đã đổi mã PIN Admin thành công!');
+        showToast('Đã đổi mã PIN!');
       });
 
-      // Modal Closers
       document.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
         btn.addEventListener('click', () => {
           portalModal.classList.remove('active');
