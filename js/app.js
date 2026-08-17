@@ -1,8 +1,8 @@
 /**
- * POSTLAIN // Core Engine
+ * POSTLAIN // Ultra-Modern Luxury Dark Engine
  */
 
-const STORAGE_KEY = 'postlain_data_v11';
+const STORAGE_KEY = 'postlain_data_v12';
 
 const DEFAULT_PORTALS = [
   {
@@ -10,14 +10,14 @@ const DEFAULT_PORTALS = [
     title: "HIDDEN MUSIC",
     url: "https://hiddenmusic.postlain.com",
     image: "",
-    desc: "Âm Nhạc Ẩn"
+    desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
   },
   {
     id: "project-2",
     title: "POSTLAIN MUSIC",
     url: "",
     image: "",
-    desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
+    desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chuẩn phòng thu."
   },
   {
     id: "project-3",
@@ -57,9 +57,13 @@ function getData() {
   return init;
 }
 
+/* ==========================================================================
+   FLOATING SEGMENTED CONTROL TAB SWITCHER
+   ========================================================================== */
 function switchTab(tabName) {
-  const btnPortals = document.getElementById('btn-tab-portals');
-  const btnAbout = document.getElementById('btn-tab-about');
+  const btnPortals = document.getElementById('tab-btn-portals');
+  const btnAbout = document.getElementById('tab-btn-about');
+  const indicator = document.getElementById('segmented-indicator');
   const viewPortals = document.getElementById('view-portals');
   const viewAbout = document.getElementById('view-about');
 
@@ -68,15 +72,28 @@ function switchTab(tabName) {
     btnAbout.classList.remove('active');
     viewPortals.classList.add('active');
     viewAbout.classList.remove('active');
+
+    if (indicator && btnPortals) {
+      indicator.style.transform = `translateX(0px)`;
+      indicator.style.width = `${btnPortals.offsetWidth}px`;
+    }
     adjustIframeScaling();
   } else {
     btnAbout.classList.add('active');
     btnPortals.classList.remove('active');
     viewAbout.classList.add('active');
     viewPortals.classList.remove('active');
+
+    if (indicator && btnPortals && btnAbout) {
+      indicator.style.transform = `translateX(${btnPortals.offsetWidth}px)`;
+      indicator.style.width = `${btnAbout.offsetWidth}px`;
+    }
   }
 }
 
+/* ==========================================================================
+   DESKTOP LIVE IFRAME VIEWPORT AUTO SCALING (1280x720 PROPORTIONAL)
+   ========================================================================== */
 function adjustIframeScaling() {
   const previewBoxes = document.querySelectorAll('.preview-box');
   previewBoxes.forEach(box => {
@@ -97,6 +114,88 @@ function adjustIframeScaling() {
   });
 }
 
+/* ==========================================================================
+   3D PARALLAX TILT EFFECT & GLEAM OVERLAY
+   ========================================================================== */
+function bindParallaxTilt() {
+  const cards = document.querySelectorAll('.project-card.active-portal');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -7;
+      const rotateY = ((x - centerX) / centerX) * 7;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+      card.style.setProperty('--mouse-card-x', `${x}px`);
+      card.style.setProperty('--mouse-card-y', `${y}px`);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    });
+  });
+}
+
+/* ==========================================================================
+   GLOBAL MOUSE SPOTLIGHT (CON TRỎ SÁNG THEO CHUỘT)
+   ========================================================================== */
+function initMouseSpotlight() {
+  const spotlight = document.getElementById('mouse-spotlight');
+  if (!spotlight) return;
+
+  window.addEventListener('mousemove', (e) => {
+    spotlight.style.left = `${e.clientX}px`;
+    spotlight.style.top = `${e.clientY}px`;
+  }, { passive: true });
+}
+
+/* ==========================================================================
+   PRELOADER COUNTER (0% -> 100% WITH LUXURY SLIDE/FADE OUT)
+   ========================================================================== */
+function initPreloader() {
+  const preloader = document.getElementById('site-preloader');
+  const counterEl = document.getElementById('preloader-counter');
+  const fillEl = document.getElementById('preloader-line-fill');
+  if (!preloader || !counterEl || !fillEl) return;
+
+  let current = 0;
+  const target = 100;
+  const startTime = performance.now();
+  const duration = 1100; // 1.1s total counting duration
+
+  function updateCounter(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out quart curve
+    const easeProgress = 1 - Math.pow(1 - progress, 4);
+    current = Math.floor(easeProgress * target);
+
+    counterEl.textContent = `${current.toString().padStart(2, '0')}%`;
+    fillEl.style.width = `${current}%`;
+
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      counterEl.textContent = `100%`;
+      fillEl.style.width = `100%`;
+      setTimeout(() => {
+        preloader.classList.add('fade-out');
+      }, 180);
+    }
+  }
+
+  requestAnimationFrame(updateCounter);
+}
+
+/* ==========================================================================
+   RENDER 4 CARDS & ABOUT
+   ========================================================================== */
 function renderGrid() {
   const data = getData();
   const grid = document.getElementById('projects-grid');
@@ -131,12 +230,16 @@ function renderGrid() {
 
       return `
         <a href="${linkTarget}" target="_blank" rel="noopener noreferrer" class="project-card active-portal">
+          <div class="card-gleam-overlay"></div>
           <div class="preview-box">
             ${previewContent}
           </div>
           <div class="project-info">
-            <div class="project-title">${p.title}</div>
-            <div class="project-desc">${p.desc || ''}</div>
+            <div class="project-text-group">
+              <div class="project-title">${p.title}</div>
+              <div class="project-desc">${p.desc || ''}</div>
+            </div>
+            <div class="card-arrow-indicator">↗</div>
           </div>
         </a>
       `;
@@ -144,13 +247,19 @@ function renderGrid() {
       return `
         <div class="project-card disabled">
           <div class="preview-box">
-            <div class="dev-placeholder-bg">
+            <div class="dev-hologram-stage">
+              <svg class="dev-holo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
               <span class="dev-pulse-text">Đang trong thời gian phát triển</span>
             </div>
           </div>
           <div class="project-info">
-            <div class="project-title">${p.title}</div>
-            <div class="project-desc">${p.desc || ''}</div>
+            <div class="project-text-group">
+              <div class="project-title">${p.title}</div>
+              <div class="project-desc">${p.desc || 'Hệ thống đang được xây dựng.'}</div>
+            </div>
           </div>
         </div>
       `;
@@ -164,31 +273,46 @@ function renderGrid() {
   const elQuote = document.getElementById('about-quote');
   const elContent = document.getElementById('about-content');
 
-  if (elTitle) elTitle.textContent = about.title || 'Giới Thiệu';
+  if (elTitle) elTitle.textContent = about.title || 'Giới Thiệu // The Architect';
   if (elAlias) elAlias.textContent = `[ ${about.alias || 'ANONYMOUS'} ]`;
   if (elQuote) elQuote.textContent = `"${about.quote || ''}"`;
   if (elContent) elContent.textContent = about.content || '';
 
-  setTimeout(adjustIframeScaling, 50);
-}
-
-// Preloader Dismissal
-function dismissPreloader() {
-  const preloader = document.getElementById('site-preloader');
-  if (preloader && !preloader.classList.contains('fade-out')) {
-    preloader.classList.add('fade-out');
+  // Initial Segmented Indicator sizing
+  const btnPortals = document.getElementById('tab-btn-portals');
+  const indicator = document.getElementById('segmented-indicator');
+  if (btnPortals && indicator) {
+    indicator.style.width = `${btnPortals.offsetWidth}px`;
   }
+
+  // Adjust Iframe and bind 3D tilt
+  setTimeout(() => {
+    adjustIframeScaling();
+    bindParallaxTilt();
+  }, 60);
 }
 
-window.addEventListener('resize', adjustIframeScaling);
+window.addEventListener('resize', () => {
+  adjustIframeScaling();
+  const btnPortals = document.getElementById('tab-btn-portals');
+  const btnAbout = document.getElementById('tab-btn-about');
+  const indicator = document.getElementById('segmented-indicator');
+  if (btnPortals && indicator && btnPortals.classList.contains('active')) {
+    indicator.style.width = `${btnPortals.offsetWidth}px`;
+    indicator.style.transform = `translateX(0px)`;
+  } else if (btnAbout && indicator && btnAbout.classList.contains('active')) {
+    indicator.style.width = `${btnAbout.offsetWidth}px`;
+    indicator.style.transform = `translateX(${btnPortals.offsetWidth}px)`;
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
+  initMouseSpotlight();
   renderGrid();
-  // Safe timeout for preloader
-  setTimeout(dismissPreloader, 800);
+  initPreloader();
 });
 
 window.addEventListener('load', () => {
   renderGrid();
   setTimeout(adjustIframeScaling, 150);
-  setTimeout(dismissPreloader, 400);
 });

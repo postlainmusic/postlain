@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Postlain</title>
+  <title>Postlain // Gateway</title>
   <meta name="description" content="Hệ sinh thái công nghệ âm nhạc độc lập Postlain.">
   
-  <!-- Google Fonts Inter & JetBrains Mono -->
+  <!-- Google Fonts: Inter, Space Grotesk, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
     *, *::before, *::after {
@@ -19,23 +19,25 @@
     }
 
     :root {
-      --bg-primary: #070709;
-      --bg-card: #0e0e12;
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.22);
+      --bg-deep: #050507;
+      --bg-card: rgba(13, 13, 18, 0.65);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(255, 255, 255, 0.28);
       --text-white: #ffffff;
-      --text-dim: #737373;
-      --text-muted: #a3a3a3;
-      --pill-bg: rgba(18, 18, 22, 0.75);
+      --text-muted: #9ca3af;
+      --text-dim: #52525b;
       --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --font-display: 'Space Grotesk', sans-serif;
+      --card-radius: 16px;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: var(--bg-primary);
+      background-color: var(--bg-deep);
       color: var(--text-white);
       font-family: var(--font-main);
       line-height: 1.4;
@@ -43,81 +45,179 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* PRELOADER SCREEN */
-    .preloader-screen {
+    /* ==========================================================================
+       1. PRELOADER SIÊU MƯỢT (0-100% COUNTER + SHIMMER TEXT + 1PX LINE)
+       ========================================================================== */
+    .preloader-overlay {
       position: fixed;
       inset: 0;
-      background-color: var(--bg-primary);
-      z-index: 99999;
+      background-color: #030305;
+      z-index: 999999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
+      transition: transform 0.8s var(--ease-out-expo), opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+      overflow: hidden;
     }
 
-    .preloader-screen.fade-out {
+    .preloader-overlay.fade-out {
       opacity: 0;
+      transform: scale(1.04) translateY(-20px);
       visibility: hidden;
       pointer-events: none;
     }
 
-    .preloader-brand {
-      font-family: var(--font-main);
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: 6px;
-      color: #ffffff;
-      text-transform: uppercase;
-      text-shadow: 0 0 25px rgba(255, 255, 255, 0.35);
-      animation: logoGlow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes logoGlow {
-      0% { opacity: 0.7; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); }
-      100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6)); }
-    }
-
-    .preloader-progress-track {
-      width: 140px;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 2px;
-      overflow: hidden;
+    .preloader-center-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
       position: relative;
+      z-index: 2;
     }
 
-    .preloader-progress-bar {
+    .preloader-shimmer-brand {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: metallicShine 2.5s linear infinite;
+      filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+    }
+
+    @keyframes metallicShine {
+      to { background-position: 200% center; }
+    }
+
+    .preloader-line-track {
+      width: 220px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preloader-line-fill {
       position: absolute;
       top: 0;
       left: 0;
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #ffffff, #a3a3a3);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-      border-radius: 2px;
-      animation: loadSim 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #ffffff, rgba(255, 255, 255, 0.8));
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+      transition: width 0.05s linear;
     }
 
-    @keyframes loadSim {
-      0% { width: 0%; }
-      50% { width: 65%; }
-      100% { width: 100%; }
+    .preloader-counter {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #71717a;
+      letter-spacing: 2px;
     }
 
-    /* APP SCREEN (LOCKED 100VH RIGID VIEWPORT) */
+    /* ==========================================================================
+       2. AMBIENT GLOW VÀ MOUSE SPOTLIGHT
+       ========================================================================== */
+    .ambient-glow-wrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .glow-orb-1 {
+      position: absolute;
+      top: 15%;
+      left: 20%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(79, 172, 254, 0.07) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: orbDrift1 22s ease-in-out infinite alternate;
+    }
+
+    .glow-orb-2 {
+      position: absolute;
+      bottom: 10%;
+      right: 15%;
+      width: 750px;
+      height: 750px;
+      background: radial-gradient(circle, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
+      filter: blur(90px);
+      animation: orbDrift2 26s ease-in-out infinite alternate;
+    }
+
+    @keyframes orbDrift1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, -60px) scale(1.15); }
+      100% { transform: translate(-50px, 40px) scale(0.9); }
+    }
+
+    @keyframes orbDrift2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-100px, 50px) scale(1.1); }
+      100% { transform: translate(60px, -70px) scale(0.95); }
+    }
+
+    .ambient-cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+      -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+    }
+
+    .mouse-spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    body:hover .mouse-spotlight {
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       3. APP SCREEN & FLOATING SEGMENTED CONTROL
+       ========================================================================== */
     .app-screen {
+      position: relative;
+      z-index: 2;
       width: 100%;
       height: 100vh;
-      padding: 16px 24px 20px;
+      padding: 16px 28px 20px;
       display: flex;
       flex-direction: column;
-      max-width: 1600px;
+      max-width: 1640px;
       margin: 0 auto;
     }
 
-    /* DYNAMIC PILL HEADER */
     .app-header {
       display: flex;
       justify-content: center;
@@ -126,41 +226,54 @@
       flex-shrink: 0;
     }
 
-    .dynamic-pill-nav {
+    .segmented-control-pill {
+      position: relative;
       display: inline-flex;
-      background: var(--pill-bg);
-      border: 1px solid var(--border-subtle);
-      border-radius: 30px;
+      background: rgba(18, 18, 24, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 36px;
       padding: 4px;
-      gap: 4px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
-    .pill-btn {
-      padding: 7px 22px;
+    .segmented-indicator {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      height: calc(100% - 8px);
+      width: 130px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: transform 0.35s var(--ease-out-expo), width 0.35s var(--ease-out-expo);
+      pointer-events: none;
+    }
+
+    .segmented-tab-btn {
+      position: relative;
+      z-index: 2;
+      padding: 8px 24px;
       background: transparent;
       border: none;
       color: var(--text-muted);
       font-family: var(--font-main);
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
-      border-radius: 20px;
+      letter-spacing: 0.4px;
+      border-radius: 28px;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: color 0.25s ease;
     }
 
-    .pill-btn:hover {
-      color: var(--text-white);
-    }
-
-    .pill-btn.active {
-      background: rgba(255, 255, 255, 0.12);
+    .segmented-tab-btn:hover {
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .segmented-tab-btn.active {
+      color: #ffffff;
     }
 
     /* VIEWS */
@@ -179,53 +292,81 @@
     .tab-view.active {
       display: flex;
       flex-direction: column;
-      animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: viewSlideFade 0.4s var(--ease-out-expo);
     }
 
-    @keyframes viewFadeIn {
-      from { opacity: 0; transform: scale(0.99); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes viewSlideFade {
+      from { opacity: 0; transform: translateY(6px) scale(0.995); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* GRID 2x2 (4 KHUNG HÌNH CHỮ NHẬT TO CÂN XỨNG) */
+    /* ==========================================================================
+       4. GRID 2x2 (PREMIUM GLASS CARDS + 3D PARALLAX TILT)
+       ========================================================================== */
     .grid-2x2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
-      gap: 18px;
+      gap: 20px;
       width: 100%;
       height: 100%;
+      perspective: 1200px;
     }
 
     .project-card {
+      position: relative;
       display: flex;
       flex-direction: column;
       background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--card-radius);
       overflow: hidden;
       text-decoration: none;
       color: inherit;
       cursor: pointer;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      transform-style: preserve-3d;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease-out;
       min-height: 0;
-      position: relative;
     }
 
     .project-card.active-portal:hover {
-      border-color: var(--border-hover);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 255, 255, 0.05);
-      transform: translateY(-3px);
+      border-color: var(--border-glow);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.9),
+        0 0 30px rgba(255, 255, 255, 0.08),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
     }
 
     .project-card.disabled {
       cursor: default;
       pointer-events: none;
-      opacity: 0.65;
-      border-color: var(--border-subtle) !important;
+      opacity: 0.75;
+      border-color: rgba(255, 255, 255, 0.05) !important;
     }
 
-    /* KHUNG PREVIEW TRÀN VIỀN */
+    /* Lớp Phủ Gradient Ánh Sáng Phản Chiếu (Gleam Reflection) */
+    .card-gleam-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        800px circle at var(--mouse-card-x, 50%) var(--mouse-card-y, 50%),
+        rgba(255, 255, 255, 0.08),
+        transparent 40%
+      );
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .card-gleam-overlay {
+      opacity: 1;
+    }
+
+    /* KHUNG PREVIEW */
     .preview-box {
       position: relative;
       flex: 1;
@@ -248,6 +389,7 @@
       pointer-events: none;
       transform-origin: top left;
       background: #000000;
+      transition: transform 0.4s var(--ease-out-expo);
     }
 
     .preview-image {
@@ -256,163 +398,232 @@
       object-fit: cover;
       object-position: center top;
       display: block;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.45s var(--ease-out-expo);
     }
 
     .project-card.active-portal:hover .preview-image {
-      transform: scale(1.03);
+      transform: scale(1.035);
     }
 
-    .dev-placeholder-bg {
+    /* ==========================================================================
+       5. HIỆU ỨNG HOLOGRAM / RADAR CHO KHUNG ĐANG PHÁT TRIỂN
+       ========================================================================== */
+    .dev-hologram-stage {
       width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #08080b;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 24px 24px;
+      gap: 14px;
+      background-color: #08080c;
+      background-image: 
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dev-hologram-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 100%
+      );
+      height: 100%;
+      animation: radarScan 4s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes radarScan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .dev-holo-icon {
+      width: 32px;
+      height: 32px;
+      opacity: 0.35;
+      color: #a1a1aa;
     }
 
     .dev-pulse-text {
-      font-family: var(--font-main);
-      color: #66666e;
-      font-size: 0.92rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      animation: pulseBreath 3s ease-in-out infinite;
+      font-family: var(--font-mono);
+      color: #71717a;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: neonHeartbeat 2.8s ease-in-out infinite;
     }
 
-    @keyframes pulseBreath {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.85; }
+    @keyframes neonHeartbeat {
+      0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 0px transparent); }
+      50% { opacity: 0.85; color: #d4d4d8; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)); }
     }
 
-    /* PHẦN DƯỚI KHUNG */
+    /* ==========================================================================
+       6. THÔNG TIN DƯỚI CARD
+       ========================================================================== */
     .project-info {
-      padding: 12px 16px;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-subtle);
+      padding: 12px 18px;
+      background: rgba(11, 11, 15, 0.95);
+      border-top: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .project-text-group {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      flex-shrink: 0;
+      gap: 2px;
+      overflow: hidden;
     }
 
     .project-title {
-      font-size: 0.95rem;
+      font-family: var(--font-display);
+      font-size: 0.96rem;
       font-weight: 700;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.8px;
       color: var(--text-white);
       text-transform: uppercase;
     }
 
     .project-desc {
-      font-size: 0.8rem;
-      color: var(--text-dim);
+      font-size: 0.78rem;
+      color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* ABOUT SECTION */
+    .card-arrow-indicator {
+      color: #71717a;
+      font-size: 1rem;
+      transition: transform 0.25s var(--ease-out-expo), color 0.25s ease;
+    }
+
+    .project-card.active-portal:hover .card-arrow-indicator {
+      color: #ffffff;
+      transform: translate(3px, -3px);
+    }
+
+    /* ==========================================================================
+       7. ABOUT SECTION
+       ========================================================================== */
     .about-wrapper {
       flex: 1;
       overflow-y: auto;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 24px;
     }
 
     .about-card {
-      max-width: 740px;
+      max-width: 760px;
       width: 100%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 40px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+      background: rgba(14, 14, 20, 0.75);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--card-radius);
+      padding: 44px;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     .about-title {
-      font-size: 1.45rem;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
       font-weight: 800;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.6px;
       color: #ffffff;
       margin-bottom: 6px;
     }
 
     .about-alias {
-      font-size: 0.82rem;
-      color: var(--text-dim);
+      font-size: 0.84rem;
+      color: #71717a;
       font-family: var(--font-mono);
-      letter-spacing: 0.5px;
-      margin-bottom: 22px;
+      letter-spacing: 0.8px;
+      margin-bottom: 24px;
     }
 
     .about-quote {
       background: rgba(255, 255, 255, 0.03);
-      border-left: 3px solid rgba(255, 255, 255, 0.3);
-      padding: 14px 18px;
-      font-size: 0.96rem;
+      border-left: 3px solid rgba(255, 255, 255, 0.4);
+      padding: 16px 20px;
+      font-size: 1rem;
       font-style: italic;
-      color: #e5e5e5;
+      color: #f1f5f9;
       border-radius: 4px;
-      margin-bottom: 22px;
-      line-height: 1.6;
+      margin-bottom: 24px;
+      line-height: 1.65;
     }
 
     .about-text {
-      font-size: 0.94rem;
+      font-size: 0.96rem;
       color: var(--text-muted);
-      line-height: 1.85;
+      line-height: 1.9;
       white-space: pre-line;
     }
 
     @media (max-width: 768px) {
-      html, body {
-        overflow-y: auto;
-        height: auto;
-      }
-      .app-screen {
-        height: auto;
-        min-height: 100vh;
-        padding: 16px;
-      }
-      .grid-2x2 {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        height: auto;
-      }
-      .project-card {
-        height: 270px;
-      }
+      html, body { overflow-y: auto; height: auto; }
+      .app-screen { height: auto; min-height: 100vh; padding: 16px; }
+      .grid-2x2 { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+      .project-card { height: 280px; }
+      .mouse-spotlight { display: none; }
     }
   </style>
 </head>
 <body>
-  <!-- 1. PRELOADER OVERLAY -->
-  <div id="site-preloader" class="preloader-screen">
-    <div class="preloader-brand">POSTLAIN</div>
-    <div class="preloader-progress-track">
-      <div class="preloader-progress-bar"></div>
+  <!-- AMBIENT GLOW & CYBER GRID -->
+  <div class="ambient-glow-wrapper">
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="ambient-cyber-grid"></div>
+  </div>
+
+  <!-- MOUSE SPOTLIGHT -->
+  <div id="mouse-spotlight" class="mouse-spotlight"></div>
+
+  <!-- 1. PRELOADER OVERLAY (0-100% COUNTER) -->
+  <div id="site-preloader" class="preloader-overlay">
+    <div class="preloader-center-box">
+      <div class="preloader-shimmer-brand">POSTLAIN</div>
+      <div class="preloader-line-track">
+        <div id="preloader-line-fill" class="preloader-line-fill"></div>
+      </div>
+      <div id="preloader-counter" class="preloader-counter">00%</div>
     </div>
   </div>
 
   <!-- 2. MAIN APP SCREEN (100VH RIGID VIEWPORT) -->
   <div class="app-screen">
-    <!-- DYNAMIC PILL HEADER CĂN GIỮA -->
+    <!-- FLOATING SEGMENTED CONTROL HEADER -->
     <header class="app-header">
-      <div class="dynamic-pill-nav">
-        <button id="btn-tab-portals" class="pill-btn active" onclick="switchTab('portals')">Cổng Website</button>
-        <button id="btn-tab-about" class="pill-btn" onclick="switchTab('about')">Giới Thiệu</button>
+      <div class="segmented-control-pill">
+        <div id="segmented-indicator" class="segmented-indicator"></div>
+        <button id="tab-btn-portals" class="segmented-tab-btn active" onclick="switchTab('portals')">Cổng Website</button>
+        <button id="tab-btn-about" class="segmented-tab-btn" onclick="switchTab('about')">Giới Thiệu</button>
       </div>
     </header>
 
     <!-- VIEWS CONTAINER -->
     <div class="views-container">
-      <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 CỐ ĐỊNH 4 KHUNG HÌNH CHỮ NHẬT TO) -->
+      <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 CỐ ĐỊNH 4 KHUNG KÍNH KIM LOẠI) -->
       <main id="view-portals" class="tab-view active">
         <div id="projects-grid" class="grid-2x2">
           <!-- Rendered via JavaScript -->
@@ -438,7 +649,7 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
   </div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v11';
+    const STORAGE_KEY = 'postlain_data_v12';
 
     const DEFAULT_PORTALS = [
       {
@@ -446,14 +657,14 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
         title: "HIDDEN MUSIC",
         url: "https://hiddenmusic.postlain.com",
         image: "",
-        desc: "Âm Nhạc Ẩn"
+        desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
       },
       {
         id: "project-2",
         title: "POSTLAIN MUSIC",
         url: "",
         image: "",
-        desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
+        desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chuẩn phòng thu."
       },
       {
         id: "project-3",
@@ -494,8 +705,9 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
     }
 
     function switchTab(tabName) {
-      const btnPortals = document.getElementById('btn-tab-portals');
-      const btnAbout = document.getElementById('btn-tab-about');
+      const btnPortals = document.getElementById('tab-btn-portals');
+      const btnAbout = document.getElementById('tab-btn-about');
+      const indicator = document.getElementById('segmented-indicator');
       const viewPortals = document.getElementById('view-portals');
       const viewAbout = document.getElementById('view-about');
 
@@ -504,12 +716,22 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
         btnAbout.classList.remove('active');
         viewPortals.classList.add('active');
         viewAbout.classList.remove('active');
+
+        if (indicator && btnPortals) {
+          indicator.style.transform = `translateX(0px)`;
+          indicator.style.width = `${btnPortals.offsetWidth}px`;
+        }
         adjustIframeScaling();
       } else {
         btnAbout.classList.add('active');
         btnPortals.classList.remove('active');
         viewAbout.classList.add('active');
         viewPortals.classList.remove('active');
+
+        if (indicator && btnPortals && btnAbout) {
+          indicator.style.transform = `translateX(${btnPortals.offsetWidth}px)`;
+          indicator.style.width = `${btnAbout.offsetWidth}px`;
+        }
       }
     }
 
@@ -531,6 +753,73 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
         iframe.style.left = `${(w - VIRTUAL_W * scale) / 2}px`;
         iframe.style.top = `${(h - VIRTUAL_H * scale) / 2}px`;
       });
+    }
+
+    function bindParallaxTilt() {
+      const cards = document.querySelectorAll('.project-card.active-portal');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -7;
+          const rotateY = ((x - centerX) / centerX) * 7;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+          card.style.setProperty('--mouse-card-x', `${x}px`);
+          card.style.setProperty('--mouse-card-y', `${y}px`);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+      });
+    }
+
+    function initMouseSpotlight() {
+      const spotlight = document.getElementById('mouse-spotlight');
+      if (!spotlight) return;
+      window.addEventListener('mousemove', (e) => {
+        spotlight.style.left = `${e.clientX}px`;
+        spotlight.style.top = `${e.clientY}px`;
+      }, { passive: true });
+    }
+
+    function initPreloader() {
+      const preloader = document.getElementById('site-preloader');
+      const counterEl = document.getElementById('preloader-counter');
+      const fillEl = document.getElementById('preloader-line-fill');
+      if (!preloader || !counterEl || !fillEl) return;
+
+      let current = 0;
+      const target = 100;
+      const startTime = performance.now();
+      const duration = 1100;
+
+      function updateCounter(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 4);
+        current = Math.floor(easeProgress * target);
+
+        counterEl.textContent = `${current.toString().padStart(2, '0')}%`;
+        fillEl.style.width = `${current}%`;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counterEl.textContent = `100%`;
+          fillEl.style.width = `100%`;
+          setTimeout(() => {
+            preloader.classList.add('fade-out');
+          }, 180);
+        }
+      }
+
+      requestAnimationFrame(updateCounter);
     }
 
     function renderGrid() {
@@ -567,12 +856,16 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
 
           return `
             <a href="${linkTarget}" target="_blank" rel="noopener noreferrer" class="project-card active-portal">
+              <div class="card-gleam-overlay"></div>
               <div class="preview-box">
                 ${previewContent}
               </div>
               <div class="project-info">
-                <div class="project-title">${p.title}</div>
-                <div class="project-desc">${p.desc || ''}</div>
+                <div class="project-text-group">
+                  <div class="project-title">${p.title}</div>
+                  <div class="project-desc">${p.desc || ''}</div>
+                </div>
+                <div class="card-arrow-indicator">↗</div>
               </div>
             </a>
           `;
@@ -580,13 +873,19 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
           return `
             <div class="project-card disabled">
               <div class="preview-box">
-                <div class="dev-placeholder-bg">
+                <div class="dev-hologram-stage">
+                  <svg class="dev-holo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
                   <span class="dev-pulse-text">Đang trong thời gian phát triển</span>
                 </div>
               </div>
               <div class="project-info">
-                <div class="project-title">${p.title}</div>
-                <div class="project-desc">${p.desc || ''}</div>
+                <div class="project-text-group">
+                  <div class="project-title">${p.title}</div>
+                  <div class="project-desc">${p.desc || 'Hệ thống đang được xây dựng.'}</div>
+                </div>
               </div>
             </div>
           `;
@@ -599,31 +898,46 @@ Mỗi cổng kết nối là một công cụ độc lập được trau chuốt
       const elQuote = document.getElementById('about-quote');
       const elContent = document.getElementById('about-content');
 
-      if (elTitle) elTitle.textContent = about.title || 'Giới Thiệu';
+      if (elTitle) elTitle.textContent = about.title || 'Giới Thiệu // The Architect';
       if (elAlias) elAlias.textContent = `[ ${about.alias || 'ANONYMOUS'} ]`;
       if (elQuote) elQuote.textContent = `"${about.quote || ''}"`;
       if (elContent) elContent.textContent = about.content || '';
 
-      setTimeout(adjustIframeScaling, 50);
-    }
-
-    function dismissPreloader() {
-      const preloader = document.getElementById('site-preloader');
-      if (preloader && !preloader.classList.contains('fade-out')) {
-        preloader.classList.add('fade-out');
+      const btnPortals = document.getElementById('tab-btn-portals');
+      const indicator = document.getElementById('segmented-indicator');
+      if (btnPortals && indicator) {
+        indicator.style.width = `${btnPortals.offsetWidth}px`;
       }
+
+      setTimeout(() => {
+        adjustIframeScaling();
+        bindParallaxTilt();
+      }, 60);
     }
 
-    window.addEventListener('resize', adjustIframeScaling);
+    window.addEventListener('resize', () => {
+      adjustIframeScaling();
+      const btnPortals = document.getElementById('tab-btn-portals');
+      const btnAbout = document.getElementById('tab-btn-about');
+      const indicator = document.getElementById('segmented-indicator');
+      if (btnPortals && indicator && btnPortals.classList.contains('active')) {
+        indicator.style.width = `${btnPortals.offsetWidth}px`;
+        indicator.style.transform = `translateX(0px)`;
+      } else if (btnAbout && indicator && btnAbout.classList.contains('active')) {
+        indicator.style.width = `${btnAbout.offsetWidth}px`;
+        indicator.style.transform = `translateX(${btnPortals.offsetWidth}px)`;
+      }
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
+      initMouseSpotlight();
       renderGrid();
-      setTimeout(dismissPreloader, 800);
+      initPreloader();
     });
 
     window.addEventListener('load', () => {
       renderGrid();
       setTimeout(adjustIframeScaling, 150);
-      setTimeout(dismissPreloader, 400);
     });
   </script>
 </body>

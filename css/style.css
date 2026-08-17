@@ -1,5 +1,8 @@
-/* Postlain - Premium Minimalist Dark Tech Design System */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* ==========================================================================
+   POSTLAIN // ULTRA-MODERN LUXURY DARK MODE DESIGN SYSTEM (AWWWARDS / LINEAR STYLE)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -8,23 +11,28 @@
 }
 
 :root {
-  --bg-primary: #070709;
-  --bg-card: #0e0e12;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.22);
+  --bg-deep: #050507;
+  --bg-card: rgba(13, 13, 18, 0.65);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(255, 255, 255, 0.28);
   --text-white: #ffffff;
-  --text-dim: #737373;
-  --text-muted: #a3a3a3;
-  --pill-bg: rgba(18, 18, 22, 0.75);
+  --text-muted: #9ca3af;
+  --text-dim: #52525b;
+  --accent-cyan: #00f2fe;
+  --accent-purple: #9d4edd;
+  --accent-blue: #4facfe;
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --card-radius: 16px;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-deep);
   color: var(--text-white);
   font-family: var(--font-main);
   line-height: 1.4;
@@ -33,85 +41,184 @@ html, body {
 }
 
 /* ==========================================================================
-   1. APPLE-GRADE / CYBERPUNK MINIMAL PRELOADER
+   1. PRELOADER SIÊU MƯỢT (BRUTALIST / MINIMAL LUXURY WITH 0-100% COUNTER)
    ========================================================================== */
-.preloader-screen {
+.preloader-overlay {
   position: fixed;
   inset: 0;
-  background-color: var(--bg-primary);
-  z-index: 99999;
+  background-color: #030305;
+  z-index: 999999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
+  transition: transform 0.8s var(--ease-out-expo), opacity 0.8s var(--ease-out-expo), visibility 0.8s;
+  overflow: hidden;
 }
 
-.preloader-screen.fade-out {
+.preloader-overlay.fade-out {
   opacity: 0;
+  transform: scale(1.04) translateY(-20px);
   visibility: hidden;
   pointer-events: none;
 }
 
-.preloader-brand {
-  font-family: var(--font-main);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 6px;
-  color: #ffffff;
-  text-transform: uppercase;
-  text-shadow: 0 0 25px rgba(255, 255, 255, 0.35);
-  animation: logoGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes logoGlow {
-  0% { opacity: 0.7; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); }
-  100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6)); }
-}
-
-.preloader-progress-track {
-  width: 140px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
-  overflow: hidden;
+.preloader-center-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
   position: relative;
+  z-index: 2;
 }
 
-.preloader-progress-bar {
+/* Metallic Shimmer Brand Text */
+.preloader-shimmer-brand {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 12px;
+  text-transform: uppercase;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: metallicShine 2.5s linear infinite;
+  filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes metallicShine {
+  to { background-position: 200% center; }
+}
+
+/* Minimal 1px Gradient Progress Line */
+.preloader-line-track {
+  width: 220px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.preloader-line-fill {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #ffffff, #a3a3a3);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-  border-radius: 2px;
-  transition: width 0.4s ease;
-  animation: loadSim 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2), #ffffff, rgba(255, 255, 255, 0.8));
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+  transition: width 0.05s linear;
 }
 
-@keyframes loadSim {
-  0% { width: 0%; }
-  50% { width: 65%; }
-  100% { width: 100%; }
+/* 0% -> 100% Counter */
+.preloader-counter {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #71717a;
+  letter-spacing: 2px;
 }
 
 /* ==========================================================================
-   2. APP CONTAINER (LOCKED 100VH RIGID VIEWPORT)
+   2. AMBIENT GLOW VÀ MOUSE SPOTLIGHT THEO CON TRỎ
+   ========================================================================== */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.glow-orb-1 {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(79, 172, 254, 0.07) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: orbDrift1 22s ease-in-out infinite alternate;
+}
+
+.glow-orb-2 {
+  position: absolute;
+  bottom: 10%;
+  right: 15%;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(157, 78, 221, 0.06) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: orbDrift2 26s ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, -60px) scale(1.15); }
+  100% { transform: translate(-50px, 40px) scale(0.9); }
+}
+
+@keyframes orbDrift2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-100px, 50px) scale(1.1); }
+  100% { transform: translate(60px, -70px) scale(0.95); }
+}
+
+/* Lưới Grid Chìm Tinh Xảo */
+.ambient-cyber-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 90%);
+}
+
+/* Mouse Spotlight Theo Chuột */
+.mouse-spotlight {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+body:hover .mouse-spotlight {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   3. APP CONTAINER & FLOATING SEGMENTED CONTROL HEADER
    ========================================================================== */
 .app-screen {
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100vh;
-  padding: 16px 24px 20px;
+  padding: 16px 28px 20px;
   display: flex;
   flex-direction: column;
-  max-width: 1600px;
+  max-width: 1640px;
   margin: 0 auto;
 }
 
-/* DYNAMIC PILL HEADER (FROSTED GLASS) */
+/* FLOATING SEGMENTED CONTROL */
 .app-header {
   display: flex;
   justify-content: center;
@@ -120,44 +227,57 @@ html, body {
   flex-shrink: 0;
 }
 
-.dynamic-pill-nav {
+.segmented-control-pill {
+  position: relative;
   display: inline-flex;
-  background: var(--pill-bg);
-  border: 1px solid var(--border-subtle);
-  border-radius: 30px;
+  background: rgba(18, 18, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 36px;
   padding: 4px;
-  gap: 4px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
-.pill-btn {
-  padding: 7px 22px;
+.segmented-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  width: 130px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.35s var(--ease-out-expo), width 0.35s var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.segmented-tab-btn {
+  position: relative;
+  z-index: 2;
+  padding: 8px 24px;
   background: transparent;
   border: none;
   color: var(--text-muted);
   font-family: var(--font-main);
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.3px;
-  border-radius: 20px;
+  letter-spacing: 0.4px;
+  border-radius: 28px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.25s ease;
 }
 
-.pill-btn:hover {
-  color: var(--text-white);
-}
-
-.pill-btn.active {
-  background: rgba(255, 255, 255, 0.12);
+.segmented-tab-btn:hover {
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* VIEWS CONTAINER */
+.segmented-tab-btn.active {
+  color: #ffffff;
+}
+
+/* VIEWS WRAPPER */
 .views-container {
   flex: 1;
   min-height: 0;
@@ -173,55 +293,82 @@ html, body {
 .tab-view.active {
   display: flex;
   flex-direction: column;
-  animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: viewSlideFade 0.4s var(--ease-out-expo);
 }
 
-@keyframes viewFadeIn {
-  from { opacity: 0; transform: scale(0.99); }
-  to { opacity: 1; transform: scale(1); }
+@keyframes viewSlideFade {
+  from { opacity: 0; transform: translateY(6px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ==========================================================================
-   3. GRID 2x2 (4 KHUNG HÌNH CHỮ NHẬT TO, HOVER ZOOM, KHÔNG NÚT RÁC)
+   4. GRID 2x2 (PREMIUM GLASS CARDS + 3D PARALLAX TILT)
    ========================================================================== */
 .grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 18px;
+  gap: 20px;
   width: 100%;
   height: 100%;
+  perspective: 1200px;
 }
 
+/* LUXURY GLASS CARD */
 .project-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--card-radius);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.25s ease-out;
   min-height: 0;
-  position: relative;
 }
 
 .project-card.active-portal:hover {
-  border-color: var(--border-hover);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 255, 255, 0.05);
-  transform: translateY(-3px);
+  border-color: var(--border-glow);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(255, 255, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .project-card.disabled {
   cursor: default;
   pointer-events: none;
-  opacity: 0.65;
-  border-color: var(--border-subtle) !important;
+  opacity: 0.75;
+  border-color: rgba(255, 255, 255, 0.05) !important;
 }
 
-/* KHUNG RUỘT PREVIEW 16:9 TRÀN VIỀN */
+/* Lớp Phủ Gradient Ánh Sáng Phản Chiếu (Gleam Reflection) */
+.card-gleam-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    800px circle at var(--mouse-card-x, 50%) var(--mouse-card-y, 50%),
+    rgba(255, 255, 255, 0.08),
+    transparent 40%
+  );
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover .card-gleam-overlay {
+  opacity: 1;
+}
+
+/* KHUNG RUỘT PREVIEW 16:9 */
 .preview-box {
   position: relative;
   flex: 1;
@@ -245,78 +392,139 @@ html, body {
   pointer-events: none;
   transform-origin: top left;
   background: #000000;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s var(--ease-out-expo);
 }
 
-/* Image Screenshot View with Clean Zoom Effect */
 .preview-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s var(--ease-out-expo);
 }
 
 .project-card.active-portal:hover .preview-image {
-  transform: scale(1.03);
+  transform: scale(1.035);
 }
 
-/* Placeholder Khung Chưa Có Web */
-.dev-placeholder-bg {
+/* ==========================================================================
+   5. HIỆU ỨNG HOLOGRAM / RADAR CHO KHUNG ĐANG PHÁT TRIỂN
+   ========================================================================== */
+.dev-hologram-stage {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #08080b;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+  gap: 14px;
+  background-color: #08080c;
+  background-image: 
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Scanline Wave */
+.dev-hologram-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 100%
+  );
+  height: 100%;
+  animation: radarScan 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes radarScan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.dev-holo-icon {
+  width: 32px;
+  height: 32px;
+  opacity: 0.35;
+  color: #a1a1aa;
 }
 
 .dev-pulse-text {
-  font-family: var(--font-main);
-  color: #66666e;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  animation: pulseBreath 3s ease-in-out infinite;
+  font-family: var(--font-mono);
+  color: #71717a;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: neonHeartbeat 2.8s ease-in-out infinite;
 }
 
-@keyframes pulseBreath {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.85; }
+@keyframes neonHeartbeat {
+  0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 0px transparent); }
+  50% { opacity: 0.85; color: #d4d4d8; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4)); }
 }
 
-/* THÔNG TIN DƯỚI KHUNG: TÊN + MÔ TẢ */
+/* ==========================================================================
+   6. PHẦN THÔNG TIN DƯỚI CARD
+   ========================================================================== */
 .project-info {
-  padding: 12px 16px;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-subtle);
+  padding: 12px 18px;
+  background: rgba(11, 11, 15, 0.95);
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.project-text-group {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  flex-shrink: 0;
+  gap: 2px;
+  overflow: hidden;
 }
 
 .project-title {
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-size: 0.96rem;
   font-weight: 700;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.8px;
   color: var(--text-white);
   text-transform: uppercase;
 }
 
 .project-desc {
-  font-size: 0.8rem;
-  color: var(--text-dim);
+  font-size: 0.78rem;
+  color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+.card-arrow-indicator {
+  color: #71717a;
+  font-size: 1rem;
+  transition: transform 0.25s var(--ease-out-expo), color 0.25s ease;
+}
+
+.project-card.active-portal:hover .card-arrow-indicator {
+  color: #ffffff;
+  transform: translate(3px, -3px);
+}
+
 /* ==========================================================================
-   4. ABOUT SECTION
+   7. ABOUT SECTION (LUXURY MANIFESTO CARD)
    ========================================================================== */
 .about-wrapper {
   flex: 1;
@@ -324,55 +532,60 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
 }
 
 .about-card {
-  max-width: 740px;
+  max-width: 760px;
   width: 100%;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  background: rgba(14, 14, 20, 0.75);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--card-radius);
+  padding: 44px;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 .about-title {
-  font-size: 1.45rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
   font-weight: 800;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.6px;
   color: #ffffff;
   margin-bottom: 6px;
 }
 
 .about-alias {
-  font-size: 0.82rem;
-  color: var(--text-dim);
+  font-size: 0.84rem;
+  color: #71717a;
   font-family: var(--font-mono);
-  letter-spacing: 0.5px;
-  margin-bottom: 22px;
+  letter-spacing: 0.8px;
+  margin-bottom: 24px;
 }
 
 .about-quote {
   background: rgba(255, 255, 255, 0.03);
-  border-left: 3px solid rgba(255, 255, 255, 0.3);
-  padding: 14px 18px;
-  font-size: 0.96rem;
+  border-left: 3px solid rgba(255, 255, 255, 0.4);
+  padding: 16px 20px;
+  font-size: 1rem;
   font-style: italic;
-  color: #e5e5e5;
+  color: #f1f5f9;
   border-radius: 4px;
-  margin-bottom: 22px;
-  line-height: 1.6;
+  margin-bottom: 24px;
+  line-height: 1.65;
 }
 
 .about-text {
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   color: var(--text-muted);
-  line-height: 1.85;
+  line-height: 1.9;
   white-space: pre-line;
 }
 
-/* Responsive */
+/* ==========================================================================
+   8. RESPONSIVE
+   ========================================================================== */
 @media (max-width: 768px) {
   html, body {
     overflow-y: auto;
@@ -389,6 +602,9 @@ html, body {
     height: auto;
   }
   .project-card {
-    height: 270px;
+    height: 280px;
+  }
+  .mouse-spotlight {
+    display: none;
   }
 }

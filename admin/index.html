@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Postlain Admin</title>
+  <title>Postlain Admin // System Hub</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #070709;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #050507;
       color: #e5e5e5;
       min-height: 100vh;
       line-height: 1.5;
@@ -19,7 +22,7 @@
     .auth-overlay {
       position: fixed;
       inset: 0;
-      background: #070709;
+      background: #030305;
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -28,29 +31,30 @@
     }
     .auth-overlay.hidden { display: none !important; }
     .auth-card {
-      background: #111116;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 36px;
+      background: rgba(18, 18, 24, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 38px;
       max-width: 360px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.85), inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
     .auth-input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 1.2rem;
       letter-spacing: 4px;
       text-align: center;
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 6px;
+      border-radius: 8px;
       color: #fff;
-      margin: 16px 0;
+      margin: 18px 0;
       outline: none;
     }
-    .auth-input:focus { border-color: rgba(255, 255, 255, 0.3); }
+    .auth-input:focus { border-color: rgba(255, 255, 255, 0.35); }
 
     /* Layout */
     .admin-container {
@@ -68,70 +72,76 @@
     }
     .nav-tabs { display: flex; gap: 8px; }
     .tab-btn {
-      padding: 8px 16px;
+      padding: 8px 18px;
       background: transparent;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
+      border-radius: 20px;
       color: #a3a3a3;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .tab-btn:hover, .tab-btn.active { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: rgba(255,255,255,0.2); }
+    .tab-btn:hover, .tab-btn.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255,255,255,0.25);
+    }
 
     .btn {
       display: inline-flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: 8px 18px;
       font-size: 0.88rem;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 20px;
       border: none;
       cursor: pointer;
       text-decoration: none;
     }
     .btn-primary { background: #ffffff; color: #000000; }
     .btn-primary:hover { background: #e5e5e5; }
-    .btn-secondary { background: #1c1c24; color: #fff; }
+    .btn-secondary { background: #1c1c24; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
     .btn-danger { background: #dc2626; color: #fff; }
-    .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+    .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
 
     /* Table */
     .table-box {
-      background: #111116;
+      background: rgba(14, 14, 20, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       margin-top: 16px;
+      backdrop-filter: blur(20px);
     }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th {
-      background: #17171e;
-      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px 18px;
       font-size: 0.8rem;
       color: #a3a3a3;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     .data-table td {
-      padding: 12px 16px;
+      padding: 14px 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       font-size: 0.9rem;
     }
-    .data-table tr:hover td { background: #17171e; }
+    .data-table tr:hover td { background: rgba(255, 255, 255, 0.03); }
 
     /* Forms */
     .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
     .form-group label { font-size: 0.82rem; font-weight: 600; color: #a3a3a3; }
     .form-input, .form-textarea {
       width: 100%;
-      padding: 10px 12px;
+      padding: 10px 14px;
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
+      border-radius: 8px;
       color: #fff;
       font-size: 0.9rem;
       outline: none;
     }
-    .form-input:focus, .form-textarea:focus { border-color: rgba(255, 255, 255, 0.3); }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(255, 255, 255, 0.35); }
 
     .section-tab { display: none; }
     .section-tab.active { display: block; }
@@ -140,7 +150,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       z-index: 1000;
       display: none;
       align-items: center;
@@ -151,20 +161,20 @@
     .modal-card {
       background: #111116;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
+      border-radius: 14px;
       max-width: 500px;
       width: 100%;
     }
     .modal-header {
-      padding: 14px 18px;
+      padding: 16px 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .modal-body { padding: 18px; }
+    .modal-body { padding: 20px; }
     .modal-footer {
-      padding: 12px 18px;
+      padding: 14px 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       justify-content: flex-end;
@@ -178,7 +188,7 @@
       background: #17171e;
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 10px 18px;
-      border-radius: 6px;
+      border-radius: 20px;
       color: #fff;
       display: none;
       z-index: 10000;
@@ -189,7 +199,7 @@
   <!-- PIN Gate -->
   <div id="auth-overlay" class="auth-overlay">
     <div class="auth-card">
-      <h2 style="color: #fff; margin-bottom: 6px;">Postlain Admin</h2>
+      <h2 style="color: #fff; margin-bottom: 6px; font-family: 'Space Grotesk', sans-serif;">POSTLAIN // HUB</h2>
       <p style="color: #a3a3a3; font-size: 0.85rem;">Nhập mã PIN truy cập</p>
       <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="8" autofocus>
       <button id="pin-submit" class="btn btn-primary" style="width: 100%;">ĐĂNG NHẬP</button>
@@ -214,7 +224,7 @@
       <!-- TAB 1: 4 DỰ ÁN -->
       <section id="tab-portals" class="section-tab active">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <h2 style="font-size: 1.2rem; color: #fff;">Quản Lý 4 Cửa Sổ Live Website (Grid 2x2)</h2>
+          <h2 style="font-size: 1.2rem; color: #fff; font-family: 'Space Grotesk', sans-serif;">Quản Lý 4 Cửa Sổ Live Website (Grid 2x2)</h2>
           <button id="btn-add-item" class="btn btn-primary btn-sm">+ Thêm / Sửa Dự Án</button>
         </div>
 
@@ -237,7 +247,7 @@
 
       <!-- TAB 2: ABOUT -->
       <section id="tab-about" class="section-tab">
-        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px;">Soạn Thảo Giới Thiệu</h2>
+        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Soạn Thảo Giới Thiệu</h2>
         <form id="about-form" style="max-width: 680px;">
           <div class="form-group">
             <label>Tiêu Đề</label>
@@ -261,7 +271,7 @@
 
       <!-- TAB 3: BACKUP -->
       <section id="tab-backup" class="section-tab">
-        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px;">Xuất & Nhập JSON</h2>
+        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Xuất & Nhập JSON</h2>
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <button id="btn-download-json" class="btn btn-primary btn-sm">Tải portals.json</button>
           <button id="btn-copy-json" class="btn btn-secondary btn-sm">Sao Chép JSON</button>
@@ -270,7 +280,7 @@
           <label>Nhập file JSON:</label>
           <input type="file" id="import-file" accept=".json">
         </div>
-        <pre id="json-viewer" style="background: #000; border: 1px solid rgba(255,255,255,0.08); padding: 14px; border-radius: 6px; font-size: 0.82rem; color: #a3a3a3; max-height: 320px; overflow-y: auto;"></pre>
+        <pre id="json-viewer" style="background: #000; border: 1px solid rgba(255,255,255,0.08); padding: 14px; border-radius: 8px; font-size: 0.82rem; color: #a3a3a3; max-height: 320px; overflow-y: auto;"></pre>
       </section>
     </main>
   </div>
@@ -279,7 +289,7 @@
   <div id="modal-portal" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-title" style="font-size: 1rem; color: #fff;">Chỉnh Sửa Dự Án</h3>
+        <h3 id="modal-title" style="font-size: 1rem; color: #fff; font-family: 'Space Grotesk', sans-serif;">Chỉnh Sửa Dự Án</h3>
         <button type="button" class="btn-close-modal" style="background: transparent; border: none; color: #a3a3a3; font-size: 1.2rem; cursor: pointer;">✕</button>
       </div>
       <form id="portal-form">
@@ -313,8 +323,8 @@
   <div id="toast-box" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v11';
-    const AUTH_KEY = 'postlain_admin_logged_v11';
+    const STORAGE_KEY = 'postlain_data_v12';
+    const AUTH_KEY = 'postlain_admin_logged_v12';
     const DEFAULT_PIN = '1234';
 
     const DEFAULT_DATA = {
@@ -325,8 +335,8 @@
         content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       portals: [
-        { id: "project-1", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", image: "", desc: "Âm Nhạc Ẩn" },
-        { id: "project-2", title: "POSTLAIN MUSIC", url: "", image: "", desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu." },
+        { id: "project-1", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", image: "", desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." },
+        { id: "project-2", title: "POSTLAIN MUSIC", url: "", image: "", desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chuẩn phòng thu." },
         { id: "project-3", title: "STUDIO DAW", url: "", image: "", desc: "Trạm thu âm & phối khí kỹ thuật số trực tuyến." },
         { id: "project-4", title: "AI SOUND LAB", url: "", image: "", desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI." }
       ]
