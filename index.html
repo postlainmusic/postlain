@@ -8,35 +8,40 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Header Switcher Căn Giữa -->
-    <header class="top-header">
+  <div class="app-screen">
+    <!-- Header Căn Giữa Nhỏ Gọn -->
+    <header class="app-header">
       <div class="tab-switcher">
         <button id="btn-tab-portals" class="tab-btn active" onclick="switchTab('portals')">Cổng Website</button>
         <button id="btn-tab-about" class="tab-btn" onclick="switchTab('about')">Giới Thiệu</button>
       </div>
     </header>
 
-    <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 ĐÚNG 4 KHUNG HÌNH CHỮ NHẬT LIVE VIEW) -->
-    <main id="view-portals" class="tab-view active">
-      <div id="projects-grid" class="grid-2x2">
-        <!-- Rendered via JavaScript -->
-      </div>
-    </main>
+    <!-- Khung Chứa Các Tab -->
+    <div class="views-container">
+      <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 CỐ ĐỊNH 4 KHUNG KHÓA CỨNG TOÀN MÀN HÌNH) -->
+      <main id="view-portals" class="tab-view active">
+        <div id="projects-grid" class="grid-2x2">
+          <!-- Rendered via JavaScript -->
+        </div>
+      </main>
 
-    <!-- VIEW 2: GIỚI THIỆU -->
-    <section id="view-about" class="tab-view">
-      <div class="about-card">
-        <h1 id="about-title" class="about-title">Giới Thiệu // The Architect</h1>
-        <div id="about-alias" class="about-alias">[ ANONYMOUS_CREATOR ]</div>
-        <div id="about-quote" class="about-quote">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
-        <div id="about-content" class="about-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
+      <!-- VIEW 2: GIỚI THIỆU -->
+      <section id="view-about" class="tab-view">
+        <div class="about-wrapper">
+          <div class="about-card">
+            <h1 id="about-title" class="about-title">Giới Thiệu // The Architect</h1>
+            <div id="about-alias" class="about-alias">[ ANONYMOUS_CREATOR ]</div>
+            <div id="about-quote" class="about-quote">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
+            <div id="about-content" class="about-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
 
 Mục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.
 
 Mỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường.</div>
-      </div>
-    </section>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 
   <script src="./js/app.js"></script>

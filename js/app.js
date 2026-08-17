@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'postlain_data_v9';
+const STORAGE_KEY = 'postlain_data_v10';
 
 const DEFAULT_PORTALS = [
   {
@@ -10,19 +10,19 @@ const DEFAULT_PORTALS = [
   {
     id: "project-2",
     title: "POSTLAIN MUSIC",
-    url: "https://music.postlain.com",
+    url: "",
     desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
   },
   {
     id: "project-3",
     title: "STUDIO DAW",
-    url: "https://studio.postlain.com",
+    url: "",
     desc: "Trạm thu âm & phối khí kỹ thuật số trực tuyến."
   },
   {
     id: "project-4",
     title: "AI SOUND LAB",
-    url: "https://ai.postlain.com",
+    url: "",
     desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI."
   }
 ];
@@ -60,12 +60,34 @@ function switchTab(tabName) {
     btnAbout.classList.remove('active');
     viewPortals.classList.add('active');
     viewAbout.classList.remove('active');
+    adjustIframeScaling();
   } else {
     btnAbout.classList.add('active');
     btnPortals.classList.remove('active');
     viewAbout.classList.add('active');
     viewPortals.classList.remove('active');
   }
+}
+
+function adjustIframeScaling() {
+  const previewBoxes = document.querySelectorAll('.preview-box');
+  previewBoxes.forEach(box => {
+    const iframe = box.querySelector('.live-iframe');
+    if (!iframe) return;
+
+    const w = box.clientWidth;
+    const h = box.clientHeight;
+    if (w === 0 || h === 0) return;
+
+    const VIRTUAL_W = 1280;
+    const VIRTUAL_H = 720;
+
+    // Scale chuẩn theo tỷ lệ màn hình 16:9
+    const scale = Math.max(w / VIRTUAL_W, h / VIRTUAL_H);
+    iframe.style.transform = `scale(${scale})`;
+    iframe.style.left = `${(w - VIRTUAL_W * scale) / 2}px`;
+    iframe.style.top = `${(h - VIRTUAL_H * scale) / 2}px`;
+  });
 }
 
 function renderGrid() {
@@ -86,13 +108,13 @@ function renderGrid() {
   }
 
   grid.innerHTML = portals.map(p => {
-    const hasValidUrl = p.url && p.url.trim() !== '' && p.url !== 'https://';
+    const hasValidUrl = p.url && p.url.trim() !== '' && p.url.startsWith('http');
 
     if (hasValidUrl) {
       return `
         <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="project-card">
           <div class="preview-box">
-            <iframe src="${p.url}" class="live-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+            <iframe src="${p.url}" class="live-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
           </div>
           <div class="project-info">
             <div class="project-title">${p.title}</div>
@@ -126,7 +148,14 @@ function renderGrid() {
   if (elAlias) elAlias.textContent = `[ ${about.alias || 'ANONYMOUS'} ]`;
   if (elQuote) elQuote.textContent = `"${about.quote || ''}"`;
   if (elContent) elContent.textContent = about.content || '';
+
+  // Canh chỉnh scale ngay khi render xong
+  setTimeout(adjustIframeScaling, 50);
 }
 
+window.addEventListener('resize', adjustIframeScaling);
 document.addEventListener('DOMContentLoaded', renderGrid);
-window.addEventListener('load', renderGrid);
+window.addEventListener('load', () => {
+  renderGrid();
+  setTimeout(adjustIframeScaling, 200);
+});

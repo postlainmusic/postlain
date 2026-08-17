@@ -15,19 +15,19 @@
     {
       "id": "project-2",
       "title": "POSTLAIN MUSIC",
-      "url": "https://music.postlain.com",
+      "url": "",
       "desc": "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
     },
     {
       "id": "project-3",
       "title": "STUDIO DAW",
-      "url": "https://studio.postlain.com",
+      "url": "",
       "desc": "Trạm thu âm & phối khí kỹ thuật số trực tuyến."
     },
     {
       "id": "project-4",
       "title": "AI SOUND LAB",
-      "url": "https://ai.postlain.com",
+      "url": "",
       "desc": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI."
     }
   ]

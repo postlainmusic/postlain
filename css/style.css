@@ -13,31 +13,35 @@
   --text-muted: #a1a1aa;
 }
 
-html {
-  color-scheme: dark;
-  background-color: var(--bg);
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Khóa cứng toàn màn hình, không bị dài kéo chuột */
   background-color: var(--bg);
   color: var(--text-main);
-  min-height: 100vh;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 
-.container {
-  max-width: 1400px;
+/* Toàn bộ app vừa khít màn hình 100vh */
+.app-screen {
+  width: 100%;
+  height: 100vh;
+  padding: 16px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 24px 20px 60px;
 }
 
-/* Header Switcher căn giữa */
-.top-header {
+/* Header Căn Giữa Nhỏ Gọn */
+.app-header {
   display: flex;
   justify-content: center;
-  margin-bottom: 32px;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .tab-switcher {
@@ -50,11 +54,11 @@ body {
 }
 
 .tab-btn {
-  padding: 8px 20px;
+  padding: 6px 18px;
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
@@ -70,59 +74,65 @@ body {
   color: #ffffff;
 }
 
-/* Sections */
+/* Khung Chứa Các Tab */
+.views-container {
+  flex: 1;
+  min-height: 0; /* Cho phép flexbox co giãn chuẩn */
+  position: relative;
+}
+
 .tab-view {
   display: none;
+  width: 100%;
+  height: 100%;
 }
 
 .tab-view.active {
-  display: block;
-  animation: fadeIn 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* GRID 2x2: ĐÚNG 4 KHUNG HÌNH CHỮ NHẬT TO SẠCH SẼ */
+/* GRID 2x2 CỐ ĐỊNH 4 KHUNG VỪA KHÍT MÀN HÌNH */
 .grid-2x2 {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 18px;
+  width: 100%;
+  height: 100%;
 }
 
-/* KHUNG HÌNH CHỮ NHẬT (KHÔNG NÚT CHẤM RƯỜM RÀ) */
+/* THẺ DỰ ÁN HÌNH CHỮ NHẬT */
 .project-card {
   display: flex;
   flex-direction: column;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s ease, transform 0.2s ease;
   cursor: pointer;
+  transition: border-color 0.2s ease;
+  min-height: 0;
 }
 
 .project-card:hover {
   border-color: var(--border-hover);
-  transform: translateY(-4px);
 }
 
 .project-card.disabled {
   cursor: not-allowed;
   opacity: 0.5;
-  transform: none !important;
   border-color: var(--border) !important;
 }
 
-/* Ruột Khung Chữ Nhật: LIVE WEB PREVIEW */
+/* KHUNG RUỘT PREVIEW (CHỨA IFRAME SCALE CHUẨN 1280x720) */
 .preview-box {
   position: relative;
+  flex: 1;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  min-height: 0;
   background: #000000;
   overflow: hidden;
   display: flex;
@@ -130,96 +140,121 @@ body {
   justify-content: center;
 }
 
-/* Live Iframe Thu Nhỏ Vừa Vặn Khung Hình Chữ Nhật */
+/* Iframe ảo chuẩn 1280x720 scale tự động vừa khít khung */
 .live-iframe {
-  width: 200%;
-  height: 200%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
   border: 0;
-  transform: scale(0.5);
-  transform-origin: 0 0;
-  pointer-events: none; /* Đảm bảo click vào thẻ sẽ mở tab mới trực tiếp */
+  pointer-events: none;
+  transform-origin: top left;
   background: #000000;
 }
 
 .dev-placeholder {
   color: #71717a;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   text-align: center;
-  padding: 20px;
+  padding: 16px;
   letter-spacing: 0.5px;
 }
 
-/* Phần Tên & Mô Tả Dưới Khung */
+/* PHẦN DƯỚI CARD: TÊN + MÔ TẢ */
 .project-info {
-  padding: 16px 18px;
+  padding: 10px 14px;
   background: var(--card-bg);
   border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .project-title {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #ffffff;
 }
 
 .project-desc {
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Giới Thiệu (About) */
+/* GIỚI THIỆU (ABOUT) */
+.about-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
 .about-card {
-  max-width: 800px;
-  margin: 20px auto;
+  max-width: 760px;
+  width: 100%;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 40px;
+  border-radius: 10px;
+  padding: 36px;
 }
 
 .about-title {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 6px;
 }
 
 .about-alias {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #71717a;
   font-family: monospace;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .about-quote {
   background: #171717;
   border-left: 3px solid #525252;
-  padding: 16px 20px;
-  font-size: 1.05rem;
+  padding: 14px 18px;
+  font-size: 0.98rem;
   font-style: italic;
   color: #e5e5e5;
   border-radius: 4px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .about-text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.8;
   white-space: pre-line;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
+/* Responsive khi xem trên màn hình nhỏ */
+@media (max-width: 768px) {
+  html, body {
+    overflow-y: auto;
+    height: auto;
+  }
+  .app-screen {
+    height: auto;
+    min-height: 100vh;
+    padding: 16px;
+  }
   .grid-2x2 {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
   }
-  .about-card {
-    padding: 24px;
+  .project-card {
+    height: 260px;
   }
 }
