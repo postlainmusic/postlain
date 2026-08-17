@@ -1,0 +1,196 @@
+{
+  "settings": {
+    "siteTitle": "Postlain Ecosystem",
+    "siteName": "Postlain",
+    "tagline": "Cổng kết nối toàn diện đến các dịch vụ, ứng dụng và nền tảng trong hệ sinh thái Postlain",
+    "announcement": {
+      "enabled": true,
+      "badge": "MỚI",
+      "text": "Chào mừng bạn đến với Postlain Hub! Tất cả các dịch vụ vệ tinh đã sẵn sàng kết nối.",
+      "link": "#portals"
+    },
+    "socials": {
+      "github": "https://github.com/postlainmusic",
+      "youtube": "https://youtube.com",
+      "discord": "https://discord.gg",
+      "telegram": "https://t.me",
+      "email": "contact@postlain.com"
+    },
+    "theme": {
+      "accentColor": "#6366f1",
+      "glowColor": "#a855f7"
+    }
+  },
+  "categories": [
+    {
+      "id": "music",
+      "name": "Âm Nhạc & Sáng Tạo",
+      "icon": "music",
+      "color": "#ec4899",
+      "description": "Nền tảng phát nhạc, phòng thu trực tuyến và thư viện âm thanh"
+    },
+    {
+      "id": "tools",
+      "name": "Công Cụ & Ứng Dụng",
+      "icon": "cpu",
+      "color": "#06b6d4",
+      "description": "Các tiện ích thông minh, công cụ làm việc và chuyển đổi dữ liệu"
+    },
+    {
+      "id": "ai",
+      "name": "AI & Công Nghệ Mới",
+      "icon": "sparkles",
+      "color": "#8b5cf6",
+      "description": "Trí tuệ nhân tạo, tự động hóa và các dự án phòng thí nghiệm"
+    },
+    {
+      "id": "community",
+      "name": "Cộng Đồng & Diễn Đàn",
+      "icon": "users",
+      "color": "#10b981",
+      "description": "Nơi kết nối các nhà sản xuất âm nhạc, sáng tạo nội dung và lập trình viên"
+    },
+    {
+      "id": "store",
+      "name": "Cửa Hàng & Dịch Vụ",
+      "icon": "shopping-bag",
+      "color": "#f59e0b",
+      "description": "Bản quyền âm nhạc, soundkits, plugin và gói dịch vụ cao cấp"
+    },
+    {
+      "id": "docs",
+      "name": "Tài Liệu & API",
+      "icon": "book-open",
+      "color": "#64748b",
+      "description": "Hướng dẫn sử dụng, tài liệu kỹ thuật và cổng API mở cho lập trình viên"
+    }
+  ],
+  "portals": [
+    {
+      "id": "postlain-music",
+      "title": "Postlain Music Player",
+      "url": "https://music.postlain.com",
+      "category": "music",
+      "description": "Nền tảng stream nhạc chất lượng cao (FLAC/Lossless) với giao diện hiện đại và trải nghiệm nghe không gián đoạn.",
+      "icon": "disc-3",
+      "badge": "Phổ biến",
+      "status": "live",
+      "featured": true,
+      "accent": "#ec4899",
+      "order": 1,
+      "clicks": 1420
+    },
+    {
+      "id": "postlain-studio",
+      "title": "Postlain Studio DAW",
+      "url": "https://studio.postlain.com",
+      "category": "music",
+      "description": "Trình tạo nhạc và phối âm trực tiếp trên trình duyệt với hỗ trợ synthesizer ảo và sampler chuyên nghiệp.",
+      "icon": "sliders",
+      "badge": "Hot",
+      "status": "live",
+      "featured": true,
+      "accent": "#f43f5e",
+      "order": 2,
+      "clicks": 980
+    },
+    {
+      "id": "postlain-ai-lab",
+      "title": "Postlain AI Sound Lab",
+      "url": "https://ai.postlain.com",
+      "category": "ai",
+      "description": "Bộ công cụ AI tách giọng (Stem Separation), trích xuất beat và phân tích hòa âm tự động.",
+      "icon": "sparkles",
+      "badge": "AI 2.0",
+      "status": "live",
+      "featured": true,
+      "accent": "#8b5cf6",
+      "order": 3,
+      "clicks": 2150
+    },
+    {
+      "id": "postlain-beat-store",
+      "title": "Beat & Sound Store",
+      "url": "https://store.postlain.com",
+      "category": "store",
+      "description": "Chợ bản quyền âm nhạc, Sound Kits độc quyền, preset synthesizer và loop mẫu chuẩn studio.",
+      "icon": "shopping-cart",
+      "badge": "Store",
+      "status": "live",
+      "featured": false,
+      "accent": "#f59e0b",
+      "order": 4,
+      "clicks": 640
+    },
+    {
+      "id": "postlain-community",
+      "title": "Postlain Hub Community",
+      "url": "https://hub.postlain.com",
+      "category": "community",
+      "description": "Không gian trao đổi kinh nghiệm, chia sẻ track nhạc mới và hợp tác phát triển giữa các nghệ sĩ.",
+      "icon": "message-square",
+      "badge": "Cộng đồng",
+      "status": "live",
+      "featured": false,
+      "accent": "#10b981",
+      "order": 5,
+      "clicks": 530
+    },
+    {
+      "id": "postlain-audio-converter",
+      "title": "Audio & Video Suite",
+      "url": "https://tools.postlain.com",
+      "category": "tools",
+      "description": "Công cụ chuyển đổi định dạng âm thanh siêu tốc, cắt ghép nhạc và tối ưu hóa metadata file âm thanh.",
+      "icon": "wand-2",
+      "badge": "Tiện ích",
+      "status": "live",
+      "featured": false,
+      "accent": "#06b6d4",
+      "order": 6,
+      "clicks": 710
+    },
+    {
+      "id": "postlain-developer-api",
+      "title": "Developer API & SDK",
+      "url": "https://docs.postlain.com",
+      "category": "docs",
+      "description": "Tài liệu API tích hợp dịch vụ Postlain, webhook và SDK cho Node.js, Python và Web Client.",
+      "icon": "terminal",
+      "badge": "Dev",
+      "status": "live",
+      "featured": false,
+      "accent": "#64748b",
+      "order": 7,
+      "clicks": 310
+    },
+    {
+      "id": "postlain-lyrics-sync",
+      "title": "Lyric Sync & Karaoke Lab",
+      "url": "https://lyrics.postlain.com",
+      "category": "tools",
+      "description": "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc, .srt) với tính năng phát hiện beat tự động.",
+      "icon": "mic-2",
+      "badge": "Beta",
+      "status": "beta",
+      "featured": false,
+      "accent": "#3b82f6",
+      "order": 8,
+      "clicks": 420
+    },
+    {
+      "id": "postlain-cloud-vault",
+      "title": "Cloud Sound Vault",
+      "url": "https://cloud.postlain.com",
+      "category": "tools",
+      "description": "Lưu trữ dự án âm nhạc (STEMs, DAW project files) an toàn trên nền tảng đám mây phân tán.",
+      "icon": "cloud",
+      "badge": "Sắp ra mắt",
+      "status": "coming_soon",
+      "featured": false,
+      "accent": "#a855f7",
+      "order": 9,
+      "clicks": 180
+    }
+  ]
+}

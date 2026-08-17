@@ -1,0 +1,72 @@
+/* Postlain Ecosystem Design System Variables */
+:root {
+  /* Color Palette - Dark Cyber & Futuristic Glass */
+  --bg-primary: #080b14;
+  --bg-secondary: #0d1322;
+  --bg-tertiary: #131c31;
+  --bg-surface: rgba(19, 28, 49, 0.7);
+  --bg-surface-hover: rgba(29, 41, 71, 0.85);
+  --bg-card: rgba(16, 24, 43, 0.65);
+  --bg-card-hover: rgba(24, 35, 63, 0.85);
+  --bg-glass: rgba(13, 19, 34, 0.55);
+  --bg-glass-strong: rgba(13, 19, 34, 0.85);
+  --bg-modal: #0f172a;
+
+  /* Border & Dividers */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-highlight: rgba(99, 102, 241, 0.4);
+  --border-focus: #6366f1;
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+  --text-accent: #818cf8;
+
+  /* Vibrant Accents */
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #4f46e5;
+  --accent-secondary: #8b5cf6;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+
+  /* Status Colors */
+  --status-live: #10b981;
+  --status-beta: #06b6d4;
+  --status-coming: #8b5cf6;
+  --status-maintenance: #f59e0b;
+
+  /* Glow & Shadows */
+  --glow-primary: 0 0 35px -5px rgba(99, 102, 241, 0.35);
+  --glow-pink: 0 0 35px -5px rgba(236, 72, 153, 0.35);
+  --glow-cyan: 0 0 35px -5px rgba(6, 182, 212, 0.35);
+  --glow-purple: 0 0 35px -5px rgba(139, 92, 246, 0.35);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.65);
+
+  /* Typography */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing & Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Animations */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
