@@ -1,65 +1,33 @@
-/**
- * Postlain Portal - Minimal App Engine
- */
-
-const STORAGE_KEY = 'postlain_data_v6';
+const STORAGE_KEY = 'postlain_data_v7';
 
 const DEFAULT_PORTALS = [
   {
-    id: "hidden-music",
+    id: "project-1",
     title: "Hidden Music",
     url: "https://hiddenmusic.postlain.com",
-    tagline: "Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.",
-    image: ""
+    image: "",
+    desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
   },
   {
-    id: "postlain-music",
+    id: "project-2",
     title: "Postlain Music",
     url: "https://music.postlain.com",
-    tagline: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.",
-    image: ""
+    image: "",
+    desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao."
   },
   {
-    id: "studio-daw",
+    id: "project-3",
     title: "Studio DAW",
     url: "https://studio.postlain.com",
-    tagline: "Trạm thu âm & phối khí trực tuyến trên trình duyệt.",
-    image: ""
+    image: "",
+    desc: "Trạm thu âm & phối khí trực tuyến trên trình duyệt."
   },
   {
-    id: "ai-sound-lab",
+    id: "project-4",
     title: "AI Sound Lab",
     url: "https://ai.postlain.com",
-    tagline: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.",
-    image: ""
-  },
-  {
-    id: "sound-vault",
-    title: "Sound Vault",
-    url: "https://store.postlain.com",
-    tagline: "Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.",
-    image: ""
-  },
-  {
-    id: "hub-community",
-    title: "Hub Community",
-    url: "https://hub.postlain.com",
-    tagline: "Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.",
-    image: ""
-  },
-  {
-    id: "audio-suite",
-    title: "Audio Suite",
-    url: "https://tools.postlain.com",
-    tagline: "Bộ công cụ cắt ghép, chuyển đổi định dạng và tối ưu metadata audio.",
-    image: ""
-  },
-  {
-    id: "lyric-sync",
-    title: "Lyric Sync",
-    url: "https://lyrics.postlain.com",
-    tagline: "Trình đồng bộ lời bài hát (.lrc / .srt) thời gian thực.",
-    image: ""
+    image: "",
+    desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI."
   }
 ];
 
@@ -70,7 +38,7 @@ const DEFAULT_ABOUT = {
   content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
 };
 
-function getLocalData() {
+function getData() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -80,92 +48,94 @@ function getLocalData() {
       }
     }
   } catch (e) {}
-  const initial = { portals: DEFAULT_PORTALS, about: DEFAULT_ABOUT };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
-  return initial;
+  const init = { portals: DEFAULT_PORTALS, about: DEFAULT_ABOUT };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(init));
+  return init;
 }
 
-function setMainTab(tab) {
-  const btnPortals = document.getElementById('nav-btn-portals');
-  const btnAbout = document.getElementById('nav-btn-about');
-  const secPortals = document.getElementById('view-portals');
-  const secAbout = document.getElementById('view-about');
+function switchTab(tabName) {
+  const btnPortals = document.getElementById('btn-tab-portals');
+  const btnAbout = document.getElementById('btn-tab-about');
+  const viewPortals = document.getElementById('view-portals');
+  const viewAbout = document.getElementById('view-about');
 
-  if (tab === 'portals') {
+  if (tabName === 'portals') {
     btnPortals.classList.add('active');
     btnAbout.classList.remove('active');
-    secPortals.classList.add('active');
-    secAbout.classList.remove('active');
+    viewPortals.classList.add('active');
+    viewAbout.classList.remove('active');
   } else {
     btnAbout.classList.add('active');
     btnPortals.classList.remove('active');
-    secAbout.classList.add('active');
-    secPortals.classList.remove('active');
+    viewAbout.classList.add('active');
+    viewPortals.classList.remove('active');
   }
-}
-
-function renderScreenContent(portal) {
-  if (portal.image) {
-    return `<img src="${portal.image}" alt="${portal.title}" class="window-snapshot" loading="lazy">`;
-  }
-  
-  // Clean, realistic live viewport preview
-  const domain = portal.url.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-  return `
-    <div class="mockup-ui-canvas">
-      <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">
-        ${domain}
-      </div>
-      <div class="mockup-music-bars">
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-        <div class="mockup-bar"></div>
-      </div>
-      <div style="font-size: 0.75rem; color: #3b82f6; margin-top: 14px; font-weight: 600;">
-        CLICK TO OPEN ↗
-      </div>
-    </div>
-  `;
 }
 
 function renderGrid() {
-  const data = getLocalData();
-  const container = document.getElementById('windows-grid');
-  if (!container) return;
+  const data = getData();
+  const grid = document.getElementById('projects-grid');
+  if (!grid) return;
 
-  container.innerHTML = data.portals.map(p => `
-    <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="browser-window">
-      <!-- Title Bar -->
-      <div class="window-titlebar">
-        <div class="window-controls">
-          <span class="dot close"></span>
-          <span class="dot min"></span>
-          <span class="dot max"></span>
-        </div>
-        <div class="window-address-bar">
-          <span class="lock-icon">🔒</span>
-          <span>${p.url}</span>
-        </div>
-        <span class="open-external-btn">↗</span>
-      </div>
+  // Lấy đúng 4 items cho Grid 2x2
+  const portals = data.portals.slice(0, 4);
 
-      <!-- Viewport Screen -->
-      <div class="window-viewport">
-        ${renderScreenContent(p)}
-        
-        <!-- Bottom Info Bar -->
-        <div class="window-footer-bar">
-          <div class="window-site-name">${p.title}</div>
-          <div class="window-tagline">${p.tagline || ''}</div>
+  // Điền đủ 4 items nếu thiếu
+  while (portals.length < 4) {
+    portals.push({
+      id: `project-${portals.length + 1}`,
+      title: `Dự án ${portals.length + 1}`,
+      url: "https://postlain.com",
+      image: "",
+      desc: "Dự án mới trong hệ sinh thái."
+    });
+  }
+
+  grid.innerHTML = portals.map(p => {
+    const hasImage = p.image && p.image.trim() !== '';
+
+    if (hasImage) {
+      return `
+        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="browser-card active-link">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="browser-url">${p.url}</div>
+          </div>
+          <div class="browser-body">
+            <img src="${p.image}" alt="${p.title}" class="preview-img" loading="lazy">
+          </div>
+          <div class="browser-info">
+            <div class="project-title">${p.title}</div>
+            <div class="project-desc">${p.desc || ''}</div>
+          </div>
+        </a>
+      `;
+    } else {
+      return `
+        <div class="browser-card disabled">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="browser-url">${p.url}</div>
+          </div>
+          <div class="browser-body">
+            <div class="dev-placeholder">Đang trong thời gian phát triển</div>
+          </div>
+          <div class="browser-info">
+            <div class="project-title">${p.title}</div>
+            <div class="project-desc">${p.desc || ''}</div>
+          </div>
         </div>
-      </div>
-    </a>
-  `).join('');
+      `;
+    }
+  }).join('');
 
   // Render About
   const about = data.about || DEFAULT_ABOUT;
@@ -180,6 +150,5 @@ function renderGrid() {
   if (elContent) elContent.textContent = about.content || '';
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', renderGrid);
 window.addEventListener('load', renderGrid);

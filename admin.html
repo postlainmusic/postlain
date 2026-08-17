@@ -9,17 +9,17 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #0f1117;
-      color: #e2e8f0;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
       min-height: 100vh;
       line-height: 1.5;
     }
 
-    /* Auth Screen */
+    /* Auth Gate */
     .auth-overlay {
       position: fixed;
       inset: 0;
-      background: #0f1117;
+      background: #0a0a0a;
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -27,9 +27,9 @@
       padding: 20px;
     }
     .auth-overlay.hidden { display: none !important; }
-    .auth-box {
-      background: #181b24;
-      border: 1px solid #272c3d;
+    .auth-card {
+      background: #141414;
+      border: 1px solid #262626;
       border-radius: 8px;
       padding: 32px;
       max-width: 360px;
@@ -42,111 +42,104 @@
       font-size: 1.2rem;
       letter-spacing: 4px;
       text-align: center;
-      background: #0d0e14;
-      border: 1px solid #272c3d;
+      background: #000000;
+      border: 1px solid #262626;
       border-radius: 6px;
       color: #fff;
       margin: 16px 0;
       outline: none;
     }
-    .auth-input:focus { border-color: #3b82f6; }
+    .auth-input:focus { border-color: #525252; }
 
     /* Layout */
-    .admin-layout { display: flex; min-height: 100vh; }
-    .admin-sidebar {
-      width: 220px;
-      background: #141720;
-      border-right: 1px solid #212534;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-shrink: 0;
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px;
     }
-    .sidebar-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
-    .nav-list { display: flex; flex-direction: column; gap: 4px; }
-    .nav-tab-btn {
-      padding: 8px 12px;
-      color: #94a3b8;
+    .admin-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #262626;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .nav-tabs { display: flex; gap: 8px; }
+    .tab-btn {
+      padding: 8px 16px;
       background: transparent;
-      border: none;
+      border: 1px solid #262626;
       border-radius: 6px;
-      font-size: 0.88rem;
+      color: #a3a3a3;
       font-weight: 600;
-      text-align: left;
       cursor: pointer;
     }
-    .nav-tab-btn:hover, .nav-tab-btn.active { background: #212636; color: #fff; }
-    .nav-tab-btn.active { color: #3b82f6; }
+    .tab-btn:hover, .tab-btn.active { background: #262626; color: #fff; }
 
-    .admin-content { flex: 1; padding: 28px 36px; overflow-y: auto; }
-    .page-heading { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 20px; }
-
-    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       padding: 8px 16px;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 600;
       border-radius: 6px;
       border: none;
       cursor: pointer;
       text-decoration: none;
     }
-    .btn-primary { background: #2563eb; color: #fff; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-secondary { background: #212636; color: #cbd5e1; }
+    .btn-primary { background: #ffffff; color: #000000; }
+    .btn-primary:hover { background: #e5e5e5; }
+    .btn-secondary { background: #262626; color: #fff; }
     .btn-danger { background: #dc2626; color: #fff; }
-    .btn-sm { padding: 4px 10px; font-size: 0.78rem; }
+    .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
 
     /* Table */
-    .table-container {
-      background: #141720;
-      border: 1px solid #212534;
+    .table-box {
+      background: #141414;
+      border: 1px solid #262626;
       border-radius: 8px;
       overflow: hidden;
-      margin-top: 14px;
+      margin-top: 16px;
     }
     .data-table { width: 100%; border-collapse: collapse; text-align: left; }
     .data-table th {
-      background: #181c27;
+      background: #1a1a1a;
       padding: 12px 16px;
-      font-size: 0.78rem;
-      color: #94a3b8;
-      border-bottom: 1px solid #212534;
+      font-size: 0.8rem;
+      color: #a3a3a3;
+      border-bottom: 1px solid #262626;
     }
     .data-table td {
       padding: 12px 16px;
-      border-bottom: 1px solid #1a1e2b;
-      font-size: 0.88rem;
+      border-bottom: 1px solid #1f1f1f;
+      font-size: 0.9rem;
     }
-    .data-table tr:hover td { background: #181c28; }
+    .data-table tr:hover td { background: #1a1a1a; }
 
     /* Forms */
-    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-    .form-group label { font-size: 0.8rem; font-weight: 600; color: #94a3b8; }
-    .form-control {
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .form-group label { font-size: 0.82rem; font-weight: 600; color: #a3a3a3; }
+    .form-input, .form-textarea {
       width: 100%;
-      padding: 8px 12px;
-      background: #0d0e14;
-      border: 1px solid #272c3d;
+      padding: 10px 12px;
+      background: #000000;
+      border: 1px solid #262626;
       border-radius: 6px;
       color: #fff;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       outline: none;
     }
-    .form-control:focus { border-color: #3b82f6; }
+    .form-input:focus, .form-textarea:focus { border-color: #525252; }
 
-    .tab-section { display: none; }
-    .tab-section.active { display: block; }
+    .section-tab { display: none; }
+    .section-tab.active { display: block; }
 
     /* Modal */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0,0,0,0.8);
       z-index: 1000;
       display: none;
       align-items: center;
@@ -154,24 +147,24 @@
       padding: 20px;
     }
     .modal-overlay.active { display: flex !important; }
-    .modal-box {
-      background: #181b24;
-      border: 1px solid #272c3d;
+    .modal-card {
+      background: #141414;
+      border: 1px solid #262626;
       border-radius: 8px;
-      max-width: 520px;
+      max-width: 500px;
       width: 100%;
     }
-    .modal-head {
+    .modal-header {
       padding: 14px 18px;
-      border-bottom: 1px solid #272c3d;
+      border-bottom: 1px solid #262626;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .modal-body { padding: 18px; }
-    .modal-foot {
+    .modal-footer {
       padding: 12px 18px;
-      border-top: 1px solid #272c3d;
+      border-top: 1px solid #262626;
       display: flex;
       justify-content: flex-end;
       gap: 8px;
@@ -181,8 +174,8 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #181b24;
-      border: 1px solid #3b82f6;
+      background: #1a1a1a;
+      border: 1px solid #525252;
       padding: 10px 18px;
       border-radius: 6px;
       color: #fff;
@@ -194,135 +187,133 @@
 <body>
   <!-- PIN Gate -->
   <div id="auth-overlay" class="auth-overlay">
-    <div class="auth-box">
+    <div class="auth-card">
       <h2 style="color: #fff; margin-bottom: 6px;">Postlain Admin</h2>
-      <p style="color: #94a3b8; font-size: 0.85rem;">Nhập mã PIN truy cập</p>
+      <p style="color: #a3a3a3; font-size: 0.85rem;">Nhập mã PIN truy cập</p>
       <input type="password" id="pin-input" class="auth-input" placeholder="••••" maxlength="8" autofocus>
       <button id="pin-submit" class="btn btn-primary" style="width: 100%;">ĐĂNG NHẬP</button>
-      <div style="font-size: 0.75rem; color: #64748b; margin-top: 10px;">Mặc định: 1234</div>
+      <div style="font-size: 0.75rem; color: #737373; margin-top: 10px;">Mặc định: 1234</div>
     </div>
   </div>
 
-  <div class="admin-layout">
-    <aside class="admin-sidebar">
-      <div>
-        <div class="sidebar-title">Postlain Admin</div>
-        <nav class="nav-list">
-          <button class="nav-tab-btn active" data-tab="portals">Danh Sách Website</button>
-          <button class="nav-tab-btn" data-tab="about">Soạn Thảo About</button>
-          <button class="nav-tab-btn" data-tab="backup">Sao Lưu & JSON</button>
-        </nav>
+  <div class="admin-container">
+    <header class="admin-nav-bar">
+      <div class="nav-tabs">
+        <button class="tab-btn active" data-tab="portals">4 Khung Dự Án</button>
+        <button class="tab-btn" data-tab="about">Nội Dung About</button>
+        <button class="tab-btn" data-tab="backup">Sao Lưu JSON</button>
       </div>
-
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="/" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%; text-align: center;">Xem Trang Chủ</a>
-        <button id="btn-logout" class="btn btn-danger btn-sm" style="width: 100%;">Đăng Xuất</button>
+      <div style="display: flex; gap: 8px;">
+        <a href="/" target="_blank" class="btn btn-secondary btn-sm">Xem Trang Chủ</a>
+        <button id="btn-logout" class="btn btn-danger btn-sm">Đăng Xuất</button>
       </div>
-    </aside>
+    </header>
 
-    <main class="admin-content">
-      <!-- TAB 1: PORTALS -->
-      <section id="tab-portals" class="tab-section active">
+    <main>
+      <!-- TAB 1: 4 DỰ ÁN -->
+      <section id="tab-portals" class="section-tab active">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <h1 class="page-heading" style="margin: 0;">Quản Lý Cổng Website</h1>
-          <button id="btn-add-portal" class="btn btn-primary">+ Thêm Website Mới</button>
+          <h2 style="font-size: 1.2rem; color: #fff;">Quản Lý 4 Cửa Sổ Màn Hình (Grid 2x2)</h2>
+          <button id="btn-add-item" class="btn btn-primary btn-sm">+ Thêm / Sửa Dự Án</button>
         </div>
 
-        <div class="table-container">
+        <div class="table-box">
           <table class="data-table">
             <thead>
               <tr>
                 <th style="width: 50px;">#</th>
-                <th>Tên Website & URL</th>
-                <th>1 Dòng Giới Thiệu</th>
+                <th>Tên Dự Án</th>
+                <th>URL Website</th>
+                <th>URL Ảnh Preview</th>
+                <th>Mô Tả</th>
                 <th style="width: 120px;">Thao Tác</th>
               </tr>
             </thead>
-            <tbody id="portals-tbody"></tbody>
+            <tbody id="table-body"></tbody>
           </table>
         </div>
       </section>
 
       <!-- TAB 2: ABOUT -->
-      <section id="tab-about" class="tab-section">
-        <h1 class="page-heading">Soạn Thảo Giới Thiệu (About)</h1>
+      <section id="tab-about" class="section-tab">
+        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px;">Soạn Thảo Giới Thiệu</h2>
         <form id="about-form" style="max-width: 680px;">
           <div class="form-group">
             <label>Tiêu Đề</label>
-            <input type="text" id="about-title-input" class="form-control">
+            <input type="text" id="about-title" class="form-input">
           </div>
           <div class="form-group">
             <label>Bí Danh (Alias)</label>
-            <input type="text" id="about-alias-input" class="form-control">
+            <input type="text" id="about-alias" class="form-input">
           </div>
           <div class="form-group">
-            <label>Trích Dẫn (Quote)</label>
-            <input type="text" id="about-quote-input" class="form-control">
+            <label>Câu Trích Dẫn (Quote)</label>
+            <input type="text" id="about-quote" class="form-input">
           </div>
           <div class="form-group">
             <label>Nội Dung</label>
-            <textarea id="about-content-input" class="form-control" rows="8"></textarea>
+            <textarea id="about-content" class="form-textarea" rows="8"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Lưu Nội Dung About</button>
+          <button type="submit" class="btn btn-primary">Lưu Nội Dung</button>
         </form>
       </section>
 
       <!-- TAB 3: BACKUP -->
-      <section id="tab-backup" class="tab-section">
-        <h1 class="page-heading">Xuất & Sao Lưu JSON</h1>
+      <section id="tab-backup" class="section-tab">
+        <h2 style="font-size: 1.2rem; color: #fff; margin-bottom: 16px;">Xuất & Nhập JSON</h2>
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-          <button id="btn-download-json" class="btn btn-primary">Tải portals.json</button>
-          <button id="btn-copy-json" class="btn btn-secondary">Sao Chép JSON</button>
+          <button id="btn-download-json" class="btn btn-primary btn-sm">Tải portals.json</button>
+          <button id="btn-copy-json" class="btn btn-secondary btn-sm">Sao Chép JSON</button>
         </div>
-        <div class="form-group" style="max-width: 480px; margin-bottom: 16px;">
-          <label>Nhập file JSON dự phòng:</label>
-          <input type="file" id="import-json-file" accept=".json">
+        <div class="form-group" style="max-width: 400px; margin-bottom: 16px;">
+          <label>Nhập file JSON:</label>
+          <input type="file" id="import-file" accept=".json">
         </div>
-        <pre id="json-preview" style="background: #0d0e14; border: 1px solid #212534; padding: 14px; border-radius: 6px; font-size: 0.8rem; color: #38bdf8; max-height: 340px; overflow-y: auto;"></pre>
+        <pre id="json-viewer" style="background: #000; border: 1px solid #262626; padding: 14px; border-radius: 6px; font-size: 0.82rem; color: #a3a3a3; max-height: 320px; overflow-y: auto;"></pre>
       </section>
     </main>
   </div>
 
-  <!-- MODAL: ADD/EDIT -->
+  <!-- MODAL EDIT/ADD -->
   <div id="modal-portal" class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3 id="modal-title" style="font-size: 1rem; color: #fff;">Thêm Website Mới</h3>
-        <button type="button" class="btn-close-modal" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;">✕</button>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" style="font-size: 1rem; color: #fff;">Chỉnh Sửa Dự Án</h3>
+        <button type="button" class="btn-close-modal" style="background: transparent; border: none; color: #a3a3a3; font-size: 1.2rem; cursor: pointer;">✕</button>
       </div>
       <form id="portal-form">
         <div class="modal-body">
-          <input type="hidden" id="portal-id">
+          <input type="hidden" id="form-id">
           <div class="form-group">
-            <label>Tên Website *</label>
-            <input type="text" id="portal-title" class="form-control" placeholder="VD: Hidden Music" required>
+            <label>1. Tên Dự Án *</label>
+            <input type="text" id="form-title" class="form-input" placeholder="VD: Hidden Music" required>
           </div>
           <div class="form-group">
-            <label>Đường Dẫn URL *</label>
-            <input type="url" id="portal-url" class="form-control" placeholder="https://hiddenmusic.postlain.com" required>
+            <label>2. URL Website *</label>
+            <input type="url" id="form-url" class="form-input" placeholder="https://hiddenmusic.postlain.com" required>
           </div>
           <div class="form-group">
-            <label>1 Dòng Giới Thiệu (Tagline) *</label>
-            <input type="text" id="portal-tagline" class="form-control" placeholder="VD: Nền tảng phát nhạc độc lập." required>
+            <label>3. URL Ảnh Preview (Để trống nếu muốn hiện 'Đang phát triển')</label>
+            <input type="text" id="form-image" class="form-input" placeholder="https://... hoặc /images/preview.png">
           </div>
           <div class="form-group">
-            <label>Link Ảnh Chụp Màn Hình (Tùy chọn)</label>
-            <input type="text" id="portal-image" class="form-control" placeholder="https://... (để trống nếu dùng giao diện live)">
+            <label>4. Mô Tả Ngắn Gọn *</label>
+            <input type="text" id="form-desc" class="form-input" placeholder="VD: Nền tảng âm nhạc độc lập." required>
           </div>
         </div>
-        <div class="modal-foot">
+        <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-close-modal">Hủy</button>
-          <button type="submit" class="btn btn-primary">Lưu Website</button>
+          <button type="submit" class="btn btn-primary">Lưu Dự Án</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div id="toast-msg" class="toast"></div>
+  <div id="toast-box" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v6';
-    const AUTH_KEY = 'postlain_admin_logged_v6';
+    const STORAGE_KEY = 'postlain_data_v7';
+    const AUTH_KEY = 'postlain_admin_logged_v7';
     const DEFAULT_PIN = '1234';
 
     const DEFAULT_DATA = {
@@ -333,14 +324,10 @@
         content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       portals: [
-        { id: "hidden-music", title: "Hidden Music", url: "https://hiddenmusic.postlain.com", tagline: "Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.", image: "" },
-        { id: "postlain-music", title: "Postlain Music", url: "https://music.postlain.com", tagline: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.", image: "" },
-        { id: "studio-daw", title: "Studio DAW", url: "https://studio.postlain.com", tagline: "Trạm thu âm & phối khí trực tuyến trên trình duyệt.", image: "" },
-        { id: "ai-sound-lab", title: "AI Sound Lab", url: "https://ai.postlain.com", tagline: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.", image: "" },
-        { id: "sound-vault", title: "Sound Vault", url: "https://store.postlain.com", tagline: "Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.", image: "" },
-        { id: "hub-community", title: "Hub Community", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.", image: "" },
-        { id: "audio-suite", title: "Audio Suite", url: "https://tools.postlain.com", tagline: "Bộ công cụ cắt ghép, chuyển đổi định dạng và tối ưu metadata audio.", image: "" },
-        { id: "lyric-sync", title: "Lyric Sync", url: "https://lyrics.postlain.com", tagline: "Trình đồng bộ lời bài hát (.lrc / .srt) thời gian thực.", image: "" }
+        { id: "project-1", title: "Hidden Music", url: "https://hiddenmusic.postlain.com", image: "", desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." },
+        { id: "project-2", title: "Postlain Music", url: "https://music.postlain.com", image: "", desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao." },
+        { id: "project-3", title: "Studio DAW", url: "https://studio.postlain.com", image: "", desc: "Trạm thu âm & phối khí trực tuyến trên trình duyệt." },
+        { id: "project-4", title: "AI Sound Lab", url: "https://ai.postlain.com", image: "", desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI." }
       ]
     };
 
@@ -360,8 +347,8 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
 
-    function notify(msg) {
-      const el = document.getElementById('toast-msg');
+    function showToast(msg) {
+      const el = document.getElementById('toast-box');
       el.textContent = msg;
       el.style.display = 'block';
       setTimeout(() => { el.style.display = 'none'; }, 2200);
@@ -375,30 +362,30 @@
       const pinSubmit = document.getElementById('pin-submit');
       const btnLogout = document.getElementById('btn-logout');
 
-      const navBtns = document.querySelectorAll('.nav-tab-btn');
-      const tabSections = document.querySelectorAll('.tab-section');
+      const tabBtns = document.querySelectorAll('.nav-tabs .tab-btn');
+      const tabSections = document.querySelectorAll('.section-tab');
 
-      const tbody = document.getElementById('portals-tbody');
-      const btnAdd = document.getElementById('btn-add-portal');
+      const tbody = document.getElementById('table-body');
+      const btnAdd = document.getElementById('btn-add-item');
       const modal = document.getElementById('modal-portal');
       const modalTitle = document.getElementById('modal-title');
       const form = document.getElementById('portal-form');
-      const inpId = document.getElementById('portal-id');
-      const inpTitle = document.getElementById('portal-title');
-      const inpUrl = document.getElementById('portal-url');
-      const inpTagline = document.getElementById('portal-tagline');
-      const inpImage = document.getElementById('portal-image');
+      const inpId = document.getElementById('form-id');
+      const inpTitle = document.getElementById('form-title');
+      const inpUrl = document.getElementById('form-url');
+      const inpImage = document.getElementById('form-image');
+      const inpDesc = document.getElementById('form-desc');
 
       const aboutForm = document.getElementById('about-form');
-      const inpAboutTitle = document.getElementById('about-title-input');
-      const inpAboutAlias = document.getElementById('about-alias-input');
-      const inpAboutQuote = document.getElementById('about-quote-input');
-      const inpAboutContent = document.getElementById('about-content-input');
+      const inpAboutTitle = document.getElementById('about-title');
+      const inpAboutAlias = document.getElementById('about-alias');
+      const inpAboutQuote = document.getElementById('about-quote');
+      const inpAboutContent = document.getElementById('about-content');
 
-      const jsonPreview = document.getElementById('json-preview');
+      const jsonViewer = document.getElementById('json-viewer');
       const btnCopyJson = document.getElementById('btn-copy-json');
       const btnDownloadJson = document.getElementById('btn-download-json');
-      const inpImport = document.getElementById('import-json-file');
+      const inpImport = document.getElementById('import-file');
 
       function checkAuth() {
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
@@ -416,7 +403,7 @@
           sessionStorage.setItem(AUTH_KEY, 'true');
           authOverlay.classList.add('hidden');
           renderAll();
-          notify('Đăng nhập thành công!');
+          showToast('Đăng nhập thành công!');
         } else {
           alert('Mã PIN không đúng.');
           pinInput.value = '';
@@ -434,10 +421,10 @@
       });
 
       // Tabs
-      navBtns.forEach(btn => {
+      tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           const tab = btn.getAttribute('data-tab');
-          navBtns.forEach(b => b.classList.remove('active'));
+          tabBtns.forEach(b => b.classList.remove('active'));
           tabSections.forEach(s => s.classList.remove('active'));
           btn.classList.add('active');
           document.getElementById('tab-' + tab).classList.add('active');
@@ -449,12 +436,13 @@
         currentData = loadData();
         tbody.innerHTML = currentData.portals.map((p, idx) => `
           <tr>
-            <td style="font-weight: 700; color: #94a3b8;">${idx + 1}</td>
-            <td>
-              <div style="font-weight: 700; color: #fff;">${p.title}</div>
-              <div style="font-size: 0.78rem; color: #64748b; font-family: monospace;">${p.url}</div>
+            <td style="font-weight: 700; color: #737373;">${idx + 1}</td>
+            <td style="font-weight: 700; color: #fff;">${p.title}</td>
+            <td style="color: #a3a3a3; font-family: monospace; font-size: 0.82rem;">${p.url}</td>
+            <td style="color: ${p.image ? '#22c55e' : '#737373'}; font-size: 0.82rem;">
+              ${p.image ? p.image : '(Chưa có - Đang phát triển)'}
             </td>
-            <td style="color: #cbd5e1;">${p.tagline || ''}</td>
+            <td style="color: #a3a3a3;">${p.desc || ''}</td>
             <td>
               <div style="display: flex; gap: 6px;">
                 <button class="btn btn-secondary btn-sm" onclick="editPortal('${p.id}')">Sửa</button>
@@ -468,26 +456,26 @@
       window.editPortal = function(id) {
         const p = currentData.portals.find(item => item.id === id);
         if (!p) return;
-        modalTitle.textContent = 'Chỉnh Sửa Website';
+        modalTitle.textContent = 'Chỉnh Sửa Dự Án';
         inpId.value = p.id;
         inpTitle.value = p.title || '';
         inpUrl.value = p.url || '';
-        inpTagline.value = p.tagline || '';
         inpImage.value = p.image || '';
+        inpDesc.value = p.desc || '';
         modal.classList.add('active');
       };
 
       window.deletePortal = function(id) {
-        if (confirm('Bạn có chắc muốn xóa cổng này?')) {
+        if (confirm('Bạn có chắc muốn xóa dự án này?')) {
           currentData.portals = currentData.portals.filter(p => p.id !== id);
           saveData(currentData);
           renderTable();
-          notify('Đã xóa thành công!');
+          showToast('Đã xóa thành công!');
         }
       };
 
       btnAdd.addEventListener('click', () => {
-        modalTitle.textContent = 'Thêm Website Mới';
+        modalTitle.textContent = 'Thêm Dự Án Mới';
         form.reset();
         inpId.value = '';
         modal.classList.add('active');
@@ -498,20 +486,20 @@
         const id = inpId.value.trim();
         const title = inpTitle.value.trim();
         const url = inpUrl.value.trim();
-        const tagline = inpTagline.value.trim();
         const image = inpImage.value.trim();
+        const desc = inpDesc.value.trim();
 
         if (id) {
           const idx = currentData.portals.findIndex(p => p.id === id);
-          if (idx >= 0) currentData.portals[idx] = { id, title, url, tagline, image };
+          if (idx >= 0) currentData.portals[idx] = { id, title, url, image, desc };
         } else {
-          currentData.portals.push({ id: 'site-' + Date.now(), title, url, tagline, image });
+          currentData.portals.push({ id: 'project-' + Date.now(), title, url, image, desc });
         }
 
         saveData(currentData);
         modal.classList.remove('active');
         renderTable();
-        notify('Đã lưu website thành công!');
+        showToast('Đã lưu thành công!');
       });
 
       function renderAbout() {
@@ -531,15 +519,15 @@
           content: inpAboutContent.value.trim()
         };
         saveData(currentData);
-        notify('Đã lưu nội dung About!');
+        showToast('Đã lưu nội dung About!');
       });
 
       function renderJson() {
-        jsonPreview.textContent = JSON.stringify(currentData, null, 2);
+        jsonViewer.textContent = JSON.stringify(currentData, null, 2);
       }
 
       btnCopyJson.addEventListener('click', () => {
-        navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => notify('Đã sao chép JSON!'));
+        navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => showToast('Đã sao chép JSON!'));
       });
 
       btnDownloadJson.addEventListener('click', () => {
@@ -548,7 +536,7 @@
         a.href = URL.createObjectURL(blob);
         a.download = 'portals.json';
         a.click();
-        notify('Đã tải file portals.json!');
+        showToast('Đã tải portals.json!');
       });
 
       inpImport.addEventListener('change', (e) => {
@@ -562,7 +550,7 @@
               currentData = parsed;
               saveData(currentData);
               renderAll();
-              notify('Nhập JSON thành công!');
+              showToast('Nhập JSON thành công!');
             }
           } catch(err) { alert('Lỗi file JSON'); }
         };

@@ -4,156 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Postlain</title>
-  <meta name="description" content="Cổng kết nối các website hệ sinh thái Postlain.">
+  <meta name="description" content="Hệ sinh thái Postlain.">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <!-- Corner Mode Toggle -->
-  <nav class="corner-nav">
-    <button id="nav-btn-portals" class="nav-toggle-btn active" onclick="setMainTab('portals')">Cổng Website</button>
-    <button id="nav-btn-about" class="nav-toggle-btn" onclick="setMainTab('about')">Giới Thiệu</button>
-  </nav>
+  <div class="container">
+    <!-- Nút chuyển tab căn giữa màn hình ở Header -->
+    <header class="top-header">
+      <div class="tab-switcher">
+        <button id="btn-tab-portals" class="tab-btn active" onclick="switchTab('portals')">Cổng Website</button>
+        <button id="btn-tab-about" class="tab-btn" onclick="switchTab('about')">Giới Thiệu</button>
+      </div>
+    </header>
 
-  <div class="app-container">
-    <!-- VIEW 1: BROWSER WINDOWS GRID -->
-    <main id="view-portals" class="view-section active">
-      <div id="windows-grid" class="windows-grid">
-        <!-- Pre-rendered Fallback Cards -->
-        <a href="https://hiddenmusic.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://hiddenmusic.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">hiddenmusic.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">Hidden Music</div>
-              <div class="window-tagline">Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.</div>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://music.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://music.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">music.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">Postlain Music</div>
-              <div class="window-tagline">Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.</div>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://studio.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://studio.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">studio.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">Studio DAW</div>
-              <div class="window-tagline">Trạm thu âm & phối khí trực tuyến trên trình duyệt.</div>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://ai.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://ai.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">ai.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">AI Sound Lab</div>
-              <div class="window-tagline">Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.</div>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://store.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://store.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">store.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">Sound Vault</div>
-              <div class="window-tagline">Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.</div>
-            </div>
-          </div>
-        </a>
-
-        <a href="https://hub.postlain.com" target="_blank" rel="noopener noreferrer" class="browser-window">
-          <div class="window-titlebar">
-            <div class="window-controls"><span class="dot close"></span><span class="dot min"></span><span class="dot max"></span></div>
-            <div class="window-address-bar"><span class="lock-icon">🔒</span><span>https://hub.postlain.com</span></div>
-            <span class="open-external-btn">↗</span>
-          </div>
-          <div class="window-viewport">
-            <div class="mockup-ui-canvas">
-              <div style="font-family: monospace; font-size: 0.82rem; color: #64748b; margin-bottom: 12px;">hub.postlain.com</div>
-              <div class="mockup-music-bars">
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-                <div class="mockup-bar"></div><div class="mockup-bar"></div><div class="mockup-bar"></div>
-              </div>
-            </div>
-            <div class="window-footer-bar">
-              <div class="window-site-name">Hub Community</div>
-              <div class="window-tagline">Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.</div>
-            </div>
-          </div>
-        </a>
+    <!-- VIEW 1: CỔNG WEBSITE (GRID 2x2 ĐÚNG 4 KHUNG HÌNH CHỮ NHẬT TO) -->
+    <main id="view-portals" class="tab-view active">
+      <div id="projects-grid" class="grid-2x2">
+        <!-- Injected via JavaScript -->
       </div>
     </main>
 
-    <!-- VIEW 2: ABOUT -->
-    <section id="view-about" class="view-section">
-      <div class="about-box">
-        <h1 id="about-title" class="about-header-title">Giới Thiệu // The Architect</h1>
-        <div id="about-alias" class="about-header-alias">[ ANONYMOUS_CREATOR ]</div>
-        <div id="about-quote" class="about-quote-card">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
-        <div id="about-content" class="about-body-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
+    <!-- VIEW 2: GIỚI THIỆU -->
+    <section id="view-about" class="tab-view">
+      <div class="about-card">
+        <h1 id="about-title" class="about-title">Giới Thiệu // The Architect</h1>
+        <div id="about-alias" class="about-alias">[ ANONYMOUS_CREATOR ]</div>
+        <div id="about-quote" class="about-quote">"Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do."</div>
+        <div id="about-content" class="about-text">Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.
 
 Mục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.
 

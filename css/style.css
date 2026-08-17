@@ -1,4 +1,3 @@
-/* Postlain Portal - Minimalist Real Browser Window Layout */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -6,84 +5,81 @@
 }
 
 :root {
-  --bg-main: #0a0b0e;
-  --bg-card: #12131a;
-  --bg-header: #181a24;
-  --border-color: #232634;
-  --border-hover: #3b82f6;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  --accent: #3b82f6;
+  --bg: #0a0a0a;
+  --card-bg: #121212;
+  --header-bg: #1a1a1a;
+  --border: #262626;
+  --border-hover: #404040;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --text-dim: #71717a;
 }
 
 html {
   color-scheme: dark;
-  background-color: var(--bg-main);
-  scroll-behavior: smooth;
+  background-color: var(--bg);
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--bg-main);
+  background-color: var(--bg);
   color: var(--text-main);
   min-height: 100vh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-/* App Layout */
-.app-container {
-  max-width: 1600px;
+.container {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px 24px 60px;
-  position: relative;
+  padding: 24px 20px 60px;
 }
 
-/* Minimal Corner Navigation Switcher */
-.corner-nav {
-  position: fixed;
-  top: 16px;
-  right: 20px;
-  z-index: 100;
+/* Header Switcher căn giữa */
+.top-header {
   display: flex;
-  background: rgba(18, 19, 26, 0.85);
-  border: 1px solid var(--border-color);
-  padding: 3px;
-  border-radius: 8px;
-  backdrop-filter: blur(12px);
+  justify-content: center;
+  margin-bottom: 32px;
 }
 
-.nav-toggle-btn {
-  padding: 6px 14px;
+.tab-switcher {
+  display: inline-flex;
+  background: #141414;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab-btn {
+  padding: 8px 20px;
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.nav-toggle-btn:hover {
+.tab-btn:hover {
   color: var(--text-main);
 }
 
-.nav-toggle-btn.active {
-  background: #2563eb;
-  color: #fff;
+.tab-btn.active {
+  background: #262626;
+  color: #ffffff;
 }
 
-/* Main View Panels */
-.view-section {
+/* Sections */
+.tab-view {
   display: none;
-  padding-top: 40px;
 }
 
-.view-section.active {
+.tab-view.active {
   display: block;
-  animation: fadeIn 0.25s ease-out;
+  animation: fadeIn 0.2s ease-out;
 }
 
 @keyframes fadeIn {
@@ -91,234 +87,171 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* REALISTIC 16:9 RECTANGULAR BROWSER SCREEN GRID */
-.windows-grid {
+/* GRID 2x2 (ĐÚNG 4 KHUNG HÌNH CHỮ NHẬT TO) */
+.grid-2x2 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
 
-/* Single Browser Window Card */
-.browser-window {
+/* Cửa Sổ Browser Card */
+.browser-card {
   display: flex;
   flex-direction: column;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  aspect-ratio: 16 / 10;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-.browser-window:hover {
-  transform: translateY(-6px);
-  border-color: #3b82f6;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(59, 130, 246, 0.4);
+.browser-card.active-link:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
 }
 
-/* Window Title Bar */
-.window-titlebar {
-  height: 38px;
-  background: var(--bg-header);
-  border-bottom: 1px solid var(--border-color);
+.browser-card.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Thanh Bar Cửa Sổ */
+.browser-bar {
+  height: 36px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   padding: 0 12px;
-  gap: 10px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
-.window-controls {
+.browser-dots {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
 }
-.dot.close { background: #ef4444; }
-.dot.min { background: #f59e0b; }
-.dot.max { background: #10b981; }
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
 
-.window-address-bar {
+.browser-url {
   flex: 1;
-  height: 22px;
-  background: #0b0c12;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--text-dim);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  gap: 6px;
 }
 
-.window-address-bar .lock-icon {
-  color: #10b981;
-  font-size: 0.7rem;
-}
-
-.open-external-btn {
-  color: var(--text-dim);
-  font-size: 0.85rem;
-  transition: color 0.2s ease;
-}
-
-.browser-window:hover .open-external-btn {
-  color: #3b82f6;
-}
-
-/* Window Content Viewport (Iframe / Live Screen Mockup) */
-.window-viewport {
-  flex: 1;
+/* Ruột Khung Chữ Nhật (Ảnh Preview hoặc Đang Phát Triển) */
+.browser-body {
   position: relative;
-  background: #07070a;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000000;
   overflow: hidden;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Live Iframe Wrapper */
-.window-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: none; /* Let clicking open link cleanly */
-}
-
-/* Image Snapshot View */
-.window-snapshot {
+.preview-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
   display: block;
 }
 
-/* High Quality Built-in Live UI Mockup */
-.mockup-ui-canvas {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.dev-placeholder {
+  color: #71717a;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
   padding: 20px;
-  position: relative;
+  letter-spacing: 0.5px;
 }
 
-.mockup-music-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  height: 48px;
-  width: 140px;
-}
-
-.mockup-bar {
-  flex: 1;
-  background: #3b82f6;
-  border-radius: 2px;
-  height: 20%;
-  animation: dance 1.2s ease-in-out infinite alternate;
-}
-.mockup-bar:nth-child(2n) { animation-duration: 0.8s; background: #60a5fa; }
-.mockup-bar:nth-child(3n) { animation-duration: 1.4s; background: #818cf8; }
-.mockup-bar:nth-child(4n) { animation-duration: 0.9s; background: #38bdf8; }
-
-@keyframes dance {
-  0% { height: 15%; }
-  100% { height: 95%; }
-}
-
-/* Bottom Bar of Window (Title + 1-Line Tagline) */
-.window-footer-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(10, 11, 16, 0.94);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid var(--border-color);
-  padding: 10px 14px;
+/* Phần Mô Tả Dưới Khung */
+.browser-info {
+  padding: 16px 18px;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
-.window-site-name {
-  font-size: 0.98rem;
+.project-title {
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
 }
 
-.window-tagline {
-  font-size: 0.8rem;
+.project-desc {
+  font-size: 0.88rem;
   color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
-/* ABOUT SECTION */
-.about-box {
+/* Giới Thiệu (About) */
+.about-card {
   max-width: 800px;
-  margin: 30px auto;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  margin: 20px auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 40px;
 }
 
-.about-header-title {
+.about-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
   margin-bottom: 6px;
 }
 
-.about-header-alias {
+.about-alias {
   font-size: 0.9rem;
-  color: #3b82f6;
+  color: #71717a;
   font-family: monospace;
   margin-bottom: 24px;
 }
 
-.about-quote-card {
-  background: rgba(59, 130, 246, 0.08);
-  border-left: 3px solid #3b82f6;
+.about-quote {
+  background: #171717;
+  border-left: 3px solid #525252;
   padding: 16px 20px;
   font-size: 1.05rem;
   font-style: italic;
-  color: #e2e8f0;
+  color: #e5e5e5;
   border-radius: 4px;
   margin-bottom: 24px;
 }
 
-.about-body-text {
+.about-text {
   font-size: 1rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   line-height: 1.8;
   white-space: pre-line;
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .app-container { padding: 16px; }
-  .windows-grid { grid-template-columns: 1fr; gap: 20px; }
-  .browser-window { aspect-ratio: 16 / 11; }
-  .about-box { padding: 24px; }
-  .corner-nav { top: 12px; right: 12px; }
+@media (max-width: 900px) {
+  .grid-2x2 {
+    grid-template-columns: 1fr;
+  }
+  .about-card {
+    padding: 24px;
+  }
 }

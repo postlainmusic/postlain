@@ -7,60 +7,32 @@
   },
   "portals": [
     {
-      "id": "hidden-music",
+      "id": "project-1",
       "title": "Hidden Music",
       "url": "https://hiddenmusic.postlain.com",
-      "tagline": "Nền tảng phát nhạc độc lập dành riêng cho cộng đồng ngầm.",
-      "image": ""
+      "image": "",
+      "desc": "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
     },
     {
-      "id": "postlain-music",
+      "id": "project-2",
       "title": "Postlain Music",
       "url": "https://music.postlain.com",
-      "tagline": "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao.",
-      "image": ""
+      "image": "",
+      "desc": "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao."
     },
     {
-      "id": "studio-daw",
+      "id": "project-3",
       "title": "Studio DAW",
       "url": "https://studio.postlain.com",
-      "tagline": "Trạm thu âm & phối khí trực tuyến trên trình duyệt.",
-      "image": ""
+      "image": "",
+      "desc": "Trạm thu âm & phối khí trực tuyến trên trình duyệt."
     },
     {
-      "id": "ai-sound-lab",
+      "id": "project-4",
       "title": "AI Sound Lab",
       "url": "https://ai.postlain.com",
-      "tagline": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI.",
-      "image": ""
-    },
-    {
-      "id": "sound-vault",
-      "title": "Sound Vault",
-      "url": "https://store.postlain.com",
-      "tagline": "Kho sample kit, preset synthesizer và thư viện âm thanh bản quyền.",
-      "image": ""
-    },
-    {
-      "id": "hub-community",
-      "title": "Hub Community",
-      "url": "https://hub.postlain.com",
-      "tagline": "Mạng lưới kết nối giữa các nhà sản xuất âm nhạc và lập trình viên.",
-      "image": ""
-    },
-    {
-      "id": "audio-suite",
-      "title": "Audio Suite",
-      "url": "https://tools.postlain.com",
-      "tagline": "Bộ công cụ cắt ghép, chuyển đổi định dạng và tối ưu metadata audio.",
-      "image": ""
-    },
-    {
-      "id": "lyric-sync",
-      "title": "Lyric Sync",
-      "url": "https://lyrics.postlain.com",
-      "tagline": "Trình đồng bộ lời bài hát (.lrc / .srt) thời gian thực.",
-      "image": ""
+      "image": "",
+      "desc": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI."
     }
   ]
 }
