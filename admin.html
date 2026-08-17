@@ -6,7 +6,7 @@
   <title>Postlain Admin</title>
   <meta name="robots" content="noindex, nofollow">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="./css/admin.css">
+  <link rel="stylesheet" href="/css/admin.css?v=3">
 </head>
 <body>
   <!-- PIN Auth Gate -->
@@ -42,7 +42,7 @@
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <a href="./" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">Xem Trang Chủ</a>
+        <a href="/" target="_blank" class="btn btn-secondary btn-sm" style="width: 100%;">Xem Trang Chủ</a>
         <button id="change-pin-btn" class="btn btn-secondary btn-sm" style="width: 100%;">Đổi Mã PIN</button>
         <button id="admin-logout-btn" class="btn btn-danger btn-sm" style="width: 100%;">Đăng Xuất</button>
       </div>
@@ -72,7 +72,7 @@
                 <th>1 Dòng Giới Thiệu (Tagline)</th>
                 <th>Trạng Thái</th>
                 <th>Clicks</th>
-                <th style="width: 100px;">Thao Tác</th>
+                <th style="width: 110px;">Thao Tác</th>
               </tr>
             </thead>
             <tbody id="portals-table-body"></tbody>
@@ -123,27 +123,27 @@
     <div class="modal-dialog">
       <div class="modal-header">
         <h3 id="portal-modal-title" style="font-size: 1.1rem; color: #fff;">Thêm Cổng Mới</h3>
-        <button class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer;">✕</button>
+        <button type="button" class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem;">✕</button>
       </div>
       <form id="portal-form">
         <div class="modal-body">
           <input type="hidden" id="form-portal-id">
           <div class="form-group">
             <label>Tên Cổng / Website *</label>
-            <input type="text" id="form-portal-title" class="admin-input" required>
+            <input type="text" id="form-portal-title" class="admin-input" placeholder="VD: HIDDEN MUSIC" required>
           </div>
           <div class="form-group">
             <label>Đường Dẫn URL *</label>
-            <input type="url" id="form-portal-url" class="admin-input" required>
+            <input type="url" id="form-portal-url" class="admin-input" placeholder="https://hiddenmusic.postlain.com" required>
           </div>
           <div class="form-group">
             <label>1 Dòng Giới Thiệu (Tagline) *</label>
-            <input type="text" id="form-portal-tagline" class="admin-input" required>
+            <input type="text" id="form-portal-tagline" class="admin-input" placeholder="VD: Nền tảng âm nhạc độc lập." required>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Icon (disc-3, sliders, cpu, globe...)</label>
-              <input type="text" id="form-portal-icon" class="admin-input">
+              <label>Icon (disc-3, sliders, cpu, globe, box...)</label>
+              <input type="text" id="form-portal-icon" class="admin-input" placeholder="globe">
             </div>
             <div class="form-group">
               <label>Trạng Thái</label>
@@ -157,7 +157,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary modal-cancel">Hủy</button>
-          <button type="submit" class="btn btn-primary">Lưu Cổng</button>
+          <button type="submit" id="portal-submit-btn" class="btn btn-primary">Lưu Cổng</button>
         </div>
       </form>
     </div>
@@ -168,20 +168,20 @@
     <div class="modal-dialog" style="max-width: 380px;">
       <div class="modal-header">
         <h3 style="font-size: 1rem; color: #fff;">Đổi Mã PIN</h3>
-        <button class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer;">✕</button>
+        <button type="button" class="modal-close" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 1.2rem;">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label>Mã PIN Cũ</label>
-          <input type="password" id="form-current-pin" class="admin-input">
+          <input type="password" id="form-current-pin" class="admin-input" placeholder="••••">
         </div>
         <div class="form-group">
           <label>Mã PIN Mới</label>
-          <input type="password" id="form-new-pin" class="admin-input">
+          <input type="password" id="form-new-pin" class="admin-input" placeholder="••••">
         </div>
         <div class="form-group">
           <label>Xác Nhận PIN Mới</label>
-          <input type="password" id="form-confirm-pin" class="admin-input">
+          <input type="password" id="form-confirm-pin" class="admin-input" placeholder="••••">
         </div>
       </div>
       <div class="modal-footer">
@@ -192,7 +192,7 @@
   </div>
 
   <div id="toast-container" class="toast-container"></div>
-  <script src="./js/store.js"></script>
-  <script src="./js/admin.js"></script>
+  <script src="/js/store.js?v=3"></script>
+  <script src="/js/admin.js?v=3"></script>
 </body>
 </html>
