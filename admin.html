@@ -6,7 +6,200 @@
   <title>Postlain Admin</title>
   <meta name="robots" content="noindex, nofollow">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="/css/admin.css?v=3">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #0b0c10;
+      color: #e0e2ec;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .auth-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0b0c10;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-overlay.hidden { display: none !important; }
+    .auth-card {
+      background: #14161f;
+      border: 1px solid #232738;
+      border-radius: 8px;
+      padding: 32px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+    .auth-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; color: #fff; }
+    .auth-pin-input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.3rem;
+      letter-spacing: 6px;
+      text-align: center;
+      background: #090a0f;
+      border: 1px solid #2d3247;
+      border-radius: 6px;
+      color: #fff;
+      outline: none;
+      margin: 16px 0;
+    }
+    .auth-pin-input:focus { border-color: #e11d48; }
+    .btn-primary-auth {
+      width: 100%;
+      padding: 12px;
+      background: #e11d48;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .admin-layout { display: flex; min-height: 100vh; }
+    .admin-sidebar {
+      width: 240px;
+      background: #10121a;
+      border-right: 1px solid #1f2333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .admin-nav { display: flex; flex-direction: column; gap: 6px; margin-top: 24px; }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .admin-nav-item:hover, .admin-nav-item.active { background: #1b1e2b; color: #fff; }
+    .admin-nav-item.active { border-left: 3px solid #e11d48; }
+
+    .admin-main { flex: 1; padding: 28px 36px; overflow-y: auto; }
+    .admin-header { margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid #1f2333; }
+    .admin-header h1 { font-size: 1.4rem; font-weight: 700; color: #fff; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+    .btn-primary { background: #e11d48; color: #fff; }
+    .btn-primary:hover { background: #f43f5e; }
+    .btn-secondary { background: #1b1e2b; border-color: #2d3247; color: #e2e8f0; }
+    .btn-danger { background: rgba(225, 29, 72, 0.15); border-color: rgba(225, 29, 72, 0.4); color: #fb7185; }
+    .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+
+    .data-table-container { background: #12141d; border: 1px solid #1f2333; border-radius: 6px; overflow: hidden; }
+    .data-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .data-table th {
+      background: #161824;
+      padding: 12px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #fb7185;
+      border-bottom: 1px solid #1f2333;
+    }
+    .data-table td { padding: 14px 16px; border-bottom: 1px solid #171a26; font-size: 0.88rem; }
+    .data-table tr:hover td { background: #161926; }
+
+    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .form-group label { font-size: 0.78rem; font-weight: 600; color: #94a3b8; }
+    .admin-input, .admin-select, .admin-textarea {
+      width: 100%;
+      padding: 9px 12px;
+      background: #090a0f;
+      border: 1px solid #232738;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .admin-input:focus, .admin-select:focus, .admin-textarea:focus { border-color: #e11d48; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.active { display: flex !important; }
+    .modal-dialog {
+      background: #141622;
+      border: 1px solid #2d3247;
+      border-radius: 8px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #232738;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-body { padding: 20px; overflow-y: auto; }
+    .modal-footer { padding: 14px 20px; border-top: 1px solid #232738; display: flex; justify-content: flex-end; gap: 8px; }
+
+    .json-viewer {
+      background: #090a0f;
+      border: 1px solid #1f2333;
+      padding: 14px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: #fb7185;
+      max-height: 360px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 10000;
+      background: #1b1e2b;
+      border: 1px solid #e11d48;
+      padding: 12px 20px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.88rem;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+  </style>
 </head>
 <body>
   <!-- PIN Auth Gate -->
@@ -26,18 +219,9 @@
       <div>
         <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">Postlain Admin</div>
         <nav class="admin-nav">
-          <a href="#portals" class="admin-nav-item active" data-tab="portals">
-            <i data-lucide="grid" style="width: 16px; height: 16px;"></i>
-            <span>Master Gate</span>
-          </a>
-          <a href="#about" class="admin-nav-item" data-tab="about">
-            <i data-lucide="user" style="width: 16px; height: 16px;"></i>
-            <span>Soạn Thảo About</span>
-          </a>
-          <a href="#deploy" class="admin-nav-item" data-tab="deploy">
-            <i data-lucide="download" style="width: 16px; height: 16px;"></i>
-            <span>Xuất JSON</span>
-          </a>
+          <div class="admin-nav-item active" data-tab="portals">Master Gate</div>
+          <div class="admin-nav-item" data-tab="about">Soạn Thảo About</div>
+          <div class="admin-nav-item" data-tab="deploy">Xuất JSON</div>
         </nav>
       </div>
 
@@ -57,10 +241,7 @@
       <section id="tab-portals" class="tab-panel active">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <div style="font-size: 0.85rem; color: #94a3b8;">Danh sách các cổng website</div>
-          <button id="open-add-portal-btn" class="btn btn-primary">
-            <i data-lucide="plus" style="width: 15px; height: 15px;"></i>
-            <span>Thêm Cổng Mới</span>
-          </button>
+          <button id="open-add-portal-btn" class="btn btn-primary">+ Thêm Cổng Mới</button>
         </div>
 
         <div class="data-table-container">
@@ -71,8 +252,7 @@
                 <th>Tên & URL</th>
                 <th>1 Dòng Giới Thiệu (Tagline)</th>
                 <th>Trạng Thái</th>
-                <th>Clicks</th>
-                <th style="width: 110px;">Thao Tác</th>
+                <th style="width: 120px;">Thao Tác</th>
               </tr>
             </thead>
             <tbody id="portals-table-body"></tbody>
@@ -191,8 +371,319 @@
     </div>
   </div>
 
-  <div id="toast-container" class="toast-container"></div>
-  <script src="/js/store.js?v=3"></script>
-  <script src="/js/admin.js?v=3"></script>
+  <div id="toast-box" class="toast-box"></div>
+
+  <!-- Self-contained Script -->
+  <script>
+    const STORAGE_KEY = 'postlain_portal_data_v4';
+    const PIN_KEY = 'postlain_admin_pin_v4';
+    const AUTH_KEY = 'postlain_admin_auth_v4';
+    const DEFAULT_PIN = '1234';
+
+    const INITIAL_DATA = {
+      about: {
+        title: "HỒ SƠ KẺ ẨN DANH // THE ARCHITECT",
+        alias: "ANONYMOUS_ARCHITECT",
+        quote: "Trong một thế giới đầy rẫy sự kiểm soát, chúng ta kiến tạo những không gian tự do.",
+        content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối (Portal) là một vũ khí công nghệ được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
+      },
+      portals: [
+        { id: "postlain-music", title: "POSTLAIN MUSIC", url: "https://music.postlain.com", tagline: "Nền tảng stream âm thanh Hi-Res Lossless chuẩn phòng thu.", icon: "disc-3", status: "ONLINE", order: 1 },
+        { id: "postlain-studio", title: "STUDIO DAW", url: "https://studio.postlain.com", tagline: "Phòng thu âm thanh & trạm phối khí kỹ thuật số trực tiếp trên trình duyệt.", icon: "sliders", status: "ONLINE", order: 2 },
+        { id: "postlain-ai-lab", title: "AI SOUND LAB", url: "https://ai.postlain.com", tagline: "Trí tuệ nhân tạo tách Stem giọng hát, trích xuất beat và phân tích phổ tần số.", icon: "sparkles", status: "ONLINE", order: 3 },
+        { id: "postlain-store", title: "SOUND VAULT", url: "https://store.postlain.com", tagline: "Kho sound kit, loop mẫu bản quyền và preset synthesizer chuyên sâu.", icon: "box", status: "ONLINE", order: 4 },
+        { id: "postlain-community", title: "HUB COMMUNITY", url: "https://hub.postlain.com", tagline: "Mạng lưới kết nối kín giữa các nhà sáng tạo âm nhạc và lập trình viên.", icon: "users", status: "ONLINE", order: 5 },
+        { id: "postlain-tools", title: "AUDIO SUITE", url: "https://tools.postlain.com", tagline: "Bộ công cụ chuyển đổi định dạng, cắt ghép và tối ưu metadata âm thanh.", icon: "wand-2", status: "ONLINE", order: 6 },
+        { id: "postlain-lyrics", title: "LYRIC SYNC", url: "https://lyrics.postlain.com", tagline: "Trình tạo lời bài hát đồng bộ thời gian thực (.lrc / .srt).", icon: "mic-2", status: "BETA", order: 7 },
+        { id: "postlain-docs", title: "CORE API // SDK", url: "https://docs.postlain.com", tagline: "Tài liệu kỹ thuật và cổng API mở cho lập trình viên tích hợp.", icon: "terminal", status: "ONLINE", order: 8 }
+      ]
+    };
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.portals) && parsed.portals.length > 0) return parsed;
+        }
+      } catch (e) {}
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_DATA));
+      return INITIAL_DATA;
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById('toast-box');
+      box.textContent = msg;
+      box.style.display = 'block';
+      setTimeout(() => { box.style.display = 'none'; }, 2500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentData = loadData();
+
+      const authOverlay = document.getElementById('auth-overlay');
+      const pinInput = document.getElementById('admin-pin-input');
+      const pinSubmit = document.getElementById('admin-pin-submit');
+      const pinError = document.getElementById('pin-error-msg');
+      const logoutBtn = document.getElementById('admin-logout-btn');
+      const changePinBtn = document.getElementById('change-pin-btn');
+
+      const navItems = document.querySelectorAll('.admin-nav-item');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      const pageTitle = document.getElementById('admin-page-title');
+
+      const portalsTable = document.getElementById('portals-table-body');
+      const openAddBtn = document.getElementById('open-add-portal-btn');
+      const portalModal = document.getElementById('portal-modal');
+      const portalModalTitle = document.getElementById('portal-modal-title');
+      const portalForm = document.getElementById('portal-form');
+      const formPortalId = document.getElementById('form-portal-id');
+      const formPortalTitle = document.getElementById('form-portal-title');
+      const formPortalUrl = document.getElementById('form-portal-url');
+      const formPortalTagline = document.getElementById('form-portal-tagline');
+      const formPortalIcon = document.getElementById('form-portal-icon');
+      const formPortalStatus = document.getElementById('form-portal-status');
+
+      const aboutForm = document.getElementById('about-form');
+      const formAboutTitle = document.getElementById('form-about-title');
+      const formAboutAlias = document.getElementById('form-about-alias');
+      const formAboutQuote = document.getElementById('form-about-quote');
+      const formAboutContent = document.getElementById('form-about-content');
+
+      const jsonViewer = document.getElementById('json-viewer');
+      const copyJsonBtn = document.getElementById('copy-json-btn');
+      const downloadJsonBtn = document.getElementById('download-json-btn');
+      const importFileInput = document.getElementById('import-file-input');
+
+      const pinModal = document.getElementById('pin-modal');
+      const formCurrentPin = document.getElementById('form-current-pin');
+      const formNewPin = document.getElementById('form-new-pin');
+      const formConfirmPin = document.getElementById('form-confirm-pin');
+      const savePinBtn = document.getElementById('save-pin-btn');
+
+      // Check Auth
+      function checkAuth() {
+        if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+          authOverlay.classList.add('hidden');
+          renderAll();
+        } else {
+          authOverlay.classList.remove('hidden');
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+
+      function doLogin() {
+        const stored = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
+        if (pinInput.value.trim() === stored) {
+          sessionStorage.setItem(AUTH_KEY, 'true');
+          authOverlay.classList.add('hidden');
+          pinError.style.display = 'none';
+          renderAll();
+          showToast('Đăng nhập thành công!');
+        } else {
+          pinError.style.display = 'block';
+          pinInput.value = '';
+          pinInput.focus();
+        }
+      }
+
+      pinSubmit.addEventListener('click', doLogin);
+      pinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+      logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem(AUTH_KEY);
+        checkAuth();
+      });
+
+      // Tabs
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const tab = item.getAttribute('data-tab');
+          navItems.forEach(n => n.classList.remove('active'));
+          tabPanels.forEach(p => p.classList.remove('active'));
+          item.classList.add('active');
+          document.getElementById('tab-' + tab).classList.add('active');
+          pageTitle.textContent = tab === 'portals' ? 'Quản Lý Master Gate' : tab === 'about' ? 'Soạn Thảo About' : 'Xuất JSON';
+          if (tab === 'deploy') renderJson();
+        });
+      });
+
+      // Render Table
+      function renderTable() {
+        currentData = loadData();
+        portalsTable.innerHTML = currentData.portals.map((p, idx) => `
+          <tr>
+            <td style="font-weight: 700; color: #fb7185;">${idx + 1}</td>
+            <td>
+              <div style="font-weight: 700; color: #fff;">${p.title}</div>
+              <div style="font-size: 0.78rem; color: #94a3b8;">${p.url}</div>
+            </td>
+            <td style="color: #cbd5e1;">${p.tagline || ''}</td>
+            <td><span style="font-size: 0.75rem; padding: 2px 7px; border: 1px solid #2d3247; border-radius: 4px;">${p.status || 'ONLINE'}</span></td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-secondary btn-sm" onclick="editPortal('${p.id}')">Sửa</button>
+                <button class="btn btn-danger btn-sm" onclick="deletePortal('${p.id}')">Xóa</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editPortal = function(id) {
+        const p = currentData.portals.find(item => item.id === id);
+        if (!p) return;
+        portalModalTitle.textContent = 'Chỉnh Sửa Cổng';
+        formPortalId.value = p.id;
+        formPortalTitle.value = p.title || '';
+        formPortalUrl.value = p.url || '';
+        formPortalTagline.value = p.tagline || '';
+        formPortalIcon.value = p.icon || 'globe';
+        formPortalStatus.value = p.status || 'ONLINE';
+        portalModal.classList.add('active');
+      };
+
+      window.deletePortal = function(id) {
+        if (confirm('Bạn có chắc muốn xóa cổng này?')) {
+          currentData.portals = currentData.portals.filter(p => p.id !== id);
+          saveData(currentData);
+          renderTable();
+          showToast('Đã xóa cổng thành công!');
+        }
+      };
+
+      openAddBtn.addEventListener('click', () => {
+        portalModalTitle.textContent = 'Thêm Cổng Mới';
+        portalForm.reset();
+        formPortalId.value = '';
+        formPortalIcon.value = 'globe';
+        formPortalStatus.value = 'ONLINE';
+        portalModal.classList.add('active');
+      });
+
+      // Submit Form
+      portalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = formPortalId.value.trim();
+        const title = formPortalTitle.value.trim();
+        const url = formPortalUrl.value.trim();
+        const tagline = formPortalTagline.value.trim();
+        const icon = formPortalIcon.value.trim() || 'globe';
+        const status = formPortalStatus.value;
+
+        if (id) {
+          const idx = currentData.portals.findIndex(p => p.id === id);
+          if (idx >= 0) {
+            currentData.portals[idx] = { ...currentData.portals[idx], title, url, tagline, icon, status };
+          }
+        } else {
+          const newId = 'gate-' + Date.now();
+          currentData.portals.push({ id: newId, title, url, tagline, icon, status, order: currentData.portals.length + 1 });
+        }
+
+        saveData(currentData);
+        portalModal.classList.remove('active');
+        renderTable();
+        showToast('Đã lưu cổng kết nối thành công!');
+      });
+
+      // About Form
+      function renderAbout() {
+        const a = currentData.about || INITIAL_DATA.about;
+        formAboutTitle.value = a.title || '';
+        formAboutAlias.value = a.alias || '';
+        formAboutQuote.value = a.quote || '';
+        formAboutContent.value = a.content || '';
+      }
+
+      aboutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        currentData.about = {
+          title: formAboutTitle.value.trim(),
+          alias: formAboutAlias.value.trim(),
+          quote: formAboutQuote.value.trim(),
+          content: formAboutContent.value.trim()
+        };
+        saveData(currentData);
+        showToast('Đã lưu nội dung About thành công!');
+      });
+
+      // JSON Deploy
+      function renderJson() {
+        jsonViewer.textContent = JSON.stringify(currentData, null, 2);
+      }
+
+      copyJsonBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(JSON.stringify(currentData, null, 2)).then(() => {
+          showToast('Đã sao chép JSON vào clipboard!');
+        });
+      });
+
+      downloadJsonBtn.addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(currentData, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'portals.json';
+        a.click();
+        showToast('Đã tải file portals.json!');
+      });
+
+      importFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const parsed = JSON.parse(evt.target.result);
+            if (parsed && Array.isArray(parsed.portals)) {
+              currentData = parsed;
+              saveData(currentData);
+              renderAll();
+              showToast('Nhập JSON thành công!');
+            }
+          } catch (err) { alert('Lỗi file JSON'); }
+        };
+        reader.readAsText(file);
+      });
+
+      // Change PIN
+      changePinBtn.addEventListener('click', () => {
+        formCurrentPin.value = '';
+        formNewPin.value = '';
+        formConfirmPin.value = '';
+        pinModal.classList.add('active');
+      });
+
+      savePinBtn.addEventListener('click', () => {
+        const stored = localStorage.getItem(PIN_KEY) || DEFAULT_PIN;
+        if (formCurrentPin.value.trim() !== stored) { alert('Mã PIN cũ không đúng.'); return; }
+        if (formNewPin.value.trim().length < 4) { alert('Mã PIN mới phải từ 4 số trở lên.'); return; }
+        if (formNewPin.value.trim() !== formConfirmPin.value.trim()) { alert('Xác nhận PIN không khớp.'); return; }
+        localStorage.setItem(PIN_KEY, formNewPin.value.trim());
+        pinModal.classList.remove('active');
+        showToast('Đã đổi mã PIN Admin thành công!');
+      });
+
+      // Modal Closers
+      document.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
+        btn.addEventListener('click', () => {
+          portalModal.classList.remove('active');
+          pinModal.classList.remove('active');
+        });
+      });
+
+      function renderAll() {
+        renderTable();
+        renderAbout();
+        renderJson();
+      }
+
+      checkAuth();
+    });
+  </script>
 </body>
 </html>
