@@ -8,31 +8,27 @@
   "portals": [
     {
       "id": "project-1",
-      "title": "Hidden Music",
+      "title": "HIDDEN MUSIC",
       "url": "https://hiddenmusic.postlain.com",
-      "image": "",
-      "desc": "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
+      "desc": "Âm Nhạc Ẩn"
     },
     {
       "id": "project-2",
-      "title": "Postlain Music",
+      "title": "POSTLAIN MUSIC",
       "url": "https://music.postlain.com",
-      "image": "",
-      "desc": "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao."
+      "desc": "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
     },
     {
       "id": "project-3",
-      "title": "Studio DAW",
+      "title": "STUDIO DAW",
       "url": "https://studio.postlain.com",
-      "image": "",
-      "desc": "Trạm thu âm & phối khí trực tuyến trên trình duyệt."
+      "desc": "Trạm thu âm & phối khí kỹ thuật số trực tuyến."
     },
     {
       "id": "project-4",
-      "title": "AI Sound Lab",
+      "title": "AI SOUND LAB",
       "url": "https://ai.postlain.com",
-      "image": "",
-      "desc": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI."
+      "desc": "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI."
     }
   ]
 }

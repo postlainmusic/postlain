@@ -213,7 +213,7 @@
       <!-- TAB 1: 4 DỰ ÁN -->
       <section id="tab-portals" class="section-tab active">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <h2 style="font-size: 1.2rem; color: #fff;">Quản Lý 4 Cửa Sổ Màn Hình (Grid 2x2)</h2>
+          <h2 style="font-size: 1.2rem; color: #fff;">Quản Lý 4 Cửa Sổ Live Website (Grid 2x2)</h2>
           <button id="btn-add-item" class="btn btn-primary btn-sm">+ Thêm / Sửa Dự Án</button>
         </div>
 
@@ -223,8 +223,7 @@
               <tr>
                 <th style="width: 50px;">#</th>
                 <th>Tên Dự Án</th>
-                <th>URL Website</th>
-                <th>URL Ảnh Preview</th>
+                <th>URL Website (Tự load Live Web)</th>
                 <th>Mô Tả</th>
                 <th style="width: 120px;">Thao Tác</th>
               </tr>
@@ -286,19 +285,15 @@
           <input type="hidden" id="form-id">
           <div class="form-group">
             <label>1. Tên Dự Án *</label>
-            <input type="text" id="form-title" class="form-input" placeholder="VD: Hidden Music" required>
+            <input type="text" id="form-title" class="form-input" placeholder="VD: HIDDEN MUSIC" required>
           </div>
           <div class="form-group">
-            <label>2. URL Website *</label>
-            <input type="url" id="form-url" class="form-input" placeholder="https://hiddenmusic.postlain.com" required>
+            <label>2. URL Website (Để trống nếu muốn hiển thị 'Đang trong thời gian phát triển')</label>
+            <input type="text" id="form-url" class="form-input" placeholder="https://hiddenmusic.postlain.com">
           </div>
           <div class="form-group">
-            <label>3. URL Ảnh Preview (Để trống nếu muốn hiện 'Đang phát triển')</label>
-            <input type="text" id="form-image" class="form-input" placeholder="https://... hoặc /images/preview.png">
-          </div>
-          <div class="form-group">
-            <label>4. Mô Tả Ngắn Gọn *</label>
-            <input type="text" id="form-desc" class="form-input" placeholder="VD: Nền tảng âm nhạc độc lập." required>
+            <label>3. Mô Tả Ngắn Gọn *</label>
+            <input type="text" id="form-desc" class="form-input" placeholder="VD: Âm Nhạc Ẩn" required>
           </div>
         </div>
         <div class="modal-footer">
@@ -312,8 +307,8 @@
   <div id="toast-box" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'postlain_data_v7';
-    const AUTH_KEY = 'postlain_admin_logged_v7';
+    const STORAGE_KEY = 'postlain_data_v9';
+    const AUTH_KEY = 'postlain_admin_logged_v9';
     const DEFAULT_PIN = '1234';
 
     const DEFAULT_DATA = {
@@ -324,10 +319,10 @@
         content: "Tôi là một kẻ ẩn danh đứng sau những dòng mã và những tần số âm thanh của Postlain.\n\nMục đích duy nhất của tôi khi tạo ra chuỗi website và công cụ này là thiết lập một mạng lưới độc lập – nơi bất kỳ ai cũng có thể sáng tạo âm nhạc chất lượng phòng thu, khai thác sức mạnh của trí tuệ nhân tạo, và kết nối với những người cùng tần số mà không bị ràng buộc bởi bất kỳ nền tảng độc quyền nào.\n\nMỗi cổng kết nối là một công cụ độc lập được trau chuốt tỉ mỉ. Hãy sử dụng những công cụ này để tạo nên những điều phi thường."
       },
       portals: [
-        { id: "project-1", title: "Hidden Music", url: "https://hiddenmusic.postlain.com", image: "", desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm." },
-        { id: "project-2", title: "Postlain Music", url: "https://music.postlain.com", image: "", desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao." },
-        { id: "project-3", title: "Studio DAW", url: "https://studio.postlain.com", image: "", desc: "Trạm thu âm & phối khí trực tuyến trên trình duyệt." },
-        { id: "project-4", title: "AI Sound Lab", url: "https://ai.postlain.com", image: "", desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI." }
+        { id: "project-1", title: "HIDDEN MUSIC", url: "https://hiddenmusic.postlain.com", desc: "Âm Nhạc Ẩn" },
+        { id: "project-2", title: "POSTLAIN MUSIC", url: "https://music.postlain.com", desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu." },
+        { id: "project-3", title: "STUDIO DAW", url: "https://studio.postlain.com", desc: "Trạm thu âm & phối khí kỹ thuật số trực tuyến." },
+        { id: "project-4", title: "AI SOUND LAB", url: "https://ai.postlain.com", desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI." }
       ]
     };
 
@@ -373,7 +368,6 @@
       const inpId = document.getElementById('form-id');
       const inpTitle = document.getElementById('form-title');
       const inpUrl = document.getElementById('form-url');
-      const inpImage = document.getElementById('form-image');
       const inpDesc = document.getElementById('form-desc');
 
       const aboutForm = document.getElementById('about-form');
@@ -438,9 +432,8 @@
           <tr>
             <td style="font-weight: 700; color: #737373;">${idx + 1}</td>
             <td style="font-weight: 700; color: #fff;">${p.title}</td>
-            <td style="color: #a3a3a3; font-family: monospace; font-size: 0.82rem;">${p.url}</td>
-            <td style="color: ${p.image ? '#22c55e' : '#737373'}; font-size: 0.82rem;">
-              ${p.image ? p.image : '(Chưa có - Đang phát triển)'}
+            <td style="color: ${p.url ? '#38bdf8' : '#737373'}; font-family: monospace; font-size: 0.82rem;">
+              ${p.url ? p.url : '(Trống - Đang phát triển)'}
             </td>
             <td style="color: #a3a3a3;">${p.desc || ''}</td>
             <td>
@@ -460,7 +453,6 @@
         inpId.value = p.id;
         inpTitle.value = p.title || '';
         inpUrl.value = p.url || '';
-        inpImage.value = p.image || '';
         inpDesc.value = p.desc || '';
         modal.classList.add('active');
       };
@@ -484,16 +476,15 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const id = inpId.value.trim();
-        const title = inpTitle.value.trim();
+        const title = formTitle.value.trim();
         const url = inpUrl.value.trim();
-        const image = inpImage.value.trim();
         const desc = inpDesc.value.trim();
 
         if (id) {
           const idx = currentData.portals.findIndex(p => p.id === id);
-          if (idx >= 0) currentData.portals[idx] = { id, title, url, image, desc };
+          if (idx >= 0) currentData.portals[idx] = { id, title, url, desc };
         } else {
-          currentData.portals.push({ id: 'project-' + Date.now(), title, url, image, desc });
+          currentData.portals.push({ id: 'project-' + Date.now(), title, url, desc });
         }
 
         saveData(currentData);

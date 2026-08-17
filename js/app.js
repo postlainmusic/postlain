@@ -1,33 +1,29 @@
-const STORAGE_KEY = 'postlain_data_v7';
+const STORAGE_KEY = 'postlain_data_v9';
 
 const DEFAULT_PORTALS = [
   {
     id: "project-1",
-    title: "Hidden Music",
+    title: "HIDDEN MUSIC",
     url: "https://hiddenmusic.postlain.com",
-    image: "",
-    desc: "Nền tảng âm nhạc độc lập dành riêng cho cộng đồng ngầm."
+    desc: "Âm Nhạc Ẩn"
   },
   {
     id: "project-2",
-    title: "Postlain Music",
+    title: "POSTLAIN MUSIC",
     url: "https://music.postlain.com",
-    image: "",
-    desc: "Dịch vụ stream âm thanh Hi-Res Lossless 24-bit chất lượng cao."
+    desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
   },
   {
     id: "project-3",
-    title: "Studio DAW",
+    title: "STUDIO DAW",
     url: "https://studio.postlain.com",
-    image: "",
-    desc: "Trạm thu âm & phối khí trực tuyến trên trình duyệt."
+    desc: "Trạm thu âm & phối khí kỹ thuật số trực tuyến."
   },
   {
     id: "project-4",
-    title: "AI Sound Lab",
+    title: "AI SOUND LAB",
     url: "https://ai.postlain.com",
-    image: "",
-    desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh bằng AI."
+    desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI."
   }
 ];
 
@@ -80,35 +76,25 @@ function renderGrid() {
   // Lấy đúng 4 items cho Grid 2x2
   const portals = data.portals.slice(0, 4);
 
-  // Điền đủ 4 items nếu thiếu
   while (portals.length < 4) {
     portals.push({
       id: `project-${portals.length + 1}`,
       title: `Dự án ${portals.length + 1}`,
-      url: "https://postlain.com",
-      image: "",
-      desc: "Dự án mới trong hệ sinh thái."
+      url: "",
+      desc: "Đang phát triển."
     });
   }
 
   grid.innerHTML = portals.map(p => {
-    const hasImage = p.image && p.image.trim() !== '';
+    const hasValidUrl = p.url && p.url.trim() !== '' && p.url !== 'https://';
 
-    if (hasImage) {
+    if (hasValidUrl) {
       return `
-        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="browser-card active-link">
-          <div class="browser-bar">
-            <div class="browser-dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <div class="browser-url">${p.url}</div>
+        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="project-card">
+          <div class="preview-box">
+            <iframe src="${p.url}" class="live-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
           </div>
-          <div class="browser-body">
-            <img src="${p.image}" alt="${p.title}" class="preview-img" loading="lazy">
-          </div>
-          <div class="browser-info">
+          <div class="project-info">
             <div class="project-title">${p.title}</div>
             <div class="project-desc">${p.desc || ''}</div>
           </div>
@@ -116,19 +102,11 @@ function renderGrid() {
       `;
     } else {
       return `
-        <div class="browser-card disabled">
-          <div class="browser-bar">
-            <div class="browser-dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <div class="browser-url">${p.url}</div>
-          </div>
-          <div class="browser-body">
+        <div class="project-card disabled">
+          <div class="preview-box">
             <div class="dev-placeholder">Đang trong thời gian phát triển</div>
           </div>
-          <div class="browser-info">
+          <div class="project-info">
             <div class="project-title">${p.title}</div>
             <div class="project-desc">${p.desc || ''}</div>
           </div>
