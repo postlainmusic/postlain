@@ -1,28 +1,36 @@
-const STORAGE_KEY = 'postlain_data_v10';
+/**
+ * POSTLAIN // Core Engine
+ */
+
+const STORAGE_KEY = 'postlain_data_v11';
 
 const DEFAULT_PORTALS = [
   {
     id: "project-1",
     title: "HIDDEN MUSIC",
     url: "https://hiddenmusic.postlain.com",
+    image: "",
     desc: "Âm Nhạc Ẩn"
   },
   {
     id: "project-2",
     title: "POSTLAIN MUSIC",
     url: "",
+    image: "",
     desc: "Dịch vụ stream âm thanh Hi-Res Lossless chuẩn phòng thu."
   },
   {
     id: "project-3",
     title: "STUDIO DAW",
     url: "",
+    image: "",
     desc: "Trạm thu âm & phối khí kỹ thuật số trực tuyến."
   },
   {
     id: "project-4",
     title: "AI SOUND LAB",
     url: "",
+    image: "",
     desc: "Công cụ tách Stem giọng hát và xử lý phổ âm thanh AI."
   }
 ];
@@ -82,7 +90,6 @@ function adjustIframeScaling() {
     const VIRTUAL_W = 1280;
     const VIRTUAL_H = 720;
 
-    // Scale chuẩn theo tỷ lệ màn hình 16:9
     const scale = Math.max(w / VIRTUAL_W, h / VIRTUAL_H);
     iframe.style.transform = `scale(${scale})`;
     iframe.style.left = `${(w - VIRTUAL_W * scale) / 2}px`;
@@ -95,7 +102,6 @@ function renderGrid() {
   const grid = document.getElementById('projects-grid');
   if (!grid) return;
 
-  // Lấy đúng 4 items cho Grid 2x2
   const portals = data.portals.slice(0, 4);
 
   while (portals.length < 4) {
@@ -103,18 +109,30 @@ function renderGrid() {
       id: `project-${portals.length + 1}`,
       title: `Dự án ${portals.length + 1}`,
       url: "",
-      desc: "Đang phát triển."
+      image: "",
+      desc: "Đang trong thời gian phát triển."
     });
   }
 
   grid.innerHTML = portals.map(p => {
+    const hasImage = p.image && p.image.trim() !== '';
     const hasValidUrl = p.url && p.url.trim() !== '' && p.url.startsWith('http');
+    const isActive = hasImage || hasValidUrl;
 
-    if (hasValidUrl) {
+    if (isActive) {
+      let previewContent = '';
+      if (hasImage) {
+        previewContent = `<img src="${p.image}" alt="${p.title}" class="preview-image" loading="lazy">`;
+      } else {
+        previewContent = `<iframe src="${p.url}" class="live-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>`;
+      }
+
+      const linkTarget = hasValidUrl ? p.url : '#';
+
       return `
-        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="project-card">
+        <a href="${linkTarget}" target="_blank" rel="noopener noreferrer" class="project-card active-portal">
           <div class="preview-box">
-            <iframe src="${p.url}" class="live-iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+            ${previewContent}
           </div>
           <div class="project-info">
             <div class="project-title">${p.title}</div>
@@ -126,7 +144,9 @@ function renderGrid() {
       return `
         <div class="project-card disabled">
           <div class="preview-box">
-            <div class="dev-placeholder">Đang trong thời gian phát triển</div>
+            <div class="dev-placeholder-bg">
+              <span class="dev-pulse-text">Đang trong thời gian phát triển</span>
+            </div>
           </div>
           <div class="project-info">
             <div class="project-title">${p.title}</div>
@@ -149,13 +169,26 @@ function renderGrid() {
   if (elQuote) elQuote.textContent = `"${about.quote || ''}"`;
   if (elContent) elContent.textContent = about.content || '';
 
-  // Canh chỉnh scale ngay khi render xong
   setTimeout(adjustIframeScaling, 50);
 }
 
+// Preloader Dismissal
+function dismissPreloader() {
+  const preloader = document.getElementById('site-preloader');
+  if (preloader && !preloader.classList.contains('fade-out')) {
+    preloader.classList.add('fade-out');
+  }
+}
+
 window.addEventListener('resize', adjustIframeScaling);
-document.addEventListener('DOMContentLoaded', renderGrid);
+document.addEventListener('DOMContentLoaded', () => {
+  renderGrid();
+  // Safe timeout for preloader
+  setTimeout(dismissPreloader, 800);
+});
+
 window.addEventListener('load', () => {
   renderGrid();
-  setTimeout(adjustIframeScaling, 200);
+  setTimeout(adjustIframeScaling, 150);
+  setTimeout(dismissPreloader, 400);
 });

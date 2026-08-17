@@ -1,3 +1,6 @@
+/* Postlain - Premium Minimalist Dark Tech Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -5,26 +8,99 @@
 }
 
 :root {
-  --bg: #0a0a0a;
-  --card-bg: #121212;
-  --border: #262626;
-  --border-hover: #404040;
-  --text-main: #ffffff;
-  --text-muted: #a1a1aa;
+  --bg-primary: #070709;
+  --bg-card: #0e0e12;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.22);
+  --text-white: #ffffff;
+  --text-dim: #737373;
+  --text-muted: #a3a3a3;
+  --pill-bg: rgba(18, 18, 22, 0.75);
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Khóa cứng toàn màn hình, không bị dài kéo chuột */
-  background-color: var(--bg);
-  color: var(--text-main);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-white);
+  font-family: var(--font-main);
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Toàn bộ app vừa khít màn hình 100vh */
+/* ==========================================================================
+   1. APPLE-GRADE / CYBERPUNK MINIMAL PRELOADER
+   ========================================================================== */
+.preloader-screen {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-primary);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.65s;
+}
+
+.preloader-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-brand {
+  font-family: var(--font-main);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.35);
+  animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  0% { opacity: 0.7; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6)); }
+}
+
+.preloader-progress-track {
+  width: 140px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.preloader-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ffffff, #a3a3a3);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  animation: loadSim 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes loadSim {
+  0% { width: 0%; }
+  50% { width: 65%; }
+  100% { width: 100%; }
+}
+
+/* ==========================================================================
+   2. APP CONTAINER (LOCKED 100VH RIGID VIEWPORT)
+   ========================================================================== */
 .app-screen {
   width: 100%;
   height: 100vh;
@@ -35,7 +111,7 @@ html, body {
   margin: 0 auto;
 }
 
-/* Header Căn Giữa Nhỏ Gọn */
+/* DYNAMIC PILL HEADER (FROSTED GLASS) */
 .app-header {
   display: flex;
   justify-content: center;
@@ -44,40 +120,47 @@ html, body {
   flex-shrink: 0;
 }
 
-.tab-switcher {
+.dynamic-pill-nav {
   display: inline-flex;
-  background: #141414;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--pill-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 30px;
   padding: 4px;
   gap: 4px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-.tab-btn {
-  padding: 6px 18px;
+.pill-btn {
+  padding: 7px 22px;
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-family: var(--font-main);
+  font-size: 0.84rem;
   font-weight: 600;
-  border-radius: 6px;
+  letter-spacing: 0.3px;
+  border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.tab-btn:hover {
-  color: var(--text-main);
+.pill-btn:hover {
+  color: var(--text-white);
 }
 
-.tab-btn.active {
-  background: #262626;
+.pill-btn.active {
+  background: rgba(255, 255, 255, 0.12);
   color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* Khung Chứa Các Tab */
+/* VIEWS CONTAINER */
 .views-container {
   flex: 1;
-  min-height: 0; /* Cho phép flexbox co giãn chuẩn */
+  min-height: 0;
   position: relative;
 }
 
@@ -90,9 +173,17 @@ html, body {
 .tab-view.active {
   display: flex;
   flex-direction: column;
+  animation: viewFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* GRID 2x2 CỐ ĐỊNH 4 KHUNG VỪA KHÍT MÀN HÌNH */
+@keyframes viewFadeIn {
+  from { opacity: 0; transform: scale(0.99); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   3. GRID 2x2 (4 KHUNG HÌNH CHỮ NHẬT TO, HOVER ZOOM, KHÔNG NÚT RÁC)
+   ========================================================================== */
 .grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -102,32 +193,35 @@ html, body {
   height: 100%;
 }
 
-/* THẺ DỰ ÁN HÌNH CHỮ NHẬT */
 .project-card {
   display: flex;
   flex-direction: column;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   min-height: 0;
+  position: relative;
 }
 
-.project-card:hover {
+.project-card.active-portal:hover {
   border-color: var(--border-hover);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 255, 255, 0.05);
+  transform: translateY(-3px);
 }
 
 .project-card.disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  border-color: var(--border) !important;
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.65;
+  border-color: var(--border-subtle) !important;
 }
 
-/* KHUNG RUỘT PREVIEW (CHỨA IFRAME SCALE CHUẨN 1280x720) */
+/* KHUNG RUỘT PREVIEW 16:9 TRÀN VIỀN */
 .preview-box {
   position: relative;
   flex: 1;
@@ -140,7 +234,7 @@ html, body {
   justify-content: center;
 }
 
-/* Iframe ảo chuẩn 1280x720 scale tự động vừa khít khung */
+/* Live Iframe Virtual 1280x720 Viewport */
 .live-iframe {
   position: absolute;
   top: 0;
@@ -151,43 +245,79 @@ html, body {
   pointer-events: none;
   transform-origin: top left;
   background: #000000;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.dev-placeholder {
-  color: #71717a;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 16px;
+/* Image Screenshot View with Clean Zoom Effect */
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card.active-portal:hover .preview-image {
+  transform: scale(1.03);
+}
+
+/* Placeholder Khung Chưa Có Web */
+.dev-placeholder-bg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #08080b;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dev-pulse-text {
+  font-family: var(--font-main);
+  color: #66666e;
+  font-size: 0.92rem;
+  font-weight: 500;
   letter-spacing: 0.5px;
+  animation: pulseBreath 3s ease-in-out infinite;
 }
 
-/* PHẦN DƯỚI CARD: TÊN + MÔ TẢ */
+@keyframes pulseBreath {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+/* THÔNG TIN DƯỚI KHUNG: TÊN + MÔ TẢ */
 .project-info {
-  padding: 10px 14px;
-  background: var(--card-bg);
-  border-top: 1px solid var(--border);
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   flex-shrink: 0;
 }
 
 .project-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
+  letter-spacing: 0.6px;
+  color: var(--text-white);
+  text-transform: uppercase;
 }
 
 .project-desc {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--text-dim);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* GIỚI THIỆU (ABOUT) */
+/* ==========================================================================
+   4. ABOUT SECTION
+   ========================================================================== */
 .about-wrapper {
   flex: 1;
   overflow-y: auto;
@@ -198,47 +328,51 @@ html, body {
 }
 
 .about-card {
-  max-width: 760px;
+  max-width: 740px;
   width: 100%;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
 .about-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
   color: #ffffff;
   margin-bottom: 6px;
 }
 
 .about-alias {
-  font-size: 0.85rem;
-  color: #71717a;
-  font-family: monospace;
-  margin-bottom: 20px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  margin-bottom: 22px;
 }
 
 .about-quote {
-  background: #171717;
-  border-left: 3px solid #525252;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
   padding: 14px 18px;
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   font-style: italic;
   color: #e5e5e5;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  line-height: 1.6;
 }
 
 .about-text {
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   color: var(--text-muted);
-  line-height: 1.8;
+  line-height: 1.85;
   white-space: pre-line;
 }
 
-/* Responsive khi xem trên màn hình nhỏ */
+/* Responsive */
 @media (max-width: 768px) {
   html, body {
     overflow-y: auto;
@@ -255,6 +389,6 @@ html, body {
     height: auto;
   }
   .project-card {
-    height: 260px;
+    height: 270px;
   }
 }
